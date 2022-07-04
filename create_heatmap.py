@@ -12,7 +12,7 @@ from PIL import Image
 from utils import (eval_class, get_nnue_eval_from_fen,
                    remove_kings_from_piece_map)
 
-minor_pieces = ['p','b','n','r', 'q']
+non_king_pieces = ['p','b','n','r', 'q']
 
 
 @click.command()
@@ -26,10 +26,10 @@ def main(fen_string, include_pieces):
     board = chess.Board(fen_string)
 
     if include_pieces.lower() == 'a':
-        perturb_pieces = minor_pieces
+        perturb_pieces = non_king_pieces
     else:
         perturb_pieces = list(include_pieces.lower())
-        assert all([p in minor_pieces for p in perturb_pieces])
+        assert all([p in non_king_pieces for p in perturb_pieces])
 
         
 
