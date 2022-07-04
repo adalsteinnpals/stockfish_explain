@@ -18,7 +18,7 @@ minor_pieces = ['p','b','n','r', 'q']
 @click.command()
 @click.option('--fen_string', prompt='Fen string',
               help='The fen string to use.')
-@click.option('--include_pieces', prompt='Perturb pieces',
+@click.option('--include_pieces', prompt='Perturb pieces (e.g. A for all pieces, KB for knight and bishop, etc.)',
               help='The pieces to use in perturbation.')
 
 def main(fen_string, include_pieces):
