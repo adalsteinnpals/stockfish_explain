@@ -18,7 +18,7 @@ minor_pieces = ['p','b','n','r', 'q']
 @click.command()
 @click.option('--fen_string', prompt='Fen string',
               help='The fen string to use.')
-@click.option('--include_pieces', prompt='Perturb pieces (e.g. A for all pieces, KB for knight and bishop, etc.)',
+@click.option('--include_pieces', prompt='Perturb pieces (e.g. A for all pieces, NB for knight and bishop, etc.)',
               help='The pieces to use in perturbation.')
 
 def main(fen_string, include_pieces):
@@ -71,7 +71,7 @@ def main(fen_string, include_pieces):
     ax1.set_yticks([])
 
     plt.tight_layout()
-    plt.savefig('test_fig.pdf')
+    plt.savefig('heatmap.pdf')
 
 
 if __name__ == '__main__':
