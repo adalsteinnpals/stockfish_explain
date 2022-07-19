@@ -6,12 +6,19 @@ import chess.svg
 import click
 import matplotlib.pyplot as plt
 import numpy as np
-from captum.attr import ShapleyValueSampling
+from captum._utils.models.linear_model import SkLearnLinearRegression
+from captum.attr import Lime, ShapleyValueSampling
+from captum.attr._core.lime import get_exp_kernel_similarity_function
 from PIL import Image
 
-from utils import eval_class, get_nnue_eval_from_fen, remove_kings_from_piece_map
-
-non_king_pieces = ["p", "b", "n", "r", "q"]
+from utils import (
+    eval_class,
+    get_nnue_eval_from_fen,
+    get_saliency_mat,
+    remove_kings_from_piece_map,
+    available_methods,
+    non_king_pieces,
+)
 
 
 @click.command()
@@ -25,8 +32,18 @@ non_king_pieces = ["p", "b", "n", "r", "q"]
     "--include_pieces",
     prompt="Perturb pieces (e.g. A for all pieces, NB for knight and bishop, etc.)",
     help="The pieces to use in perturbation.",
+    default="A",
 )
-def main(fen_string, include_pieces):
+@click.option(
+    "--method",
+    prompt="Perturbation method:",
+    default="shapley",
+    help="The pieces to use in perturbation.",
+)
+def main(fen_string, include_pieces, method):
+
+    if method not in available_methods:
+        raise ValueError(f"Method value [{method}] not in {available_methods}")
 
     board = chess.Board(fen_string)
 
@@ -36,28 +53,13 @@ def main(fen_string, include_pieces):
         perturb_pieces = list(include_pieces.lower())
         assert all([p in non_king_pieces for p in perturb_pieces])
 
-    eval = eval_class(board, pertub_pieces=perturb_pieces)
-    alg_svs = ShapleyValueSampling(eval)
-
-    mat = (
-        alg_svs.attribute(
-            eval.input,
-            baselines=0,
-            target=0,
-            perturbations_per_eval=1,
-            n_samples=50,
-            show_progress=True,
-        )
-        .detach()
-        .cpu()
-        .numpy()
-    )
+    mat, chosen_map_keys = get_saliency_mat(board, perturb_pieces, method)
 
     zeros_mat = np.zeros((8, 8))
     fig, (ax1, ax2) = plt.subplots(ncols=2, figsize=(20, 10))
 
     for i in range(mat.shape[1]):
-        zeros_mat.ravel()[63 - eval.chosen_map_keys[i]] = mat[0, i]
+        zeros_mat.ravel()[63 - chosen_map_keys[i]] = mat[0, i]
     zeros_mat = np.fliplr(zeros_mat)
     ax2_plot = ax2.imshow(zeros_mat)
     plt.colorbar(ax2_plot, ax=ax2)

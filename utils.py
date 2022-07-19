@@ -6,8 +6,15 @@ import numpy as np
 import pandas as pd
 import torch
 import yaml
+from captum._utils.models.linear_model import SkLearnLinearRegression
+from captum.attr import Lime, ShapleyValueSampling
+from captum.attr._core.lime import get_exp_kernel_similarity_function
 from stockfish import Stockfish
 from torch import nn
+
+
+non_king_pieces = ["p", "b", "n", "r", "q"]
+available_methods = ["shapley", "lime"]
 
 
 def get_config():
@@ -171,3 +178,47 @@ class eval_class(nn.Module):
         )
 
         return return_value
+
+
+def get_saliency_mat(board, perturb_pieces, method):
+    eval = eval_class(board, pertub_pieces=perturb_pieces)
+
+    if method == "shapley":
+        alg_svs = ShapleyValueSampling(eval)
+
+        mat = (
+            alg_svs.attribute(
+                eval.input,
+                baselines=0,
+                target=0,
+                perturbations_per_eval=1,
+                n_samples=50,
+                show_progress=True,
+            )
+            .detach()
+            .cpu()
+            .numpy()
+        )
+    elif method == "lime":
+        exp_eucl_distance = get_exp_kernel_similarity_function(
+            "euclidean", kernel_width=1000
+        )
+        alg_lime = Lime(
+            eval,
+            interpretable_model=SkLearnLinearRegression(),  # build-in wrapped sklearn Linear Regression
+            similarity_func=exp_eucl_distance,
+        )
+
+        mat = (
+            alg_lime.attribute(
+                eval.input,
+                target=0,
+                n_samples=1000,
+                perturbations_per_eval=1,
+                show_progress=True,
+            )
+            .detach()
+            .cpu()
+            .numpy()
+        )
+    return mat, eval.chosen_map_keys
