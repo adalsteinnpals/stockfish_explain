@@ -27,7 +27,7 @@ config = get_config()
 
 
 class stockfish_eval(Stockfish):
-    def get_evaluation_table(self, verbose=True):
+    def get_evaluation_table(self, verbose=False):
         def get_evaluation_dict(text_list, version=14):
             eval_dict = {}
             for _text in text_list:
@@ -109,7 +109,7 @@ class stockfish_eval(Stockfish):
 def get_nnue_eval_from_fen(fen, parameters=None):
     stockfish = stockfish_eval(path=config["STOCKFISH_PATH"], parameters=parameters)
     stockfish.set_fen_position(fen)
-    df, eval_dict = stockfish.get_evaluation_table(verbose=True)
+    df, eval_dict = stockfish.get_evaluation_table(verbose=False)
     return {"table": df, "eval": eval_dict}
 
 
@@ -124,13 +124,20 @@ def remove_kings_from_piece_map(piece_map):
     return _piece_map, _kings_map
 
 
-def reduce_piece_map(map, list_pieces=["p", "b", "n", "r", "q"]):
+def reduce_piece_map(map, list_pieces=["p", "b", "n", "r", "q"], color=None):
     _map = copy.copy(map)
     _chosen_map = {}
     for key, value in map.items():
         if str(value).lower() in list_pieces:
-            del _map[key]
-            _chosen_map[key] = value
+            if color is None:
+                del _map[key]
+                _chosen_map[key] = value
+            elif (color == "white") and (str(value).isupper()):
+                del _map[key]
+                _chosen_map[key] = value
+            elif (color == "black") and (str(value).islower()):
+                del _map[key]
+                _chosen_map[key] = value
     return _chosen_map, _map
 
 
@@ -138,11 +145,12 @@ class eval_class(nn.Module):
     def __init__(self, board, pertub_pieces=["p", "b", "n", "r", "q"], color=None):
         self.board = board
         self.pertub_pieces = pertub_pieces
+        self.color = color
         super(eval_class, self).__init__()
         self.org_piece_map = board.piece_map()
         self.map, self.king_map = remove_kings_from_piece_map(self.org_piece_map)
         self.chosen_map, self.static_map = reduce_piece_map(
-            self.map, list_pieces=self.pertub_pieces
+            self.map, list_pieces=self.pertub_pieces, color=self.color
         )
 
         self.chosen_map_keys = list(self.chosen_map.keys())
@@ -182,8 +190,8 @@ class eval_class(nn.Module):
         return return_value
 
 
-def get_saliency_mat(board, perturb_pieces, method):
-    eval = eval_class(board, pertub_pieces=perturb_pieces)
+def get_saliency_mat(board, perturb_pieces, method, n_samples=50, color=None):
+    eval = eval_class(board, pertub_pieces=perturb_pieces, color=color)
 
     if method == "shapley":
         alg_svs = ShapleyValueSampling(eval)
@@ -194,7 +202,7 @@ def get_saliency_mat(board, perturb_pieces, method):
                 baselines=0,
                 target=0,
                 perturbations_per_eval=1,
-                n_samples=50,
+                n_samples=n_samples,
                 show_progress=True,
             )
             .detach()
@@ -215,7 +223,7 @@ def get_saliency_mat(board, perturb_pieces, method):
             alg_lime.attribute(
                 eval.input,
                 target=0,
-                n_samples=1000,
+                n_samples=n_samples,
                 perturbations_per_eval=1,
                 show_progress=True,
             )
@@ -223,4 +231,6 @@ def get_saliency_mat(board, perturb_pieces, method):
             .cpu()
             .numpy()
         )
-    return mat, eval.chosen_map_keys
+
+    results = {"mat": mat, "chosen_map_keys": eval.chosen_map_keys}
+    return results

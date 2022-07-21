@@ -12,12 +12,12 @@ from captum.attr._core.lime import get_exp_kernel_similarity_function
 from PIL import Image
 
 from utils import (
+    available_methods,
     eval_class,
     get_nnue_eval_from_fen,
     get_saliency_mat,
-    remove_kings_from_piece_map,
-    available_methods,
     non_king_pieces,
+    remove_kings_from_piece_map,
 )
 
 
@@ -53,7 +53,9 @@ def main(fen_string, include_pieces, method):
         perturb_pieces = list(include_pieces.lower())
         assert all([p in non_king_pieces for p in perturb_pieces])
 
-    mat, chosen_map_keys = get_saliency_mat(board, perturb_pieces, method)
+    saliency = get_saliency_mat(board, perturb_pieces, method)
+    mat = saliency["mat"]
+    chosen_map_keys = saliency["chosen_map_keys"]
 
     board_mat = np.zeros((8, 8))
     fig, (ax1, ax2) = plt.subplots(ncols=2, figsize=(20, 10))

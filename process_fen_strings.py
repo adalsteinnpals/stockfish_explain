@@ -48,7 +48,10 @@ def main(include_pieces, method):
     for idx, fen_string in enumerate(fen_strings):
         board = chess.Board(fen_string)
 
-        mat, chosen_map_keys = get_saliency_mat(board, perturb_pieces, method)
+        saliency = get_saliency_mat(board, perturb_pieces, method)
+
+        mat = saliency["mat"]
+        chosen_map_keys = saliency["chosen_map_keys"]
 
         board_mat = np.zeros((8, 8))
         for i in range(mat.shape[1]):
