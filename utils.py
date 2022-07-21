@@ -12,7 +12,6 @@ from captum.attr._core.lime import get_exp_kernel_similarity_function
 from stockfish import Stockfish
 from torch import nn
 
-
 non_king_pieces = ["p", "b", "n", "r", "q"]
 available_methods = ["shapley", "lime"]
 
@@ -232,5 +231,14 @@ def get_saliency_mat(board, perturb_pieces, method, n_samples=50, color=None):
             .numpy()
         )
 
-    results = {"mat": mat, "chosen_map_keys": eval.chosen_map_keys}
+    board_mat = np.zeros((8, 8))
+    for i in range(mat.shape[1]):
+        board_mat.ravel()[63 - eval.chosen_map_keys[i]] = mat[0, i]
+    board_mat = np.fliplr(board_mat)
+
+    results = {
+        "mat": mat,
+        "chosen_map_keys": eval.chosen_map_keys,
+        "board_mat": board_mat,
+    }
     return results

@@ -12,11 +12,15 @@ def test_saliency():
 
     saliency = get_saliency_mat(board, perturb_pieces, method, n_samples=5, color=None)
 
+    both_mat = saliency["board_mat"]
+
     assert len(saliency["mat"][0]) == 17
 
     saliency = get_saliency_mat(
         board, perturb_pieces, method, n_samples=5, color="white"
     )
+
+    white_mat = saliency["board_mat"]
 
     assert len(saliency["mat"][0]) == 8
 
@@ -25,4 +29,9 @@ def test_saliency():
     )
 
     assert len(saliency["mat"][0]) == 9
+
+    black_mat = saliency["board_mat"]
+
+    print(black_mat + white_mat)
+    print(both_mat)
 

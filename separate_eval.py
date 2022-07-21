@@ -40,7 +40,19 @@ from utils import (
     default="shapley",
     help="The pieces to use in perturbation.",
 )
-def main(fen_string, include_pieces, method):
+@click.option(
+    "--separate",
+    prompt="Evaluate values for each player separately",
+    default="Y",
+    help="The pieces to use in perturbation.",
+)
+@click.option(
+    "--ending",
+    prompt="Add string to file name: ",
+    default="",
+    help="The pieces to use in perturbation.",
+)
+def main(fen_string, include_pieces, method, separate, ending):
 
     if method not in available_methods:
         raise ValueError(f"Method value [{method}] not in {available_methods}")
@@ -53,10 +65,17 @@ def main(fen_string, include_pieces, method):
         perturb_pieces = list(include_pieces.lower())
         assert all([p in non_king_pieces for p in perturb_pieces])
 
-    saliency = get_saliency_mat(board, perturb_pieces, method)
-    mat = saliency["mat"]
-    chosen_map_keys = saliency["chosen_map_keys"]
-    board_mat = saliency["board_mat"]
+    if separate == "Y":
+        saliency = get_saliency_mat(board, perturb_pieces, method, color="white")
+        white_mat = saliency["board_mat"]
+        saliency = get_saliency_mat(board, perturb_pieces, method, color="black")
+        black_mat = saliency["board_mat"]
+        board_mat = white_mat + black_mat
+    elif separate == "N":
+        saliency = get_saliency_mat(board, perturb_pieces, method, color=None)
+        board_mat = saliency["board_mat"]
+    else:
+        raise ValueError(f"Expected separate to be Y or N, got {separate}")
 
     fig, (ax1, ax2) = plt.subplots(ncols=2, figsize=(20, 10))
 
@@ -100,7 +119,7 @@ def main(fen_string, include_pieces, method):
     ax1.set_yticks([])
 
     plt.tight_layout()
-    plt.savefig("heatmap.pdf")
+    plt.savefig(f"figures/heatmap_{ending}.pdf")
 
 
 if __name__ == "__main__":
