@@ -52,6 +52,8 @@ class stockfish_eval(Stockfish):
         text = []
         while True:
             text_ = self._read_line()
+            if verbose:
+                print(text_)
             text.append(text_)
             if "Final evaluation" in text_:
                 break
@@ -133,7 +135,7 @@ def reduce_piece_map(map, list_pieces=["p", "b", "n", "r", "q"]):
 
 
 class eval_class(nn.Module):
-    def __init__(self, board, pertub_pieces=["p", "b", "n", "r", "q"]):
+    def __init__(self, board, pertub_pieces=["p", "b", "n", "r", "q"], color=None):
         self.board = board
         self.pertub_pieces = pertub_pieces
         super(eval_class, self).__init__()

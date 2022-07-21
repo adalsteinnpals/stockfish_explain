@@ -8,11 +8,7 @@ import matplotlib.pyplot as plt
 import numpy as np
 from PIL import Image
 
-from utils import (
-    available_methods,
-    get_saliency_mat,
-    non_king_pieces,
-)
+from utils import available_methods, get_saliency_mat, non_king_pieces
 
 
 @click.command()
@@ -31,7 +27,7 @@ from utils import (
 def main(include_pieces, method):
 
     with open("fen_strings.txt") as f:
-        fen_strings = f.readlines()[:2]
+        fen_strings = f.readlines()[:3]
 
     num_fen_strings = len(fen_strings)
 
