@@ -1,7 +1,11 @@
 import copy
 import re
+from io import BytesIO
 
+import cairosvg
 import chess
+import chess.svg
+import matplotlib.pyplot as plt
 import numpy as np
 import pandas as pd
 import torch
@@ -9,6 +13,7 @@ import yaml
 from captum._utils.models.linear_model import SkLearnLinearRegression
 from captum.attr import Lime, ShapleyValueSampling
 from captum.attr._core.lime import get_exp_kernel_similarity_function
+from PIL import Image
 from stockfish import Stockfish
 from torch import nn
 
@@ -252,3 +257,44 @@ def get_saliency_mat(board, perturb_pieces, method, n_samples=50, color=None):
         "value": eval.forward(eval.input)
     }
     return results
+
+
+def plot_chess_board(board_mat, board, ax1, ax2):
+    max_abs_val = np.abs(board_mat).max()
+    ax2_plot = ax2.imshow(board_mat, vmin=-max_abs_val, vmax=max_abs_val, cmap="bwr")
+
+    ax2.hlines(
+        y=np.arange(0, 8) + 0.5,
+        xmin=np.full(8, 0) - 0.5,
+        xmax=np.full(8, 8) - 0.5,
+        color="black",
+    )
+    ax2.vlines(
+        x=np.arange(0, 8) + 0.5,
+        ymin=np.full(8, 0) - 0.5,
+        ymax=np.full(8, 8) - 0.5,
+        color="black",
+    )
+    ax2.set_xticks(list(range(8)))
+    ax2.set_xticklabels(["A", "B", "C", "D", "E", "F", "G", "H"])
+    ax2.set_yticks(list(range(8)))
+    ax2.set_yticklabels(["8", "7", "6", "5", "4", "3", "2", "1"])
+
+    #ax2.set_title(f"Method: {method}, Pieces: {include_pieces}, Value: {saliency['value'].item()}")
+
+    plt.colorbar(ax2_plot, ax=ax2)
+
+    for i in range(board_mat.shape[0]):
+        for j in range(board_mat.shape[1]):
+            c = board_mat[j, i]
+            if c != 0:
+                ax2.text(
+                    i, j, f"{c:.2f}", va="center", ha="center", c="green", fontsize=20
+                )
+
+    svg = chess.svg.board(board)
+    img = cairosvg.svg2png(svg)
+    img = Image.open(BytesIO(img))
+    ax1_plot = ax1.imshow(img)
+    ax1.set_xticks([])
+    ax1.set_yticks([])
