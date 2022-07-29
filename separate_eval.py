@@ -54,6 +54,13 @@ from utils import (
 )
 def main(fen_string, include_pieces, method, separate, ending):
 
+    fig = main_separate(fen_string, include_pieces, method, separate)
+    
+    plt.savefig(f"figures/heatmap_{ending}.pdf")
+
+
+def main_separate(fen_string, include_pieces, method, separate):
+
     if method not in available_methods:
         raise ValueError(f"Method value [{method}] not in {available_methods}")
 
@@ -99,7 +106,7 @@ def main(fen_string, include_pieces, method, separate, ending):
     ax2.set_yticks(list(range(8)))
     ax2.set_yticklabels(["8", "7", "6", "5", "4", "3", "2", "1"])
 
-    ax2.set_title(f"Method: {method}, Pieces: {include_pieces}")
+    ax2.set_title(f"Method: {method}, Pieces: {include_pieces}, Value: {saliency['value'].item()}")
 
     plt.colorbar(ax2_plot, ax=ax2)
 
@@ -108,7 +115,7 @@ def main(fen_string, include_pieces, method, separate, ending):
             c = board_mat[j, i]
             if c != 0:
                 ax2.text(
-                    i, j, f"{c:.2f}", va="center", ha="center", c="white", fontsize=20
+                    i, j, f"{c:.2f}", va="center", ha="center", c="black", fontsize=20
                 )
 
     svg = chess.svg.board(board)
@@ -119,7 +126,7 @@ def main(fen_string, include_pieces, method, separate, ending):
     ax1.set_yticks([])
 
     plt.tight_layout()
-    plt.savefig(f"figures/heatmap_{ending}.pdf")
+    return fig
 
 
 if __name__ == "__main__":

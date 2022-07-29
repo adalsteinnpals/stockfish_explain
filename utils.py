@@ -240,5 +240,6 @@ def get_saliency_mat(board, perturb_pieces, method, n_samples=50, color=None):
         "mat": mat,
         "chosen_map_keys": eval.chosen_map_keys,
         "board_mat": board_mat,
+        "value": eval.forward(eval.input)
     }
     return results
