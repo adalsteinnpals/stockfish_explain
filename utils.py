@@ -61,7 +61,10 @@ class stockfish_eval(Stockfish):
 
         # if verbose: [print(text_) for text_ in text]
         # if verbose: print('len text: ', len(text))
+        # print(f"len text is: {len(text)}")
 
+        #import pdb
+        #pdb.set_trace()
         if len(text) == 21:
             start_idx = 5
             offset = 0
@@ -70,6 +73,12 @@ class stockfish_eval(Stockfish):
             start_idx = 9
             offset = 1
             eval_dict = get_evaluation_dict(text, version=14)
+
+        elif len(text) == 70: # for mac 
+            start_idx = 9
+            offset = 1
+            eval_dict = get_evaluation_dict(text, version=14)
+
         else:
             return None, None
 
