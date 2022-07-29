@@ -5,6 +5,8 @@
 
 - Download stockfish binaries: https://stockfishchess.org/download/
 - set correct path (STOCKFISH_PATH) to stockfish binaries in config.yml
+    - problems with cairo might be solved with https://doc.courtbouillon.org/weasyprint/stable/first_steps.html#macos
+    
 
 
 
