@@ -17,6 +17,7 @@ from PIL import Image
 from stockfish import Stockfish
 from torch import nn
 
+
 non_king_pieces = ["p", "b", "n", "r", "q"]
 available_methods = ["shapley", "lime"]
 
@@ -68,8 +69,8 @@ class stockfish_eval(Stockfish):
         # if verbose: print('len text: ', len(text))
         # print(f"len text is: {len(text)}")
 
-        #import pdb
-        #pdb.set_trace()
+        # import pdb
+        # pdb.set_trace()
         if len(text) == 21:
             start_idx = 5
             offset = 0
@@ -79,7 +80,7 @@ class stockfish_eval(Stockfish):
             offset = 1
             eval_dict = get_evaluation_dict(text, version=14)
 
-        elif len(text) == 70: # for mac 
+        elif len(text) == 70:  # for mac
             start_idx = 9
             offset = 1
             eval_dict = get_evaluation_dict(text, version=14)
@@ -254,7 +255,7 @@ def get_saliency_mat(board, perturb_pieces, method, n_samples=50, color=None):
         "mat": mat,
         "chosen_map_keys": eval.chosen_map_keys,
         "board_mat": board_mat,
-        "value": eval.forward(eval.input)
+        "value": eval.forward(eval.input),
     }
     return results
 
@@ -280,7 +281,7 @@ def plot_chess_board(board_mat, board, ax1, ax2):
     ax2.set_yticks(list(range(8)))
     ax2.set_yticklabels(["8", "7", "6", "5", "4", "3", "2", "1"])
 
-    #ax2.set_title(f"Method: {method}, Pieces: {include_pieces}, Value: {saliency['value'].item()}")
+    # ax2.set_title(f"Method: {method}, Pieces: {include_pieces}, Value: {saliency['value'].item()}")
 
     plt.colorbar(ax2_plot, ax=ax2)
 
@@ -298,3 +299,86 @@ def plot_chess_board(board_mat, board, ax1, ax2):
     ax1_plot = ax1.imshow(img)
     ax1.set_xticks([])
     ax1.set_yticks([])
+
+
+def idx_to_name(idx):
+    letters = ["A", "B", "C", "D", "E", "F", "G", "H"]
+    row = (idx // 8) + 1
+    rank = idx % 8
+    letter = letters[rank]
+    return letter + str(row)
+
+
+def letter_to_name(letter):
+    letter_dict = {"n": "Knight", "p": "Pawn", "q": "Queen", "b": "Bishop", "r": "Rook"}
+    return letter_dict[str(letter).lower()]
+
+
+def get_correlation_matrix(fen_string):
+    board = chess.Board(fen_string)
+    piece_map = board.piece_map()
+    king_map = {}
+    white_map = {}
+    black_map = {}
+
+    for key, value in piece_map.items():
+        if str(value) in ["k", "K"]:
+            king_map[key] = value
+        elif str(value).isupper():
+            white_map[key] = value
+        elif str(value).islower():
+            black_map[key] = value
+
+    white_names = [
+        letter_to_name(v) + "-" + idx_to_name(k) for k, v in white_map.items()
+    ]
+    black_names = [
+        letter_to_name(v) + "-" + idx_to_name(k) for k, v in black_map.items()
+    ]
+
+    mat = np.zeros((len(white_map) + 1, len(black_map) + 1))
+    results = get_nnue_eval_from_fen(board.fen())
+    reference = float(results["eval"]["NNUE"])
+
+    for i, (white_pos, white_type) in enumerate(white_map.items()):
+        for j, (black_pos, black_type) in enumerate(black_map.items()):
+            _white_map = copy.copy(white_map)
+            _black_map = copy.copy(black_map)
+            del _white_map[white_pos]
+            del _black_map[black_pos]
+
+            _piece_map = {**king_map, **_white_map, **_black_map}
+
+            board.set_piece_map(_piece_map)
+
+            _fen = board.fen()
+
+            results = get_nnue_eval_from_fen(_fen)
+            mat[i + 1, j + 1] = float(results["eval"]["NNUE"])
+
+    for i, (white_pos, white_type) in enumerate(white_map.items()):
+        _white_map = copy.copy(white_map)
+        del _white_map[white_pos]
+        _piece_map = {**king_map, **_white_map, **black_map}
+
+        board.set_piece_map(_piece_map)
+
+        _fen = board.fen()
+
+        results = get_nnue_eval_from_fen(_fen)
+        mat[i + 1, 0] = float(results["eval"]["NNUE"])
+
+    for j, (black_pos, black_type) in enumerate(black_map.items()):
+        _black_map = copy.copy(black_map)
+        del _black_map[black_pos]
+        _piece_map = {**king_map, **white_map, **_black_map}
+
+        board.set_piece_map(_piece_map)
+
+        _fen = board.fen()
+
+        results = get_nnue_eval_from_fen(_fen)
+        mat[0, j + 1] = float(results["eval"]["NNUE"]) - reference
+
+    df = pd.DataFrame(mat, index=["None"] + white_names, columns=["None"] + black_names)
+    return df
