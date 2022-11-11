@@ -138,3 +138,6 @@ Stockfish-sf_14.1
 *.png
 
 nnue_pytorch/
+*.db
+.vscode/
+*.pt
