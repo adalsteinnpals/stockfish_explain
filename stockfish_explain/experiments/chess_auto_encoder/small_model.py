@@ -8,16 +8,10 @@ class DeepAutoencoder(torch.nn.Module):
         self.input_size = input_size      
         self.size_0 = 1024
         self.size_1 = 64
-        self.size_2 = 32
-        self.size_3 = 16
 
         self.encoder_0 = torch.nn.Linear(self.input_size, self.size_0)
         self.encoder_1 = torch.nn.Linear(self.size_0, self.size_1)
-        self.encoder_2 = torch.nn.Linear(self.size_1, self.size_2)
-        self.encoder_3 = torch.nn.Linear(self.size_2, self.size_3)
 
-        self.decoder_0 = torch.nn.Linear(self.size_3, self.size_2)
-        self.decoder_1 = torch.nn.Linear(self.size_2, self.size_1)
         self.decoder_2 = torch.nn.Linear(self.size_1, self.size_0)
         self.decoder_3 = torch.nn.Linear(self.size_0, self.input_size)
 
@@ -25,17 +19,9 @@ class DeepAutoencoder(torch.nn.Module):
             self.encoder_0,
             torch.nn.ReLU(),
             self.encoder_1,
-            torch.nn.ReLU(),
-            self.encoder_2,
-            torch.nn.ReLU(),
-            self.encoder_3
         )
           
         self.decoder = torch.nn.Sequential(
-            self.decoder_0,
-            torch.nn.ReLU(),
-            self.decoder_1,
-            torch.nn.ReLU(),
             self.decoder_2,
             torch.nn.ReLU(),
             self.decoder_3,

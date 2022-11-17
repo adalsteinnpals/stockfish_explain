@@ -141,3 +141,5 @@ nnue_pytorch/
 *.db
 .vscode/
 *.pt
+runs/
+external_packages/
