@@ -143,3 +143,4 @@ nnue_pytorch/
 *.pt
 runs/
 external_packages/
+data/

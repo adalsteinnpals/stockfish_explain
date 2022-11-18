@@ -1,5 +1,5 @@
 import matplotlib.pyplot as plt
-from small_model import DeepAutoencoder
+from model_medium import DeepAutoencoder
 import torch
 import pandas as pd
 import chess
@@ -15,7 +15,7 @@ from torch.utils.tensorboard import SummaryWriter
 
 def train_model():
     writer = SummaryWriter()   
-    model_name = 'BCE_small_2'                                                                                             
+    model_name = 'BCE_medium'                                                                                             
 
     batch_size = 200
     train_loader = get_FenBatchProvider(batch_size=batch_size)
@@ -24,7 +24,6 @@ def train_model():
 
     # Instantiating the model and hyperparameters
     model = DeepAutoencoder(input_size=641)
-    #criterion = torch.nn.MSELoss()
     criterion = torch.nn.BCELoss()
     num_epochs = 1000
     max_iterations = 500
@@ -87,6 +86,8 @@ def train_model():
         if epoch % 100 == 0:
             torch.save(model.state_dict(), f'./models/model_{model_name}_{epoch}.pt')
         
+        # Storing useful images and
+        # reconstructed outputs for the last batch
     
     
     writer.flush()
