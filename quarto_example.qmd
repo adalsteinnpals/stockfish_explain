@@ -28,6 +28,7 @@ In the quest to understand why a machine learning model makes the decision it do
 # Chess
 
 ## Implemented Concepts
+All concepts are implemented for both white and black.
 
 - **white_bishop_pair** - Is true if white has a bishop pair
 - **white_knight_pair** - Is true if white has a knight pair
@@ -46,8 +47,20 @@ In the quest to understand why a machine learning model makes the decision it do
 
 # Concept Probing
 
+## Comparing concept probing methods
+Here we will evaluate the concept probing methods and consider what they tell us about the model. There are numerous challenges related to concept probing, e.g.:
+
+- How can we find the best concept probing method?
+asdfasdfasdf
+
+- When can we really know if a concept is being used? Even if a concept is linearly separable, how can we know if it is being used?
+
+asdfasdf
 
 
+- When is a probing method too simple, or too complex? 
+
+### Autoencoder Experiment
 
 ```{python}
 #| label: fig-polar
@@ -67,5 +80,3 @@ ax.grid(True)
 plt.show()
 ```
 
-
-# Next Chapter

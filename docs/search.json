@@ -11,6 +11,13 @@
     "href": "quarto_example.html#implemented-concepts",
     "title": "Stockfish Explainability",
     "section": "2.1 Implemented Concepts",
-    "text": "2.1 Implemented Concepts\n\nwhite_bishop_pair - Is true if white has a bishop pair\nwhite_knight_pair - Is true if white has a knight pair\nwhite_double_pawn - Is true if white has a double pawn\nwhite_isolated_pawn - Is true if white has an isolated pawn\nwhite_connected_rooks - Is true if white has connected rooks\nwhite_rook_on_open_file - Is true if white has a rook on an open file\nhas_contested_open_file - Is true if there is a contested open file\ncurrent_player_is_forking - Is true if the current player is forking\ncurrent_player_can_fork - Is true if the current player can fork\ncurrent_player_is_checking - Is true if the current player is checking"
+    "text": "2.1 Implemented Concepts\nAll concepts are implemented for both white and black.\n\nwhite_bishop_pair - Is true if white has a bishop pair\nwhite_knight_pair - Is true if white has a knight pair\nwhite_double_pawn - Is true if white has a double pawn\nwhite_isolated_pawn - Is true if white has an isolated pawn\nwhite_connected_rooks - Is true if white has connected rooks\nwhite_rook_on_open_file - Is true if white has a rook on an open file\nhas_contested_open_file - Is true if there is a contested open file\ncurrent_player_is_forking - Is true if the current player is forking\ncurrent_player_can_fork - Is true if the current player can fork\ncurrent_player_is_checking - Is true if the current player is checking"
+  },
+  {
+    "objectID": "quarto_example.html#comparing-concept-probing-methods",
+    "href": "quarto_example.html#comparing-concept-probing-methods",
+    "title": "Stockfish Explainability",
+    "section": "3.1 Comparing concept probing methods",
+    "text": "3.1 Comparing concept probing methods\nHere we will evaluate the concept probing methods and consider what they tell us about the model. There are numerous challenges related to concept probing, e.g.:\n\nHow can we find the best concept probing method? asdfasdfasdf\nWhen can we really know if a concept is being used? Even if a concept is linearly separable, how can we know if it is being used?\n\nasdfasdf\n\nWhen is a probing method too simple, or too complex?\n\n\n3.1.1 Autoencoder Experiment\n\n\nCode\nimport numpy as np\nimport matplotlib.pyplot as plt\n\nr = np.arange(0, 2, 0.01)\ntheta = 2 * np.pi * r\nfig, ax = plt.subplots(\n  subplot_kw = {'projection': 'polar'} \n)\nax.plot(theta, r)\nax.set_rticks([0.5, 1, 1.5, 2])\nax.grid(True)\nplt.show()\n\n\n\n\n\nFigure 1: A line plot on a polar axis"
   }
 ]

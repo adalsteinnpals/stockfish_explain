@@ -146,8 +146,13 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
   <ul class="collapse">
   <li><a href="#implemented-concepts" id="toc-implemented-concepts" class="nav-link" data-scroll-target="#implemented-concepts"><span class="toc-section-number">2.1</span>  Implemented Concepts</a></li>
   </ul></li>
-  <li><a href="#concept-probing" id="toc-concept-probing" class="nav-link" data-scroll-target="#concept-probing"><span class="toc-section-number">3</span>  Concept Probing</a></li>
-  <li><a href="#next-chapter" id="toc-next-chapter" class="nav-link" data-scroll-target="#next-chapter"><span class="toc-section-number">4</span>  Next Chapter</a></li>
+  <li><a href="#concept-probing" id="toc-concept-probing" class="nav-link" data-scroll-target="#concept-probing"><span class="toc-section-number">3</span>  Concept Probing</a>
+  <ul class="collapse">
+  <li><a href="#comparing-concept-probing-methods" id="toc-comparing-concept-probing-methods" class="nav-link" data-scroll-target="#comparing-concept-probing-methods"><span class="toc-section-number">3.1</span>  Comparing concept probing methods</a>
+  <ul class="collapse">
+  <li><a href="#autoencoder-experiment" id="toc-autoencoder-experiment" class="nav-link" data-scroll-target="#autoencoder-experiment"><span class="toc-section-number">3.1.1</span>  Autoencoder Experiment</a></li>
+  </ul></li>
+  </ul></li>
   </ul>
 </nav>
     </div>
@@ -195,6 +200,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <h1 data-number="2"><span class="header-section-number">2</span> Chess</h1>
 <section id="implemented-concepts" class="level2" data-number="2.1">
 <h2 data-number="2.1" class="anchored" data-anchor-id="implemented-concepts"><span class="header-section-number">2.1</span> Implemented Concepts</h2>
+<p>All concepts are implemented for both white and black.</p>
 <ul>
 <li><strong>white_bishop_pair</strong> - Is true if white has a bishop pair</li>
 <li><strong>white_knight_pair</strong> - Is true if white has a knight pair</li>
@@ -211,6 +217,19 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 </section>
 <section id="concept-probing" class="level1" data-number="3">
 <h1 data-number="3"><span class="header-section-number">3</span> Concept Probing</h1>
+<section id="comparing-concept-probing-methods" class="level2" data-number="3.1">
+<h2 data-number="3.1" class="anchored" data-anchor-id="comparing-concept-probing-methods"><span class="header-section-number">3.1</span> Comparing concept probing methods</h2>
+<p>Here we will evaluate the concept probing methods and consider what they tell us about the model. There are numerous challenges related to concept probing, e.g.:</p>
+<ul>
+<li><p>How can we find the best concept probing method? asdfasdfasdf</p></li>
+<li><p>When can we really know if a concept is being used? Even if a concept is linearly separable, how can we know if it is being used?</p></li>
+</ul>
+<p>asdfasdf</p>
+<ul>
+<li>When is a probing method too simple, or too complex?</li>
+</ul>
+<section id="autoencoder-experiment" class="level3" data-number="3.1.1">
+<h3 data-number="3.1.1" class="anchored" data-anchor-id="autoencoder-experiment"><span class="header-section-number">3.1.1</span> Autoencoder Experiment</h3>
 <div class="cell" data-execution_count="1">
 <details>
 <summary>Code</summary>
@@ -236,11 +255,10 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 </div>
 </div>
 </div>
+
+
 </section>
-<section id="next-chapter" class="level1" data-number="4">
-<h1 data-number="4"><span class="header-section-number">4</span> Next Chapter</h1>
-
-
+</section>
 </section>
 
 </main> <!-- /main -->
