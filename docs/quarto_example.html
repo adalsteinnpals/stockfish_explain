@@ -142,8 +142,12 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
   <li><a href="#what-is-explainability" id="toc-what-is-explainability" class="nav-link" data-scroll-target="#what-is-explainability"><span class="toc-section-number">1.2</span>  What is Explainability?</a></li>
   <li><a href="#explainability-methods" id="toc-explainability-methods" class="nav-link" data-scroll-target="#explainability-methods"><span class="toc-section-number">1.3</span>  Explainability Methods</a></li>
   </ul></li>
-  <li><a href="#concept-probing" id="toc-concept-probing" class="nav-link" data-scroll-target="#concept-probing"><span class="toc-section-number">2</span>  Concept Probing</a></li>
-  <li><a href="#next-chapter" id="toc-next-chapter" class="nav-link" data-scroll-target="#next-chapter"><span class="toc-section-number">3</span>  Next Chapter</a></li>
+  <li><a href="#chess" id="toc-chess" class="nav-link" data-scroll-target="#chess"><span class="toc-section-number">2</span>  Chess</a>
+  <ul class="collapse">
+  <li><a href="#implemented-concepts" id="toc-implemented-concepts" class="nav-link" data-scroll-target="#implemented-concepts"><span class="toc-section-number">2.1</span>  Implemented Concepts</a></li>
+  </ul></li>
+  <li><a href="#concept-probing" id="toc-concept-probing" class="nav-link" data-scroll-target="#concept-probing"><span class="toc-section-number">3</span>  Concept Probing</a></li>
+  <li><a href="#next-chapter" id="toc-next-chapter" class="nav-link" data-scroll-target="#next-chapter"><span class="toc-section-number">4</span>  Next Chapter</a></li>
   </ul>
 </nav>
     </div>
@@ -187,8 +191,26 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 </ul>
 </section>
 </section>
-<section id="concept-probing" class="level1" data-number="2">
-<h1 data-number="2"><span class="header-section-number">2</span> Concept Probing</h1>
+<section id="chess" class="level1" data-number="2">
+<h1 data-number="2"><span class="header-section-number">2</span> Chess</h1>
+<section id="implemented-concepts" class="level2" data-number="2.1">
+<h2 data-number="2.1" class="anchored" data-anchor-id="implemented-concepts"><span class="header-section-number">2.1</span> Implemented Concepts</h2>
+<ul>
+<li><strong>white_bishop_pair</strong> - Is true if white has a bishop pair</li>
+<li><strong>white_knight_pair</strong> - Is true if white has a knight pair</li>
+<li><strong>white_double_pawn</strong> - Is true if white has a double pawn</li>
+<li><strong>white_isolated_pawn</strong> - Is true if white has an isolated pawn</li>
+<li><strong>white_connected_rooks</strong> - Is true if white has connected rooks</li>
+<li><strong>white_rook_on_open_file</strong> - Is true if white has a rook on an open file</li>
+<li><strong>has_contested_open_file</strong> - Is true if there is a contested open file</li>
+<li><strong>current_player_is_forking</strong> - Is true if the current player is forking</li>
+<li><strong>current_player_can_fork</strong> - Is true if the current player can fork</li>
+<li><strong>current_player_is_checking</strong> - Is true if the current player is checking</li>
+</ul>
+</section>
+</section>
+<section id="concept-probing" class="level1" data-number="3">
+<h1 data-number="3"><span class="header-section-number">3</span> Concept Probing</h1>
 <div class="cell" data-execution_count="1">
 <details>
 <summary>Code</summary>
@@ -215,8 +237,8 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 </div>
 </div>
 </section>
-<section id="next-chapter" class="level1" data-number="3">
-<h1 data-number="3"><span class="header-section-number">3</span> Next Chapter</h1>
+<section id="next-chapter" class="level1" data-number="4">
+<h1 data-number="4"><span class="header-section-number">4</span> Next Chapter</h1>
 
 
 </section>

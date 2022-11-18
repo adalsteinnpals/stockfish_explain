@@ -5,5 +5,12 @@
     "title": "Stockfish Explainability",
     "section": "",
     "text": "This document is a work in progress. It is intended to be a guide to the explainability features of Stockfish. It is not intended to be a guide to Stockfish itself. For that, please see the Stockfish documentation.\n\n\n\nExplainability is the ability to understand why a machine learning model makes the decisions it does. It is a key component of the Explainable AI movement. It is also a key component of the Fairness, Accountability, and Transparency\n\n\n\nIn the quest to understand why a machine learning model makes the decision it does we want to find out what it has learnt. The methods we will be using to explain Stockfish are:\n\nFeature Importance\nSaliency Maps\nConcept Probing"
+  },
+  {
+    "objectID": "quarto_example.html#implemented-concepts",
+    "href": "quarto_example.html#implemented-concepts",
+    "title": "Stockfish Explainability",
+    "section": "2.1 Implemented Concepts",
+    "text": "2.1 Implemented Concepts\n\nwhite_bishop_pair - Is true if white has a bishop pair\nwhite_knight_pair - Is true if white has a knight pair\nwhite_double_pawn - Is true if white has a double pawn\nwhite_isolated_pawn - Is true if white has an isolated pawn\nwhite_connected_rooks - Is true if white has connected rooks\nwhite_rook_on_open_file - Is true if white has a rook on an open file\nhas_contested_open_file - Is true if there is a contested open file\ncurrent_player_is_forking - Is true if the current player is forking\ncurrent_player_can_fork - Is true if the current player can fork\ncurrent_player_is_checking - Is true if the current player is checking"
   }
 ]

@@ -25,6 +25,21 @@ In the quest to understand why a machine learning model makes the decision it do
 
 
 
+# Chess
+
+## Implemented Concepts
+
+- **white_bishop_pair** - Is true if white has a bishop pair
+- **white_knight_pair** - Is true if white has a knight pair
+- **white_double_pawn** - Is true if white has a double pawn
+- **white_isolated_pawn** - Is true if white has an isolated pawn
+- **white_connected_rooks** - Is true if white has connected rooks
+- **white_rook_on_open_file** - Is true if white has a rook on an open file
+- **has_contested_open_file** - Is true if there is a contested open file
+- **current_player_is_forking** - Is true if the current player is forking
+- **current_player_can_fork** - Is true if the current player can fork
+- **current_player_is_checking** - Is true if the current player is checking
+
 
 
 
