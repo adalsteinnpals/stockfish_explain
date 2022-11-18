@@ -7,7 +7,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
 
-<title>Matplotlib demo</title>
+<title>Stockfish Explainability</title>
 <style>
 code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
@@ -136,8 +136,14 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
     <h2 id="toc-title">On this page</h2>
    
   <ul>
-  <li><a href="#matplotlib-demo" id="toc-matplotlib-demo" class="nav-link active" data-scroll-target="#matplotlib-demo"><span class="toc-section-number">1</span>  matplotlib demo</a></li>
-  <li><a href="#next-chapter" id="toc-next-chapter" class="nav-link" data-scroll-target="#next-chapter"><span class="toc-section-number">2</span>  Next Chapter</a></li>
+  <li><a href="#explainability-and-stockfish" id="toc-explainability-and-stockfish" class="nav-link active" data-scroll-target="#explainability-and-stockfish"><span class="toc-section-number">1</span>  Explainability and Stockfish</a>
+  <ul class="collapse">
+  <li><a href="#introduction" id="toc-introduction" class="nav-link" data-scroll-target="#introduction"><span class="toc-section-number">1.1</span>  Introduction</a></li>
+  <li><a href="#what-is-explainability" id="toc-what-is-explainability" class="nav-link" data-scroll-target="#what-is-explainability"><span class="toc-section-number">1.2</span>  What is Explainability?</a></li>
+  <li><a href="#explainability-methods" id="toc-explainability-methods" class="nav-link" data-scroll-target="#explainability-methods"><span class="toc-section-number">1.3</span>  Explainability Methods</a></li>
+  </ul></li>
+  <li><a href="#concept-probing" id="toc-concept-probing" class="nav-link" data-scroll-target="#concept-probing"><span class="toc-section-number">2</span>  Concept Probing</a></li>
+  <li><a href="#next-chapter" id="toc-next-chapter" class="nav-link" data-scroll-target="#next-chapter"><span class="toc-section-number">3</span>  Next Chapter</a></li>
   </ul>
 </nav>
     </div>
@@ -146,7 +152,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 
 <header id="title-block-header" class="quarto-title-block default">
 <div class="quarto-title">
-<h1 class="title">Matplotlib demo</h1>
+<h1 class="title">Stockfish Explainability</h1>
 </div>
 
 
@@ -161,9 +167,23 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 
 </header>
 
-<section id="matplotlib-demo" class="level1" data-number="1">
-<h1 data-number="1"><span class="header-section-number">1</span> matplotlib demo</h1>
-<p>For a demonstration of a line plot on a polar axis, see <a href="#fig-polar">Figure&nbsp;1</a>.</p>
+<section id="explainability-and-stockfish" class="level1" data-number="1">
+<h1 data-number="1"><span class="header-section-number">1</span> Explainability and Stockfish</h1>
+<section id="introduction" class="level2" data-number="1.1">
+<h2 data-number="1.1" class="anchored" data-anchor-id="introduction"><span class="header-section-number">1.1</span> Introduction</h2>
+<p>This document is a work in progress. It is intended to be a guide to the explainability features of Stockfish. It is not intended to be a guide to Stockfish itself. For that, please see the <a href="https://stockfishchess.org/documentation/">Stockfish documentation</a>.</p>
+</section>
+<section id="what-is-explainability" class="level2" data-number="1.2">
+<h2 data-number="1.2" class="anchored" data-anchor-id="what-is-explainability"><span class="header-section-number">1.2</span> What is Explainability?</h2>
+<p>Explainability is the ability to understand why a machine learning model makes the decisions it does. It is a key component of the Explainable AI movement. It is also a key component of the Fairness, Accountability, and Transparency</p>
+</section>
+<section id="explainability-methods" class="level2" data-number="1.3">
+<h2 data-number="1.3" class="anchored" data-anchor-id="explainability-methods"><span class="header-section-number">1.3</span> Explainability Methods</h2>
+<p>In the quest to understand why a machine learning model makes the decision it does we want to find out what it has learnt. The methods we will be using to explain Stockfish are: - Feature Importance - Saliency Maps - Concept Probing</p>
+</section>
+</section>
+<section id="concept-probing" class="level1" data-number="2">
+<h1 data-number="2"><span class="header-section-number">2</span> Concept Probing</h1>
 <div class="cell" data-execution_count="1">
 <details>
 <summary>Code</summary>
@@ -190,8 +210,8 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 </div>
 </div>
 </section>
-<section id="next-chapter" class="level1" data-number="2">
-<h1 data-number="2"><span class="header-section-number">2</span> Next Chapter</h1>
+<section id="next-chapter" class="level1" data-number="3">
+<h1 data-number="3"><span class="header-section-number">3</span> Next Chapter</h1>
 
 
 </section>
