@@ -4,6 +4,6 @@
     "href": "quarto_example.html",
     "title": "Stockfish Explainability",
     "section": "",
-    "text": "This document is a work in progress. It is intended to be a guide to the explainability features of Stockfish. It is not intended to be a guide to Stockfish itself. For that, please see the Stockfish documentation.\n\n\n\nExplainability is the ability to understand why a machine learning model makes the decisions it does. It is a key component of the Explainable AI movement. It is also a key component of the Fairness, Accountability, and Transparency\n\n\n\nIn the quest to understand why a machine learning model makes the decision it does we want to find out what it has learnt. The methods we will be using to explain Stockfish are: - Feature Importance - Saliency Maps - Concept Probing"
+    "text": "This document is a work in progress. It is intended to be a guide to the explainability features of Stockfish. It is not intended to be a guide to Stockfish itself. For that, please see the Stockfish documentation.\n\n\n\nExplainability is the ability to understand why a machine learning model makes the decisions it does. It is a key component of the Explainable AI movement. It is also a key component of the Fairness, Accountability, and Transparency\n\n\n\nIn the quest to understand why a machine learning model makes the decision it does we want to find out what it has learnt. The methods we will be using to explain Stockfish are:\n\nFeature Importance\nSaliency Maps\nConcept Probing"
   }
 ]
