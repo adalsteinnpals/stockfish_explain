@@ -1,0 +1,1442 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
+
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.2.269">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+
+<title>chess_auto_encoder-copy</title>
+<style>
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: min(4vw, 1.5em);}
+div.column{flex: auto; overflow-x: auto;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1.6em;
+  vertical-align: middle;
+}
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+    color: #aaaaaa;
+  }
+pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+code span.al { color: #ff0000; font-weight: bold; } /* Alert */
+code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
+code span.at { color: #7d9029; } /* Attribute */
+code span.bn { color: #40a070; } /* BaseN */
+code span.bu { color: #008000; } /* BuiltIn */
+code span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
+code span.ch { color: #4070a0; } /* Char */
+code span.cn { color: #880000; } /* Constant */
+code span.co { color: #60a0b0; font-style: italic; } /* Comment */
+code span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
+code span.do { color: #ba2121; font-style: italic; } /* Documentation */
+code span.dt { color: #902000; } /* DataType */
+code span.dv { color: #40a070; } /* DecVal */
+code span.er { color: #ff0000; font-weight: bold; } /* Error */
+code span.ex { } /* Extension */
+code span.fl { color: #40a070; } /* Float */
+code span.fu { color: #06287e; } /* Function */
+code span.im { color: #008000; font-weight: bold; } /* Import */
+code span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
+code span.kw { color: #007020; font-weight: bold; } /* Keyword */
+code span.op { color: #666666; } /* Operator */
+code span.ot { color: #007020; } /* Other */
+code span.pp { color: #bc7a00; } /* Preprocessor */
+code span.sc { color: #4070a0; } /* SpecialChar */
+code span.ss { color: #bb6688; } /* SpecialString */
+code span.st { color: #4070a0; } /* String */
+code span.va { color: #19177c; } /* Variable */
+code span.vs { color: #4070a0; } /* VerbatimString */
+code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
+</style>
+
+
+<script src="../../../site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="../../../site_libs/clipboard/clipboard.min.js"></script>
+<script src="../../../site_libs/quarto-search/autocomplete.umd.js"></script>
+<script src="../../../site_libs/quarto-search/fuse.min.js"></script>
+<script src="../../../site_libs/quarto-search/quarto-search.js"></script>
+<meta name="quarto:offset" content="../../../">
+<script src="../../../site_libs/quarto-html/quarto.js"></script>
+<script src="../../../site_libs/quarto-html/popper.min.js"></script>
+<script src="../../../site_libs/quarto-html/tippy.umd.min.js"></script>
+<script src="../../../site_libs/quarto-html/anchor.min.js"></script>
+<link href="../../../site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="../../../site_libs/quarto-html/quarto-syntax-highlighting.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<script src="../../../site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="../../../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="../../../site_libs/bootstrap/bootstrap.min.css" rel="stylesheet" id="quarto-bootstrap" data-mode="light">
+<script id="quarto-search-options" type="application/json">{
+  "location": "sidebar",
+  "copy-button": false,
+  "collapse-after": 3,
+  "panel-placement": "start",
+  "type": "textbox",
+  "limit": 20,
+  "language": {
+    "search-no-results-text": "No results",
+    "search-matching-documents-text": "matching documents",
+    "search-copy-link-title": "Copy link to search",
+    "search-hide-matches-text": "Hide additional matches",
+    "search-more-match-text": "more match in this document",
+    "search-more-matches-text": "more matches in this document",
+    "search-clear-button-title": "Clear",
+    "search-detached-cancel-button-title": "Cancel",
+    "search-submit-button-title": "Submit"
+  }
+}</script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.6/require.min.js" integrity="sha512-c3Nl8+7g4LMSTdrm621y7kf9v3SDPnhxLNhcjFJbKECVnmZHTdo+IRO05sNLTH/D3vA6u1X32ehoLC7WFVdheg==" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.5.1/jquery.min.js" integrity="sha512-bLT0Qm9VnAYZDflyKcBaQ2gg0hSYNQrJ8RilYldYQ1FxQYoCLtUjuuRuZo+fjqhx/qtq/1itJ0C2ejDxltZVFg==" crossorigin="anonymous"></script>
+<script type="application/javascript">define('jquery', [],function() {return window.jQuery;})</script>
+
+
+</head>
+
+<body class="fullcontent">
+
+<div id="quarto-search-results"></div>
+<!-- content -->
+<div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article">
+<!-- sidebar -->
+<!-- margin-sidebar -->
+    
+<!-- main -->
+<main class="content" id="quarto-document-content">
+
+
+
+<section id="chess-auto-encoder" class="level1">
+<h1>Chess Auto Encoder</h1>
+<div class="cell" data-execution_count="8">
+<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> stockfish_project.nnue_pytorch.halfkp <span class="im">import</span> Features</span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> torch</span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> stockfish_project.nnue_pytorch.nnue_dataset <span class="im">import</span> FenBatchProvider</span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> pandas <span class="im">as</span> pd</span>
+<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> chess</span>
+<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> tqdm <span class="im">import</span> tqdm</span>
+<span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> numpy <span class="im">as</span> np</span>
+<span id="cb1-8"><a href="#cb1-8" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> collections <span class="im">import</span> Counter</span>
+<span id="cb1-9"><a href="#cb1-9" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-10"><a href="#cb1-10" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-11"><a href="#cb1-11" aria-hidden="true" tabindex="-1"></a><span class="co"># add parent directory to path</span></span>
+<span id="cb1-12"><a href="#cb1-12" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> sys</span>
+<span id="cb1-13"><a href="#cb1-13" aria-hidden="true" tabindex="-1"></a>sys.path.append(<span class="st">'..'</span>)</span>
+<span id="cb1-14"><a href="#cb1-14" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-15"><a href="#cb1-15" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-16"><a href="#cb1-16" aria-hidden="true" tabindex="-1"></a>batch_size <span class="op">=</span> <span class="dv">50</span></span>
+<span id="cb1-17"><a href="#cb1-17" aria-hidden="true" tabindex="-1"></a>num_batch <span class="op">=</span> <span class="dv">1000</span></span>
+<span id="cb1-18"><a href="#cb1-18" aria-hidden="true" tabindex="-1"></a>FBP <span class="op">=</span> FenBatchProvider(<span class="st">'../../../../data/training_data.binpack'</span>, <span class="va">True</span>, <span class="dv">1</span>, batch_size<span class="op">=</span>batch_size)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+</section>
+<section id="create-dataset" class="level1">
+<h1>Create Dataset</h1>
+<section id="fetch-fens" class="level2">
+<h2 class="anchored" data-anchor-id="fetch-fens">Fetch fens</h2>
+<div class="cell" data-execution_count="6">
+<div class="sourceCode cell-code" id="cb2"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-5"><a href="#cb2-5" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> fetch_batch():</span>
+<span id="cb2-6"><a href="#cb2-6" aria-hidden="true" tabindex="-1"></a>    fens <span class="op">=</span> <span class="bu">next</span>(FBP)</span>
+<span id="cb2-7"><a href="#cb2-7" aria-hidden="true" tabindex="-1"></a>    results <span class="op">=</span> []</span>
+<span id="cb2-8"><a href="#cb2-8" aria-hidden="true" tabindex="-1"></a>    <span class="cf">for</span> i, fen <span class="kw">in</span> <span class="bu">enumerate</span>(fens):</span>
+<span id="cb2-9"><a href="#cb2-9" aria-hidden="true" tabindex="-1"></a>        d <span class="op">=</span> {}</span>
+<span id="cb2-10"><a href="#cb2-10" aria-hidden="true" tabindex="-1"></a>        d[<span class="st">'fen'</span>] <span class="op">=</span> fen</span>
+<span id="cb2-11"><a href="#cb2-11" aria-hidden="true" tabindex="-1"></a>        board <span class="op">=</span> chess.Board(fen)</span>
+<span id="cb2-12"><a href="#cb2-12" aria-hidden="true" tabindex="-1"></a>        pieces <span class="op">=</span> <span class="bu">dict</span>(Counter([<span class="bu">str</span>(v) <span class="cf">for</span> v <span class="kw">in</span> board.piece_map().values()]))</span>
+<span id="cb2-13"><a href="#cb2-13" aria-hidden="true" tabindex="-1"></a>        d <span class="op">=</span> {<span class="op">**</span>d, <span class="op">**</span>pieces}</span>
+<span id="cb2-14"><a href="#cb2-14" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-15"><a href="#cb2-15" aria-hidden="true" tabindex="-1"></a>        results.append(d)</span>
+<span id="cb2-16"><a href="#cb2-16" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> results</span>
+<span id="cb2-17"><a href="#cb2-17" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-18"><a href="#cb2-18" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-19"><a href="#cb2-19" aria-hidden="true" tabindex="-1"></a>data <span class="op">=</span> []</span>
+<span id="cb2-20"><a href="#cb2-20" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> i <span class="kw">in</span> tqdm(<span class="bu">range</span>(num_batch)):</span>
+<span id="cb2-21"><a href="#cb2-21" aria-hidden="true" tabindex="-1"></a>    data <span class="op">=</span> data  <span class="op">+</span> fetch_batch()</span>
+<span id="cb2-22"><a href="#cb2-22" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f'Len data: </span><span class="sc">{</span><span class="bu">len</span>(data)<span class="sc">}</span><span class="ss">'</span>)</span>
+<span id="cb2-23"><a href="#cb2-23" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-24"><a href="#cb2-24" aria-hidden="true" tabindex="-1"></a>df <span class="op">=</span> pd.DataFrame(data).fillna(<span class="dv">0</span>)</span>
+<span id="cb2-25"><a href="#cb2-25" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f'df shape: </span><span class="sc">{</span>df<span class="sc">.</span>shape<span class="sc">}</span><span class="ss">'</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stderr">
+<pre><code>100%|██████████| 1000/1000 [00:03&lt;00:00, 286.91it/s]</code></pre>
+</div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Len data: 50000
+df shape: (50000, 13)</code></pre>
+</div>
+</div>
+</section>
+<section id="add-concepts" class="level2">
+<h2 class="anchored" data-anchor-id="add-concepts">Add concepts</h2>
+<div class="cell" data-execution_count="7">
+<div class="sourceCode cell-code" id="cb5"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> gen_concepts <span class="im">import</span> create_custom_concepts</span>
+<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(df.shape)</span>
+<span id="cb5-5"><a href="#cb5-5" aria-hidden="true" tabindex="-1"></a><span class="co"># add concept_dict to df</span></span>
+<span id="cb5-6"><a href="#cb5-6" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> idx, row <span class="kw">in</span> tqdm(df.iterrows()):</span>
+<span id="cb5-7"><a href="#cb5-7" aria-hidden="true" tabindex="-1"></a>    board <span class="op">=</span> chess.Board(row[<span class="st">'fen'</span>])</span>
+<span id="cb5-8"><a href="#cb5-8" aria-hidden="true" tabindex="-1"></a>    concept_dict <span class="op">=</span> create_custom_concepts(board)</span>
+<span id="cb5-9"><a href="#cb5-9" aria-hidden="true" tabindex="-1"></a>    <span class="cf">for</span> k, v <span class="kw">in</span> concept_dict.items():</span>
+<span id="cb5-10"><a href="#cb5-10" aria-hidden="true" tabindex="-1"></a>        df.at[idx, k] <span class="op">=</span> v   </span>
+<span id="cb5-11"><a href="#cb5-11" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(df.shape)</span>
+<span id="cb5-12"><a href="#cb5-12" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-13"><a href="#cb5-13" aria-hidden="true" tabindex="-1"></a></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>(50000, 13)</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>50000it [01:39, 504.36it/s]</code></pre>
+</div>
+<div class="cell-output cell-output-stdout">
+<pre><code>(50000, 29)</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code></code></pre>
+</div>
+</div>
+<div class="cell" data-execution_count="8">
+<div class="sourceCode cell-code" id="cb10"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a>columns_names <span class="op">=</span> {</span>
+<span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a>    <span class="st">'K'</span>: <span class="st">'white king'</span>,</span>
+<span id="cb10-3"><a href="#cb10-3" aria-hidden="true" tabindex="-1"></a>    <span class="st">'k'</span>: <span class="st">'black king'</span>,</span>
+<span id="cb10-4"><a href="#cb10-4" aria-hidden="true" tabindex="-1"></a>    <span class="st">'Q'</span>: <span class="st">'white queen'</span>,</span>
+<span id="cb10-5"><a href="#cb10-5" aria-hidden="true" tabindex="-1"></a>    <span class="st">'q'</span>: <span class="st">'black queen'</span>,</span>
+<span id="cb10-6"><a href="#cb10-6" aria-hidden="true" tabindex="-1"></a>    <span class="st">'R'</span>: <span class="st">'white rook'</span>,</span>
+<span id="cb10-7"><a href="#cb10-7" aria-hidden="true" tabindex="-1"></a>    <span class="st">'r'</span>: <span class="st">'black rook'</span>,</span>
+<span id="cb10-8"><a href="#cb10-8" aria-hidden="true" tabindex="-1"></a>    <span class="st">'B'</span>: <span class="st">'white bishop'</span>,</span>
+<span id="cb10-9"><a href="#cb10-9" aria-hidden="true" tabindex="-1"></a>    <span class="st">'b'</span>: <span class="st">'black bishop'</span>,</span>
+<span id="cb10-10"><a href="#cb10-10" aria-hidden="true" tabindex="-1"></a>    <span class="st">'N'</span>: <span class="st">'white knight'</span>,</span>
+<span id="cb10-11"><a href="#cb10-11" aria-hidden="true" tabindex="-1"></a>    <span class="st">'n'</span>: <span class="st">'black knight'</span>,</span>
+<span id="cb10-12"><a href="#cb10-12" aria-hidden="true" tabindex="-1"></a>    <span class="st">'P'</span>: <span class="st">'white pawn'</span>,</span>
+<span id="cb10-13"><a href="#cb10-13" aria-hidden="true" tabindex="-1"></a>    <span class="st">'p'</span>: <span class="st">'black pawn'</span>,</span>
+<span id="cb10-14"><a href="#cb10-14" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb10-15"><a href="#cb10-15" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb10-16"><a href="#cb10-16" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb10-17"><a href="#cb10-17" aria-hidden="true" tabindex="-1"></a>df <span class="op">=</span> df.rename(columns<span class="op">=</span>columns_names)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div class="cell" data-execution_count="9">
+<div class="sourceCode cell-code" id="cb11"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a><span class="co"># store df in sqlite db for later use</span></span>
+<span id="cb11-2"><a href="#cb11-2" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> sqlite3</span>
+<span id="cb11-3"><a href="#cb11-3" aria-hidden="true" tabindex="-1"></a>conn <span class="op">=</span> sqlite3.<span class="ex">connect</span>(<span class="st">'chess_auto_encoder.db'</span>)</span>
+<span id="cb11-4"><a href="#cb11-4" aria-hidden="true" tabindex="-1"></a>df.to_sql(<span class="st">'fen_concept_df'</span>, conn, if_exists<span class="op">=</span><span class="st">'replace'</span>, index<span class="op">=</span><span class="va">True</span>)</span>
+<span id="cb11-5"><a href="#cb11-5" aria-hidden="true" tabindex="-1"></a>conn.close()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stderr">
+<pre><code>/home/ap/miniconda3/lib/python3.9/site-packages/pandas/core/generic.py:2872: UserWarning: The spaces in these column names will not be changed. In pandas versions &lt; 0.14, spaces were converted to underscores.
+  sql.to_sql(</code></pre>
+</div>
+</div>
+</section>
+<section id="convert-to-halfkp" class="level2">
+<h2 class="anchored" data-anchor-id="convert-to-halfkp">Convert to HalfKP</h2>
+<p>from stockfish_project.nnue_pytorch.halfkp import Features import torch</p>
+<p>if False: halfkp_features = Features() halfkp_list = [] for idx, row in tqdm(df.iterrows()): board = chess.Board(row[‘fen’]) features = halfkp_features.get_active_features(board) halfkp_list.append(torch.cat(features))</p>
+<pre><code>print(halfkp_list[0].shape)</code></pre>
+</section>
+<section id="custom-data-loader" class="level2">
+<h2 class="anchored" data-anchor-id="custom-data-loader">Custom data loader</h2>
+<div class="cell" data-execution_count="9">
+<div class="sourceCode cell-code" id="cb14"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a>halfkp_features <span class="op">=</span> Features()</span>
+<span id="cb14-2"><a href="#cb14-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb14-3"><a href="#cb14-3" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> transform(batch):</span>
+<span id="cb14-4"><a href="#cb14-4" aria-hidden="true" tabindex="-1"></a>    halfkp_list <span class="op">=</span> []</span>
+<span id="cb14-5"><a href="#cb14-5" aria-hidden="true" tabindex="-1"></a>    <span class="cf">for</span> fen <span class="kw">in</span> batch:</span>
+<span id="cb14-6"><a href="#cb14-6" aria-hidden="true" tabindex="-1"></a>        board <span class="op">=</span> chess.Board(fen)</span>
+<span id="cb14-7"><a href="#cb14-7" aria-hidden="true" tabindex="-1"></a>        features <span class="op">=</span> halfkp_features.get_active_features(board)</span>
+<span id="cb14-8"><a href="#cb14-8" aria-hidden="true" tabindex="-1"></a>        halfkp_list.append(torch.cat(features))</span>
+<span id="cb14-9"><a href="#cb14-9" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb14-10"><a href="#cb14-10" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> torch.stack(halfkp_list)</span>
+<span id="cb14-11"><a href="#cb14-11" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb14-12"><a href="#cb14-12" aria-hidden="true" tabindex="-1"></a>transform(<span class="bu">next</span>(FBP)).shape</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display" data-execution_count="9">
+<pre><code>torch.Size([50, 82048])</code></pre>
+</div>
+</div>
+</section>
+</section>
+<section id="dataset" class="level1">
+<h1>Dataset</h1>
+<p>import torchvision import numpy as np</p>
+</section>
+<section id="downloading-the-mnist-dataset" class="level1">
+<h1>Downloading the MNIST dataset</h1>
+<p>train_dataset = torch.utils.data.TensorDataset(torch.stack(halfkp_list[:(len(halfkp_list)//2)]))</p>
+<p>test_dataset = torch.utils.data.TensorDataset(torch.stack(halfkp_list[(len(halfkp_list)//2):]))</p>
+</section>
+<section id="creating-dataloaders-from-the" class="level1">
+<h1>Creating Dataloaders from the</h1>
+</section>
+<section id="training-and-testing-dataset" class="level1">
+<h1>training and testing dataset</h1>
+<p>train_loader = torch.utils.data.DataLoader( train_dataset, batch_size=256) test_loader = torch.utils.data.DataLoader( test_dataset, batch_size=256)</p>
+<p>from stockfish_project.nnue_pytorch import nnue_dataset, features from torch.utils.data import DataLoader</p>
+<p>train_filename = ‘../../data/training_data.binpack’ val_filename = ‘../../data/training_data.binpack’ feature_set = features.get_feature_set_from_name(‘HalfKP’) num_workers = 1 batch_size_loader = 32 filtered = False random_fen_skipping = False wld_filtered = False main_device = ‘cuda’</p>
+<p>def make_data_loaders(train_filename, val_filename, feature_set, num_workers, batch_size, filtered, random_fen_skipping, wld_filtered, main_device): # Epoch and validation sizes are arbitrary epoch_size = 100000000 val_size = 1000000 features_name = feature_set.name train_infinite = nnue_dataset.SparseBatchDataset(features_name, train_filename, batch_size, num_workers=num_workers, filtered=filtered, random_fen_skipping=random_fen_skipping, wld_filtered=wld_filtered, device=main_device) val_infinite = nnue_dataset.SparseBatchDataset(features_name, val_filename, batch_size, filtered=filtered, random_fen_skipping=random_fen_skipping, wld_filtered=wld_filtered, device=main_device) # num_workers has to be 0 for sparse, and 1 for dense # it currently cannot work in parallel mode but it shouldn’t need to train = DataLoader(nnue_dataset.FixedNumBatchesDataset(train_infinite, (epoch_size + batch_size - 1) // batch_size), batch_size=None, batch_sampler=None) val = DataLoader(nnue_dataset.FixedNumBatchesDataset(val_infinite, (val_size + batch_size - 1) // batch_size), batch_size=None, batch_sampler=None) return train, val</p>
+<p>train_loader, val_loader = make_data_loaders(train_filename, val_filename, feature_set, num_workers, batch_size, filtered, random_fen_skipping, wld_filtered, main_device)</p>
+</section>
+<section id="autoencoder" class="level1">
+<h1>Autoencoder</h1>
+<p>import matplotlib.pyplot as plt</p>
+<p>class DeepAutoencoder(torch.nn.Module): def <strong>init</strong>(self): super().__init__()<br>
+self.input_size = 82048<br>
+self.size_0 = 1024 self.size_1 = 256 self.size_2 = 32 self.size_3 = 3</p>
+<pre><code>    self.encoder_0 = torch.nn.Linear(self.input_size, self.size_0)
+    self.encoder_1 = torch.nn.Linear(self.size_0, self.size_1)
+    self.encoder_2 = torch.nn.Linear(self.size_1, self.size_2)
+    self.encoder_3 = torch.nn.Linear(self.size_2, self.size_3)
+
+    self.decoder_0 = torch.nn.Linear(self.size_3, self.size_2)
+    self.decoder_1 = torch.nn.Linear(self.size_2, self.size_1)
+    self.decoder_2 = torch.nn.Linear(self.size_1, self.size_0)
+    self.decoder_3 = torch.nn.Linear(self.size_0, self.input_size)
+
+    self.encoder = torch.nn.Sequential(
+        self.encoder_0,
+        torch.nn.ReLU(),
+        self.encoder_1,
+        torch.nn.ReLU(),
+        self.encoder_2,
+        torch.nn.ReLU(),
+        self.encoder_3
+    )
+      
+    self.decoder = torch.nn.Sequential(
+        self.decoder_0,
+        torch.nn.ReLU(),
+        self.decoder_1,
+        torch.nn.ReLU(),
+        self.decoder_2,
+        torch.nn.ReLU(),
+        self.decoder_3,
+        torch.nn.Sigmoid()
+    )
+
+def forward(self, x):
+    encoded = self.encoder(x)
+    decoded = self.decoder(encoded)
+    return decoded</code></pre>
+</section>
+<section id="instantiating-the-model-and-hyperparameters" class="level1">
+<h1>Instantiating the model and hyperparameters</h1>
+<p>model = DeepAutoencoder() criterion = torch.nn.MSELoss() num_epochs = 10 optimizer = torch.optim.Adam(model.parameters(), lr=1e-4)</p>
+<p>model = model.cuda()</p>
+</section>
+<section id="list-that-will-store-the-training-loss" class="level1">
+<h1>List that will store the training loss</h1>
+<p>train_loss = []</p>
+</section>
+<section id="dictionary-that-will-store-the" class="level1">
+<h1>Dictionary that will store the</h1>
+</section>
+<section id="different-images-and-outputs-for" class="level1">
+<h1>different images and outputs for</h1>
+</section>
+<section id="various-epochs" class="level1">
+<h1>various epochs</h1>
+<p>outputs = {}</p>
+<p>batch_size = len(train_loader)</p>
+</section>
+<section id="training-loop-starts" class="level1">
+<h1>Training loop starts</h1>
+<p>for epoch in tqdm(range(num_epochs)):</p>
+<pre><code># Initializing variable for storing 
+# loss
+running_loss = 0
+  
+# Iterating over the training dataset
+for batch in train_loader:
+        
+    # Loading image(s) and
+    # reshaping it into a 1-d vector
+    img = batch[0]  
+    img = img.reshape(-1, model.input_size).cuda()
+      
+    # Generating output
+    out = model(img)
+      
+    # Calculating loss
+    loss = criterion(out, img)
+      
+    # Updating weights according
+    # to the calculated loss
+    optimizer.zero_grad()
+    loss.backward()
+    optimizer.step()
+      
+    # Incrementing loss
+    running_loss += loss.item()
+  
+# Averaging out loss over entire batch
+running_loss /= batch_size
+train_loss.append(running_loss)
+  
+# Storing useful images and
+# reconstructed outputs for the last batch
+outputs[epoch+1] = {'img': img, 'out': out}</code></pre>
+</section>
+<section id="plotting-the-training-loss" class="level1">
+<h1>Plotting the training loss</h1>
+<p>plt.plot(range(1,num_epochs+1),train_loss) plt.xlabel(“Number of epochs”) plt.ylabel(“Training Loss”) plt.show()</p>
+</section>
+<section id="custom-autoencoder" class="level1">
+<h1>Custom Autoencoder</h1>
+<div class="cell" data-execution_count="2">
+<div class="sourceCode cell-code" id="cb18"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb18-1"><a href="#cb18-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> torch</span>
+<span id="cb18-2"><a href="#cb18-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb18-3"><a href="#cb18-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb18-4"><a href="#cb18-4" aria-hidden="true" tabindex="-1"></a><span class="kw">class</span> DeepAutoencoder(torch.nn.Module):</span>
+<span id="cb18-5"><a href="#cb18-5" aria-hidden="true" tabindex="-1"></a>    <span class="kw">def</span> <span class="fu">__init__</span>(<span class="va">self</span>):</span>
+<span id="cb18-6"><a href="#cb18-6" aria-hidden="true" tabindex="-1"></a>        <span class="bu">super</span>().<span class="fu">__init__</span>()  </span>
+<span id="cb18-7"><a href="#cb18-7" aria-hidden="true" tabindex="-1"></a>        <span class="va">self</span>.input_size <span class="op">=</span> <span class="dv">82048</span>      </span>
+<span id="cb18-8"><a href="#cb18-8" aria-hidden="true" tabindex="-1"></a>        <span class="va">self</span>.size_0 <span class="op">=</span> <span class="dv">1024</span></span>
+<span id="cb18-9"><a href="#cb18-9" aria-hidden="true" tabindex="-1"></a>        <span class="va">self</span>.size_1 <span class="op">=</span> <span class="dv">32</span></span>
+<span id="cb18-10"><a href="#cb18-10" aria-hidden="true" tabindex="-1"></a>        <span class="va">self</span>.size_2 <span class="op">=</span> <span class="dv">8</span></span>
+<span id="cb18-11"><a href="#cb18-11" aria-hidden="true" tabindex="-1"></a>        <span class="va">self</span>.size_3 <span class="op">=</span> <span class="dv">2</span></span>
+<span id="cb18-12"><a href="#cb18-12" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb18-13"><a href="#cb18-13" aria-hidden="true" tabindex="-1"></a>        <span class="va">self</span>.encoder_0 <span class="op">=</span> torch.nn.Linear(<span class="va">self</span>.input_size, <span class="va">self</span>.size_0)</span>
+<span id="cb18-14"><a href="#cb18-14" aria-hidden="true" tabindex="-1"></a>        <span class="va">self</span>.encoder_1 <span class="op">=</span> torch.nn.Linear(<span class="va">self</span>.size_0, <span class="va">self</span>.size_1)</span>
+<span id="cb18-15"><a href="#cb18-15" aria-hidden="true" tabindex="-1"></a>        <span class="va">self</span>.encoder_2 <span class="op">=</span> torch.nn.Linear(<span class="va">self</span>.size_1, <span class="va">self</span>.size_2)</span>
+<span id="cb18-16"><a href="#cb18-16" aria-hidden="true" tabindex="-1"></a>        <span class="va">self</span>.encoder_3 <span class="op">=</span> torch.nn.Linear(<span class="va">self</span>.size_2, <span class="va">self</span>.size_3)</span>
+<span id="cb18-17"><a href="#cb18-17" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb18-18"><a href="#cb18-18" aria-hidden="true" tabindex="-1"></a>        <span class="va">self</span>.decoder_0 <span class="op">=</span> torch.nn.Linear(<span class="va">self</span>.size_3, <span class="va">self</span>.size_2)</span>
+<span id="cb18-19"><a href="#cb18-19" aria-hidden="true" tabindex="-1"></a>        <span class="va">self</span>.decoder_1 <span class="op">=</span> torch.nn.Linear(<span class="va">self</span>.size_2, <span class="va">self</span>.size_1)</span>
+<span id="cb18-20"><a href="#cb18-20" aria-hidden="true" tabindex="-1"></a>        <span class="va">self</span>.decoder_2 <span class="op">=</span> torch.nn.Linear(<span class="va">self</span>.size_1, <span class="va">self</span>.size_0)</span>
+<span id="cb18-21"><a href="#cb18-21" aria-hidden="true" tabindex="-1"></a>        <span class="va">self</span>.decoder_3 <span class="op">=</span> torch.nn.Linear(<span class="va">self</span>.size_0, <span class="va">self</span>.input_size)</span>
+<span id="cb18-22"><a href="#cb18-22" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb18-23"><a href="#cb18-23" aria-hidden="true" tabindex="-1"></a>        <span class="va">self</span>.encoder <span class="op">=</span> torch.nn.Sequential(</span>
+<span id="cb18-24"><a href="#cb18-24" aria-hidden="true" tabindex="-1"></a>            <span class="va">self</span>.encoder_0,</span>
+<span id="cb18-25"><a href="#cb18-25" aria-hidden="true" tabindex="-1"></a>            torch.nn.ReLU(),</span>
+<span id="cb18-26"><a href="#cb18-26" aria-hidden="true" tabindex="-1"></a>            <span class="va">self</span>.encoder_1,</span>
+<span id="cb18-27"><a href="#cb18-27" aria-hidden="true" tabindex="-1"></a>            torch.nn.ReLU(),</span>
+<span id="cb18-28"><a href="#cb18-28" aria-hidden="true" tabindex="-1"></a>            <span class="va">self</span>.encoder_2,</span>
+<span id="cb18-29"><a href="#cb18-29" aria-hidden="true" tabindex="-1"></a>            torch.nn.ReLU(),</span>
+<span id="cb18-30"><a href="#cb18-30" aria-hidden="true" tabindex="-1"></a>            <span class="va">self</span>.encoder_3</span>
+<span id="cb18-31"><a href="#cb18-31" aria-hidden="true" tabindex="-1"></a>        )</span>
+<span id="cb18-32"><a href="#cb18-32" aria-hidden="true" tabindex="-1"></a>          </span>
+<span id="cb18-33"><a href="#cb18-33" aria-hidden="true" tabindex="-1"></a>        <span class="va">self</span>.decoder <span class="op">=</span> torch.nn.Sequential(</span>
+<span id="cb18-34"><a href="#cb18-34" aria-hidden="true" tabindex="-1"></a>            <span class="va">self</span>.decoder_0,</span>
+<span id="cb18-35"><a href="#cb18-35" aria-hidden="true" tabindex="-1"></a>            torch.nn.ReLU(),</span>
+<span id="cb18-36"><a href="#cb18-36" aria-hidden="true" tabindex="-1"></a>            <span class="va">self</span>.decoder_1,</span>
+<span id="cb18-37"><a href="#cb18-37" aria-hidden="true" tabindex="-1"></a>            torch.nn.ReLU(),</span>
+<span id="cb18-38"><a href="#cb18-38" aria-hidden="true" tabindex="-1"></a>            <span class="va">self</span>.decoder_2,</span>
+<span id="cb18-39"><a href="#cb18-39" aria-hidden="true" tabindex="-1"></a>            torch.nn.ReLU(),</span>
+<span id="cb18-40"><a href="#cb18-40" aria-hidden="true" tabindex="-1"></a>            <span class="va">self</span>.decoder_3,</span>
+<span id="cb18-41"><a href="#cb18-41" aria-hidden="true" tabindex="-1"></a>            torch.nn.Sigmoid()</span>
+<span id="cb18-42"><a href="#cb18-42" aria-hidden="true" tabindex="-1"></a>        )</span>
+<span id="cb18-43"><a href="#cb18-43" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb18-44"><a href="#cb18-44" aria-hidden="true" tabindex="-1"></a>    <span class="kw">def</span> forward(<span class="va">self</span>, x):</span>
+<span id="cb18-45"><a href="#cb18-45" aria-hidden="true" tabindex="-1"></a>        encoded <span class="op">=</span> <span class="va">self</span>.encoder(x)</span>
+<span id="cb18-46"><a href="#cb18-46" aria-hidden="true" tabindex="-1"></a>        decoded <span class="op">=</span> <span class="va">self</span>.decoder(encoded)</span>
+<span id="cb18-47"><a href="#cb18-47" aria-hidden="true" tabindex="-1"></a>        <span class="cf">return</span> decoded</span>
+<span id="cb18-48"><a href="#cb18-48" aria-hidden="true" tabindex="-1"></a>  </span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div class="cell" data-execution_count="11">
+<div class="sourceCode cell-code" id="cb19"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb19-1"><a href="#cb19-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> matplotlib.pyplot <span class="im">as</span> plt</span>
+<span id="cb19-2"><a href="#cb19-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb19-3"><a href="#cb19-3" aria-hidden="true" tabindex="-1"></a>batch_size <span class="op">=</span> <span class="dv">50</span></span>
+<span id="cb19-4"><a href="#cb19-4" aria-hidden="true" tabindex="-1"></a>train_loader <span class="op">=</span> FenBatchProvider(<span class="st">'../../data/training_data.binpack'</span>, <span class="va">True</span>, <span class="dv">1</span>, batch_size<span class="op">=</span>batch_size)</span>
+<span id="cb19-5"><a href="#cb19-5" aria-hidden="true" tabindex="-1"></a>val_loader <span class="op">=</span> FenBatchProvider(<span class="st">'../../data/training_data.binpack'</span>, <span class="va">True</span>, <span class="dv">1</span>, batch_size<span class="op">=</span>batch_size)</span>
+<span id="cb19-6"><a href="#cb19-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb19-7"><a href="#cb19-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb19-8"><a href="#cb19-8" aria-hidden="true" tabindex="-1"></a><span class="co"># Instantiating the model and hyperparameters</span></span>
+<span id="cb19-9"><a href="#cb19-9" aria-hidden="true" tabindex="-1"></a>model <span class="op">=</span> DeepAutoencoder()</span>
+<span id="cb19-10"><a href="#cb19-10" aria-hidden="true" tabindex="-1"></a>criterion <span class="op">=</span> torch.nn.MSELoss()</span>
+<span id="cb19-11"><a href="#cb19-11" aria-hidden="true" tabindex="-1"></a>num_epochs <span class="op">=</span> <span class="dv">30</span></span>
+<span id="cb19-12"><a href="#cb19-12" aria-hidden="true" tabindex="-1"></a>max_iterations <span class="op">=</span> <span class="dv">100</span></span>
+<span id="cb19-13"><a href="#cb19-13" aria-hidden="true" tabindex="-1"></a>optimizer <span class="op">=</span> torch.optim.Adam(model.parameters(), lr<span class="op">=</span><span class="fl">1e-5</span>)</span>
+<span id="cb19-14"><a href="#cb19-14" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb19-15"><a href="#cb19-15" aria-hidden="true" tabindex="-1"></a>model <span class="op">=</span> model.cuda()</span>
+<span id="cb19-16"><a href="#cb19-16" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb19-17"><a href="#cb19-17" aria-hidden="true" tabindex="-1"></a><span class="co"># List that will store the training loss</span></span>
+<span id="cb19-18"><a href="#cb19-18" aria-hidden="true" tabindex="-1"></a>train_loss <span class="op">=</span> []</span>
+<span id="cb19-19"><a href="#cb19-19" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb19-20"><a href="#cb19-20" aria-hidden="true" tabindex="-1"></a><span class="co"># Dictionary that will store the</span></span>
+<span id="cb19-21"><a href="#cb19-21" aria-hidden="true" tabindex="-1"></a><span class="co"># different images and outputs for </span></span>
+<span id="cb19-22"><a href="#cb19-22" aria-hidden="true" tabindex="-1"></a><span class="co"># various epochs</span></span>
+<span id="cb19-23"><a href="#cb19-23" aria-hidden="true" tabindex="-1"></a>outputs <span class="op">=</span> {}</span>
+<span id="cb19-24"><a href="#cb19-24" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb19-25"><a href="#cb19-25" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb19-26"><a href="#cb19-26" aria-hidden="true" tabindex="-1"></a><span class="co"># Training loop starts</span></span>
+<span id="cb19-27"><a href="#cb19-27" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> epoch <span class="kw">in</span> tqdm(<span class="bu">range</span>(num_epochs)):</span>
+<span id="cb19-28"><a href="#cb19-28" aria-hidden="true" tabindex="-1"></a>        </span>
+<span id="cb19-29"><a href="#cb19-29" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Initializing variable for storing </span></span>
+<span id="cb19-30"><a href="#cb19-30" aria-hidden="true" tabindex="-1"></a>    <span class="co"># loss</span></span>
+<span id="cb19-31"><a href="#cb19-31" aria-hidden="true" tabindex="-1"></a>    running_loss <span class="op">=</span> <span class="dv">0</span></span>
+<span id="cb19-32"><a href="#cb19-32" aria-hidden="true" tabindex="-1"></a>      </span>
+<span id="cb19-33"><a href="#cb19-33" aria-hidden="true" tabindex="-1"></a>    it <span class="op">=</span> <span class="dv">0</span></span>
+<span id="cb19-34"><a href="#cb19-34" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Iterating over the training dataset</span></span>
+<span id="cb19-35"><a href="#cb19-35" aria-hidden="true" tabindex="-1"></a>    <span class="cf">for</span> batch <span class="kw">in</span> train_loader:</span>
+<span id="cb19-36"><a href="#cb19-36" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb19-37"><a href="#cb19-37" aria-hidden="true" tabindex="-1"></a>        <span class="cf">if</span> it <span class="op">==</span> max_iterations:</span>
+<span id="cb19-38"><a href="#cb19-38" aria-hidden="true" tabindex="-1"></a>            <span class="cf">break</span></span>
+<span id="cb19-39"><a href="#cb19-39" aria-hidden="true" tabindex="-1"></a>        it <span class="op">+=</span> <span class="dv">1</span></span>
+<span id="cb19-40"><a href="#cb19-40" aria-hidden="true" tabindex="-1"></a>            </span>
+<span id="cb19-41"><a href="#cb19-41" aria-hidden="true" tabindex="-1"></a>        <span class="co"># Loading image(s) and</span></span>
+<span id="cb19-42"><a href="#cb19-42" aria-hidden="true" tabindex="-1"></a>        <span class="co"># reshaping it into a 1-d vector</span></span>
+<span id="cb19-43"><a href="#cb19-43" aria-hidden="true" tabindex="-1"></a>        img <span class="op">=</span> batch</span>
+<span id="cb19-44"><a href="#cb19-44" aria-hidden="true" tabindex="-1"></a>        img <span class="op">=</span> transform(img) </span>
+<span id="cb19-45"><a href="#cb19-45" aria-hidden="true" tabindex="-1"></a>        img <span class="op">=</span> img.reshape(<span class="op">-</span><span class="dv">1</span>, model.input_size).cuda()</span>
+<span id="cb19-46"><a href="#cb19-46" aria-hidden="true" tabindex="-1"></a>          </span>
+<span id="cb19-47"><a href="#cb19-47" aria-hidden="true" tabindex="-1"></a>        <span class="co"># Generating output</span></span>
+<span id="cb19-48"><a href="#cb19-48" aria-hidden="true" tabindex="-1"></a>        out <span class="op">=</span> model(img)</span>
+<span id="cb19-49"><a href="#cb19-49" aria-hidden="true" tabindex="-1"></a>          </span>
+<span id="cb19-50"><a href="#cb19-50" aria-hidden="true" tabindex="-1"></a>        <span class="co"># Calculating loss</span></span>
+<span id="cb19-51"><a href="#cb19-51" aria-hidden="true" tabindex="-1"></a>        loss <span class="op">=</span> criterion(out, img)</span>
+<span id="cb19-52"><a href="#cb19-52" aria-hidden="true" tabindex="-1"></a>          </span>
+<span id="cb19-53"><a href="#cb19-53" aria-hidden="true" tabindex="-1"></a>        <span class="co"># Updating weights according</span></span>
+<span id="cb19-54"><a href="#cb19-54" aria-hidden="true" tabindex="-1"></a>        <span class="co"># to the calculated loss</span></span>
+<span id="cb19-55"><a href="#cb19-55" aria-hidden="true" tabindex="-1"></a>        optimizer.zero_grad()</span>
+<span id="cb19-56"><a href="#cb19-56" aria-hidden="true" tabindex="-1"></a>        loss.backward()</span>
+<span id="cb19-57"><a href="#cb19-57" aria-hidden="true" tabindex="-1"></a>        optimizer.step()</span>
+<span id="cb19-58"><a href="#cb19-58" aria-hidden="true" tabindex="-1"></a>          </span>
+<span id="cb19-59"><a href="#cb19-59" aria-hidden="true" tabindex="-1"></a>        <span class="co"># Incrementing loss</span></span>
+<span id="cb19-60"><a href="#cb19-60" aria-hidden="true" tabindex="-1"></a>        running_loss <span class="op">+=</span> loss.item()</span>
+<span id="cb19-61"><a href="#cb19-61" aria-hidden="true" tabindex="-1"></a>      </span>
+<span id="cb19-62"><a href="#cb19-62" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Averaging out loss over entire batch</span></span>
+<span id="cb19-63"><a href="#cb19-63" aria-hidden="true" tabindex="-1"></a>    running_loss <span class="op">/=</span> batch_size</span>
+<span id="cb19-64"><a href="#cb19-64" aria-hidden="true" tabindex="-1"></a>    train_loss.append(running_loss)</span>
+<span id="cb19-65"><a href="#cb19-65" aria-hidden="true" tabindex="-1"></a>      </span>
+<span id="cb19-66"><a href="#cb19-66" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Storing useful images and</span></span>
+<span id="cb19-67"><a href="#cb19-67" aria-hidden="true" tabindex="-1"></a>    <span class="co"># reconstructed outputs for the last batch</span></span>
+<span id="cb19-68"><a href="#cb19-68" aria-hidden="true" tabindex="-1"></a>    outputs[epoch<span class="op">+</span><span class="dv">1</span>] <span class="op">=</span> {<span class="st">'img'</span>: img, <span class="st">'out'</span>: out}</span>
+<span id="cb19-69"><a href="#cb19-69" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb19-70"><a href="#cb19-70" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb19-71"><a href="#cb19-71" aria-hidden="true" tabindex="-1"></a><span class="co"># Plotting the training loss</span></span>
+<span id="cb19-72"><a href="#cb19-72" aria-hidden="true" tabindex="-1"></a>plt.plot(<span class="bu">range</span>(<span class="dv">1</span>,num_epochs<span class="op">+</span><span class="dv">1</span>),train_loss)</span>
+<span id="cb19-73"><a href="#cb19-73" aria-hidden="true" tabindex="-1"></a>plt.xlabel(<span class="st">"Number of epochs"</span>)</span>
+<span id="cb19-74"><a href="#cb19-74" aria-hidden="true" tabindex="-1"></a>plt.ylabel(<span class="st">"Training Loss"</span>)</span>
+<span id="cb19-75"><a href="#cb19-75" aria-hidden="true" tabindex="-1"></a>plt.show()</span>
+<span id="cb19-76"><a href="#cb19-76" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb19-77"><a href="#cb19-77" aria-hidden="true" tabindex="-1"></a><span class="co"># save model to disk</span></span>
+<span id="cb19-78"><a href="#cb19-78" aria-hidden="true" tabindex="-1"></a>torch.save(model.state_dict(), <span class="st">'model.pt'</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stderr">
+<pre><code>100%|██████████| 30/30 [02:03&lt;00:00,  4.11s/it]</code></pre>
+</div>
+<div class="cell-output cell-output-display">
+<p><img src="chess_auto_encoder copy_files/figure-html/cell-9-output-2.png" class="img-fluid"></p>
+</div>
+</div>
+</section>
+<section id="fetch-activations-from-encoders" class="level1">
+<h1>Fetch activations from encoders</h1>
+<div class="cell" data-execution_count="10">
+<div class="sourceCode cell-code" id="cb21"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb21-1"><a href="#cb21-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> scipy.sparse <span class="im">import</span> csr_matrix</span>
+<span id="cb21-2"><a href="#cb21-2" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> tqdm <span class="im">import</span> tqdm</span>
+<span id="cb21-3"><a href="#cb21-3" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> pandas <span class="im">as</span> pd</span>
+<span id="cb21-4"><a href="#cb21-4" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> sqlite3</span>
+<span id="cb21-5"><a href="#cb21-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb21-6"><a href="#cb21-6" aria-hidden="true" tabindex="-1"></a><span class="co"># load model from disk</span></span>
+<span id="cb21-7"><a href="#cb21-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb21-8"><a href="#cb21-8" aria-hidden="true" tabindex="-1"></a>model <span class="op">=</span> DeepAutoencoder()</span>
+<span id="cb21-9"><a href="#cb21-9" aria-hidden="true" tabindex="-1"></a>model.load_state_dict(torch.load(<span class="st">'model.pt'</span>))</span>
+<span id="cb21-10"><a href="#cb21-10" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb21-11"><a href="#cb21-11" aria-hidden="true" tabindex="-1"></a><span class="co"># load df from sqlite db</span></span>
+<span id="cb21-12"><a href="#cb21-12" aria-hidden="true" tabindex="-1"></a>conn <span class="op">=</span> sqlite3.<span class="ex">connect</span>(<span class="st">'chess_auto_encoder.db'</span>)</span>
+<span id="cb21-13"><a href="#cb21-13" aria-hidden="true" tabindex="-1"></a>df <span class="op">=</span> pd.read_sql_query(<span class="st">'select * from fen_concept_df'</span>, conn)</span>
+<span id="cb21-14"><a href="#cb21-14" aria-hidden="true" tabindex="-1"></a>conn.close()</span>
+<span id="cb21-15"><a href="#cb21-15" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb21-16"><a href="#cb21-16" aria-hidden="true" tabindex="-1"></a>activation <span class="op">=</span> {}</span>
+<span id="cb21-17"><a href="#cb21-17" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> get_output_activation(name):</span>
+<span id="cb21-18"><a href="#cb21-18" aria-hidden="true" tabindex="-1"></a>    <span class="kw">def</span> hook(model, <span class="bu">input</span>, output):</span>
+<span id="cb21-19"><a href="#cb21-19" aria-hidden="true" tabindex="-1"></a>        activation[name] <span class="op">=</span> output.detach()</span>
+<span id="cb21-20"><a href="#cb21-20" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> hook</span>
+<span id="cb21-21"><a href="#cb21-21" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb21-22"><a href="#cb21-22" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> get_input_activation(name):</span>
+<span id="cb21-23"><a href="#cb21-23" aria-hidden="true" tabindex="-1"></a>    <span class="kw">def</span> hook(model, <span class="bu">input</span>, output):</span>
+<span id="cb21-24"><a href="#cb21-24" aria-hidden="true" tabindex="-1"></a>        activation[<span class="st">'input_'</span><span class="op">+</span>name] <span class="op">=</span> output.detach()</span>
+<span id="cb21-25"><a href="#cb21-25" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> hook</span>
+<span id="cb21-26"><a href="#cb21-26" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb21-27"><a href="#cb21-27" aria-hidden="true" tabindex="-1"></a>model.encoder_0.register_forward_hook(get_input_activation(<span class="st">'encoder_0'</span>))</span>
+<span id="cb21-28"><a href="#cb21-28" aria-hidden="true" tabindex="-1"></a>model.encoder_0.register_forward_hook(get_output_activation(<span class="st">'encoder_0'</span>))</span>
+<span id="cb21-29"><a href="#cb21-29" aria-hidden="true" tabindex="-1"></a>model.encoder_1.register_forward_hook(get_output_activation(<span class="st">'encoder_1'</span>))</span>
+<span id="cb21-30"><a href="#cb21-30" aria-hidden="true" tabindex="-1"></a>model.encoder_2.register_forward_hook(get_output_activation(<span class="st">'encoder_2'</span>))</span>
+<span id="cb21-31"><a href="#cb21-31" aria-hidden="true" tabindex="-1"></a>model.encoder_3.register_forward_hook(get_output_activation(<span class="st">'encoder_3'</span>))</span>
+<span id="cb21-32"><a href="#cb21-32" aria-hidden="true" tabindex="-1"></a>model.decoder_0.register_forward_hook(get_output_activation(<span class="st">'decoder_0'</span>))</span>
+<span id="cb21-33"><a href="#cb21-33" aria-hidden="true" tabindex="-1"></a>model.decoder_1.register_forward_hook(get_output_activation(<span class="st">'decoder_1'</span>))</span>
+<span id="cb21-34"><a href="#cb21-34" aria-hidden="true" tabindex="-1"></a>model.decoder_2.register_forward_hook(get_output_activation(<span class="st">'decoder_2'</span>))</span>
+<span id="cb21-35"><a href="#cb21-35" aria-hidden="true" tabindex="-1"></a>model.decoder_3.register_forward_hook(get_output_activation(<span class="st">'decoder_3'</span>))</span>
+<span id="cb21-36"><a href="#cb21-36" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb21-37"><a href="#cb21-37" aria-hidden="true" tabindex="-1"></a>model.cuda()</span>
+<span id="cb21-38"><a href="#cb21-38" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb21-39"><a href="#cb21-39" aria-hidden="true" tabindex="-1"></a>activation_list <span class="op">=</span> []</span>
+<span id="cb21-40"><a href="#cb21-40" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb21-41"><a href="#cb21-41" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> idx, row <span class="kw">in</span> tqdm(df.iterrows()):</span>
+<span id="cb21-42"><a href="#cb21-42" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb21-43"><a href="#cb21-43" aria-hidden="true" tabindex="-1"></a>    data <span class="op">=</span> transform([row[<span class="st">'fen'</span>]]).cuda()</span>
+<span id="cb21-44"><a href="#cb21-44" aria-hidden="true" tabindex="-1"></a>    output <span class="op">=</span> model(data)</span>
+<span id="cb21-45"><a href="#cb21-45" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb21-46"><a href="#cb21-46" aria-hidden="true" tabindex="-1"></a>    activations_ <span class="op">=</span> {<span class="st">'index'</span>: idx}</span>
+<span id="cb21-47"><a href="#cb21-47" aria-hidden="true" tabindex="-1"></a>    <span class="cf">for</span> k, v <span class="kw">in</span> activation.items():</span>
+<span id="cb21-48"><a href="#cb21-48" aria-hidden="true" tabindex="-1"></a>        values <span class="op">=</span> v.cpu().numpy()[<span class="dv">0</span>]</span>
+<span id="cb21-49"><a href="#cb21-49" aria-hidden="true" tabindex="-1"></a>        <span class="cf">if</span> k <span class="kw">in</span> [<span class="st">'input_encoder_0'</span>, <span class="st">'decoder_3'</span>]:</span>
+<span id="cb21-50"><a href="#cb21-50" aria-hidden="true" tabindex="-1"></a>            <span class="co"># convert values to csr matrix with boolean values</span></span>
+<span id="cb21-51"><a href="#cb21-51" aria-hidden="true" tabindex="-1"></a>            values <span class="op">=</span> csr_matrix(values, dtype<span class="op">=</span><span class="bu">bool</span>)</span>
+<span id="cb21-52"><a href="#cb21-52" aria-hidden="true" tabindex="-1"></a>        <span class="cf">else</span>:</span>
+<span id="cb21-53"><a href="#cb21-53" aria-hidden="true" tabindex="-1"></a>            <span class="co"># convert values to numpy float16</span></span>
+<span id="cb21-54"><a href="#cb21-54" aria-hidden="true" tabindex="-1"></a>            values <span class="op">=</span> values.astype(np.float16)</span>
+<span id="cb21-55"><a href="#cb21-55" aria-hidden="true" tabindex="-1"></a>        </span>
+<span id="cb21-56"><a href="#cb21-56" aria-hidden="true" tabindex="-1"></a>        activations_[k] <span class="op">=</span> values</span>
+<span id="cb21-57"><a href="#cb21-57" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb21-58"><a href="#cb21-58" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb21-59"><a href="#cb21-59" aria-hidden="true" tabindex="-1"></a>    <span class="co"># copy activation and add to activation_list</span></span>
+<span id="cb21-60"><a href="#cb21-60" aria-hidden="true" tabindex="-1"></a>    activation_list.append(activations_.copy())</span>
+<span id="cb21-61"><a href="#cb21-61" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb21-62"><a href="#cb21-62" aria-hidden="true" tabindex="-1"></a>df_activations <span class="op">=</span> pd.DataFrame(activation_list)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stderr">
+<pre><code>50000it [02:39, 314.42it/s]</code></pre>
+</div>
+</div>
+<div class="cell" data-execution_count="14">
+<div class="sourceCode cell-code" id="cb23"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb23-1"><a href="#cb23-1" aria-hidden="true" tabindex="-1"></a>df_activations.head()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display" data-execution_count="14">
+
+<div>
+
+<table class="dataframe table table-sm table-striped">
+  <thead>
+    <tr>
+      <th></th>
+      <th>index</th>
+      <th>encoder_0</th>
+      <th>encoder_1</th>
+      <th>encoder_2</th>
+      <th>encoder_3</th>
+      <th>decoder_0</th>
+      <th>decoder_1</th>
+      <th>decoder_2</th>
+      <th>decoder_3</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>0</th>
+      <td>0</td>
+      <td>[0.5723, 0.578, 0.5396, 0.5845, -0.06946, 0.51...</td>
+      <td>[10.32, -0.1953, 9.4, 10.52, 10.2, -1.096, -0....</td>
+      <td>[11.36, 9.016, -4.37, 13.08, -1.234, 3.014, 0....</td>
+      <td>[-6.78, 9.11]</td>
+      <td>[5.094, 10.42, -3.629, -1.919, 4.38, -4.266, 2...</td>
+      <td>[-0.12256, -0.4778, 1.023, 2.104, -4.08, 0.149...</td>
+      <td>[1.246, 2.803, 1.398, -1.455, -0.526, -0.3208,...</td>
+      <td>(0, 0)\tTrue\n  (0, 1)\tTrue\n  (0, 2)\tTrue...</td>
+    </tr>
+    <tr>
+      <th>1</th>
+      <td>1</td>
+      <td>[0.3806, 0.3796, 0.3828, 0.3962, -0.03885, 0.3...</td>
+      <td>[7.14, -0.1421, 6.56, 7.34, 7.145, -0.744, -0....</td>
+      <td>[7.953, 6.273, -3.057, 9.125, -0.886, 2.07, 0....</td>
+      <td>[-4.7, 6.36]</td>
+      <td>[3.404, 7.465, -2.713, -1.528, 2.89, -2.814, 1...</td>
+      <td>[-0.2274, -0.3984, 0.6265, 1.645, -2.768, 0.19...</td>
+      <td>[0.967, 1.946, 1.012, -1.0205, -0.4016, -0.262...</td>
+      <td>(0, 0)\tTrue\n  (0, 1)\tTrue\n  (0, 2)\tTrue...</td>
+    </tr>
+    <tr>
+      <th>2</th>
+      <td>2</td>
+      <td>[0.04263, 0.0404, 0.03558, 0.0465, -0.007454, ...</td>
+      <td>[0.746, -0.02776, 0.6953, 0.7993, 0.796, -0.06...</td>
+      <td>[0.978, 0.614, -0.3496, 0.9478, -0.233, 0.1459...</td>
+      <td>[-0.4243, 0.693]</td>
+      <td>[-0.0666, 1.379, -0.82, -0.721, -0.1768, 0.172...</td>
+      <td>[-0.3958, -0.257, -0.1764, 0.6343, -0.1702, 0....</td>
+      <td>[0.2993, 0.2686, 0.2418, -0.2225, -0.1368, -0....</td>
+      <td>(0, 0)\tTrue\n  (0, 1)\tTrue\n  (0, 2)\tTrue...</td>
+    </tr>
+    <tr>
+      <th>3</th>
+      <td>3</td>
+      <td>[0.241, 0.2646, 0.236, 0.2363, -0.03308, 0.214...</td>
+      <td>[4.816, -0.0758, 4.45, 4.95, 4.84, -0.519, -0....</td>
+      <td>[5.418, 4.23, -2.08, 6.17, -0.645, 1.364, 0.00...</td>
+      <td>[-3.15, 4.31]</td>
+      <td>[2.148, 5.26, -2.027, -1.236, 1.779, -1.732, 1...</td>
+      <td>[-0.3044, -0.3389, 0.3306, 1.302, -1.789, 0.22...</td>
+      <td>[0.758, 1.308, 0.7236, -0.696, -0.31, -0.2183,...</td>
+      <td>(0, 0)\tTrue\n  (0, 1)\tTrue\n  (0, 2)\tTrue...</td>
+    </tr>
+    <tr>
+      <th>4</th>
+      <td>4</td>
+      <td>[0.2573, 0.2482, 0.2391, 0.2783, -0.02132, 0.2...</td>
+      <td>[4.812, -0.1035, 4.41, 4.945, 4.832, -0.5005, ...</td>
+      <td>[5.41, 4.21, -2.068, 6.145, -0.6484, 1.369, 0....</td>
+      <td>[-3.143, 4.293]</td>
+      <td>[2.14, 5.246, -2.021, -1.233, 1.772, -1.726, 1...</td>
+      <td>[-0.3047, -0.3384, 0.329, 1.299, -1.783, 0.221...</td>
+      <td>[0.756, 1.304, 0.7217, -0.6934, -0.309, -0.218...</td>
+      <td>(0, 0)\tTrue\n  (0, 1)\tTrue\n  (0, 2)\tTrue...</td>
+    </tr>
+  </tbody>
+</table>
+</div>
+</div>
+</div>
+<div class="cell" data-execution_count="14">
+<div class="sourceCode cell-code" id="cb24"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb24-1"><a href="#cb24-1" aria-hidden="true" tabindex="-1"></a><span class="co"># import and create sqlite engine</span></span>
+<span id="cb24-2"><a href="#cb24-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb24-3"><a href="#cb24-3" aria-hidden="true" tabindex="-1"></a>conn <span class="op">=</span> sqlite3.<span class="ex">connect</span>(<span class="st">'chess_auto_encoder.db'</span>)</span>
+<span id="cb24-4"><a href="#cb24-4" aria-hidden="true" tabindex="-1"></a>df_activations.to_sql(<span class="st">'activations'</span>, conn, if_exists<span class="op">=</span><span class="st">'replace'</span>, index<span class="op">=</span><span class="va">True</span>)</span>
+<span id="cb24-5"><a href="#cb24-5" aria-hidden="true" tabindex="-1"></a>conn.close()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb25"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb25-1"><a href="#cb25-1" aria-hidden="true" tabindex="-1"></a><span class="co"># import create_engine from sqlalchemy</span></span>
+<span id="cb25-2"><a href="#cb25-2" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> sqlalchemy <span class="im">import</span> create_engine</span>
+<span id="cb25-3"><a href="#cb25-3" aria-hidden="true" tabindex="-1"></a><span class="co"># use sqlalchemy to query the database</span></span>
+<span id="cb25-4"><a href="#cb25-4" aria-hidden="true" tabindex="-1"></a>engine <span class="op">=</span> create_engine(<span class="st">'sqlite:///chess_auto_encoder.db'</span>)</span>
+<span id="cb25-5"><a href="#cb25-5" aria-hidden="true" tabindex="-1"></a>df_activations <span class="op">=</span> pd.read_sql_query(<span class="st">'SELECT * FROM activations'</span>, engine)</span>
+<span id="cb25-6"><a href="#cb25-6" aria-hidden="true" tabindex="-1"></a></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div class="cell" data-execution_count="7">
+<div class="sourceCode cell-code" id="cb26"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb26-1"><a href="#cb26-1" aria-hidden="true" tabindex="-1"></a>df.columns.tolist()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display" data-execution_count="7">
+<pre><code>['fen',
+ 'r',
+ 'n',
+ 'b',
+ 'k',
+ 'q',
+ 'p',
+ 'P',
+ 'R',
+ 'N',
+ 'B',
+ 'K',
+ 'Q',
+ 'white_bishop_pair',
+ 'black_bishop_pair',
+ 'white_knight_pair',
+ 'black_knight_pair',
+ 'white_double_pawn',
+ 'black_double_pawn',
+ 'white_isolated_pawns',
+ 'black_isolated_pawns',
+ 'white_connected_rooks',
+ 'black_connected_rooks',
+ 'white_has_control_of_open_file',
+ 'black_has_control_of_open_file',
+ 'has_contested_open_file',
+ 'is_forking',
+ 'can_fork',
+ 'can_check']</code></pre>
+</div>
+</div>
+</section>
+<section id="concept-model" class="level1">
+<h1>Concept Model</h1>
+<div class="cell" data-execution_count="48">
+<div class="sourceCode cell-code" id="cb28"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb28-1"><a href="#cb28-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> sklearn.model_selection <span class="im">import</span> train_test_split</span>
+<span id="cb28-2"><a href="#cb28-2" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> sklearn.linear_model <span class="im">import</span> (</span>
+<span id="cb28-3"><a href="#cb28-3" aria-hidden="true" tabindex="-1"></a>    ElasticNet,</span>
+<span id="cb28-4"><a href="#cb28-4" aria-hidden="true" tabindex="-1"></a>    LogisticRegression,</span>
+<span id="cb28-5"><a href="#cb28-5" aria-hidden="true" tabindex="-1"></a>    Ridge,</span>
+<span id="cb28-6"><a href="#cb28-6" aria-hidden="true" tabindex="-1"></a>    RidgeClassifier,</span>
+<span id="cb28-7"><a href="#cb28-7" aria-hidden="true" tabindex="-1"></a>    SGDRegressor,</span>
+<span id="cb28-8"><a href="#cb28-8" aria-hidden="true" tabindex="-1"></a>    LinearRegression,</span>
+<span id="cb28-9"><a href="#cb28-9" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb28-10"><a href="#cb28-10" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> lightgbm <span class="im">import</span> LGBMClassifier, LGBMRegressor</span>
+<span id="cb28-11"><a href="#cb28-11" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb28-12"><a href="#cb28-12" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> imblearn.under_sampling <span class="im">import</span> RandomUnderSampler</span>
+<span id="cb28-13"><a href="#cb28-13" aria-hidden="true" tabindex="-1"></a><span class="co"># import confusion matrix</span></span>
+<span id="cb28-14"><a href="#cb28-14" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> sklearn.metrics <span class="im">import</span> confusion_matrix, classification_report, accuracy_score</span>
+<span id="cb28-15"><a href="#cb28-15" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb28-16"><a href="#cb28-16" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb28-17"><a href="#cb28-17" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> classification_cost(y_test, y_pred):</span>
+<span id="cb28-18"><a href="#cb28-18" aria-hidden="true" tabindex="-1"></a>    y_test <span class="op">=</span> np.array(y_test).astype(<span class="bu">int</span>)</span>
+<span id="cb28-19"><a href="#cb28-19" aria-hidden="true" tabindex="-1"></a>    y_pred <span class="op">=</span> np.array(y_pred).astype(<span class="bu">int</span>)</span>
+<span id="cb28-20"><a href="#cb28-20" aria-hidden="true" tabindex="-1"></a>    residuals <span class="op">=</span> <span class="dv">1</span> <span class="op">-</span> np.<span class="bu">abs</span>(y_pred <span class="op">-</span> y_test)</span>
+<span id="cb28-21"><a href="#cb28-21" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> np.mean(residuals) <span class="op">*</span> <span class="dv">2</span> <span class="op">-</span> <span class="dv">1</span></span>
+<span id="cb28-22"><a href="#cb28-22" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb28-23"><a href="#cb28-23" aria-hidden="true" tabindex="-1"></a>test_size <span class="op">=</span> <span class="fl">0.33</span></span>
+<span id="cb28-24"><a href="#cb28-24" aria-hidden="true" tabindex="-1"></a>input_name <span class="op">=</span> <span class="st">'encoder_3'</span></span>
+<span id="cb28-25"><a href="#cb28-25" aria-hidden="true" tabindex="-1"></a>target_name <span class="op">=</span> <span class="st">'has_contested_open_file'</span></span>
+<span id="cb28-26"><a href="#cb28-26" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb28-27"><a href="#cb28-27" aria-hidden="true" tabindex="-1"></a>concept_model <span class="op">=</span> LGBMClassifier()</span>
+<span id="cb28-28"><a href="#cb28-28" aria-hidden="true" tabindex="-1"></a><span class="co">#concept_model = LogisticRegression()</span></span>
+<span id="cb28-29"><a href="#cb28-29" aria-hidden="true" tabindex="-1"></a>metric <span class="op">=</span> classification_cost</span>
+<span id="cb28-30"><a href="#cb28-30" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb28-31"><a href="#cb28-31" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb28-32"><a href="#cb28-32" aria-hidden="true" tabindex="-1"></a>undersample <span class="op">=</span> RandomUnderSampler(</span>
+<span id="cb28-33"><a href="#cb28-33" aria-hidden="true" tabindex="-1"></a>    sampling_strategy<span class="op">=</span><span class="st">"majority"</span></span>
+<span id="cb28-34"><a href="#cb28-34" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb28-35"><a href="#cb28-35" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb28-36"><a href="#cb28-36" aria-hidden="true" tabindex="-1"></a>concept_models <span class="op">=</span> [RidgeClassifier(), LGBMClassifier(), LogisticRegression()]</span>
+<span id="cb28-37"><a href="#cb28-37" aria-hidden="true" tabindex="-1"></a>input_names <span class="op">=</span> [<span class="st">'encoder_0'</span>, <span class="st">'encoder_1'</span>, <span class="st">'encoder_2'</span>, <span class="st">'encoder_3'</span>, <span class="st">'decoder_0'</span>, <span class="st">'decoder_1'</span>, <span class="st">'decoder_2'</span>]</span>
+<span id="cb28-38"><a href="#cb28-38" aria-hidden="true" tabindex="-1"></a>target_names <span class="op">=</span> [<span class="st">'has_contested_open_file'</span>,<span class="st">'white_double_pawn'</span>]</span>
+<span id="cb28-39"><a href="#cb28-39" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb28-40"><a href="#cb28-40" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb28-41"><a href="#cb28-41" aria-hidden="true" tabindex="-1"></a>results <span class="op">=</span> []</span>
+<span id="cb28-42"><a href="#cb28-42" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> concept_model <span class="kw">in</span> concept_models:</span>
+<span id="cb28-43"><a href="#cb28-43" aria-hidden="true" tabindex="-1"></a>    <span class="cf">for</span> input_name <span class="kw">in</span> input_names:</span>
+<span id="cb28-44"><a href="#cb28-44" aria-hidden="true" tabindex="-1"></a>        <span class="cf">for</span> target_name <span class="kw">in</span> target_names:</span>
+<span id="cb28-45"><a href="#cb28-45" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb28-46"><a href="#cb28-46" aria-hidden="true" tabindex="-1"></a>            model_name <span class="op">=</span> <span class="ss">f"</span><span class="sc">{</span>concept_model<span class="sc">.</span>__class__<span class="sc">.</span><span class="va">__name__</span><span class="sc">}</span><span class="ss">"</span></span>
+<span id="cb28-47"><a href="#cb28-47" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb28-48"><a href="#cb28-48" aria-hidden="true" tabindex="-1"></a>            X <span class="op">=</span> df_activations[input_name].tolist()</span>
+<span id="cb28-49"><a href="#cb28-49" aria-hidden="true" tabindex="-1"></a>            y <span class="op">=</span> df[target_name].tolist()</span>
+<span id="cb28-50"><a href="#cb28-50" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb28-51"><a href="#cb28-51" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb28-52"><a href="#cb28-52" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb28-53"><a href="#cb28-53" aria-hidden="true" tabindex="-1"></a>            <span class="co"># fit and apply the transform</span></span>
+<span id="cb28-54"><a href="#cb28-54" aria-hidden="true" tabindex="-1"></a>            X, y <span class="op">=</span> undersample.fit_resample(X, <span class="bu">list</span>(y <span class="op">*</span> <span class="dv">1</span>))</span>
+<span id="cb28-55"><a href="#cb28-55" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb28-56"><a href="#cb28-56" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb28-57"><a href="#cb28-57" aria-hidden="true" tabindex="-1"></a>            <span class="co"># split into train and test sets </span></span>
+<span id="cb28-58"><a href="#cb28-58" aria-hidden="true" tabindex="-1"></a>            X_train, X_test, y_train, y_test <span class="op">=</span> train_test_split(</span>
+<span id="cb28-59"><a href="#cb28-59" aria-hidden="true" tabindex="-1"></a>                X, y, test_size<span class="op">=</span>test_size, random_state<span class="op">=</span><span class="dv">42</span>, stratify<span class="op">=</span>y</span>
+<span id="cb28-60"><a href="#cb28-60" aria-hidden="true" tabindex="-1"></a>            )</span>
+<span id="cb28-61"><a href="#cb28-61" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb28-62"><a href="#cb28-62" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb28-63"><a href="#cb28-63" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb28-64"><a href="#cb28-64" aria-hidden="true" tabindex="-1"></a>            concept_model.fit(X_train, <span class="bu">list</span>(y_train))</span>
+<span id="cb28-65"><a href="#cb28-65" aria-hidden="true" tabindex="-1"></a>            y_pred <span class="op">=</span> concept_model.predict(X_test)</span>
+<span id="cb28-66"><a href="#cb28-66" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb28-67"><a href="#cb28-67" aria-hidden="true" tabindex="-1"></a>            score <span class="op">=</span> metric(y_test, y_pred)</span>
+<span id="cb28-68"><a href="#cb28-68" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb28-69"><a href="#cb28-69" aria-hidden="true" tabindex="-1"></a>            <span class="co"># calculate confusion matrix</span></span>
+<span id="cb28-70"><a href="#cb28-70" aria-hidden="true" tabindex="-1"></a>            matrix <span class="op">=</span> confusion_matrix(y_test, y_pred)</span>
+<span id="cb28-71"><a href="#cb28-71" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb28-72"><a href="#cb28-72" aria-hidden="true" tabindex="-1"></a>            <span class="co">#print(f'Target value counts: {pd.Series(y_train).value_counts()}')</span></span>
+<span id="cb28-73"><a href="#cb28-73" aria-hidden="true" tabindex="-1"></a>            <span class="co">#print(f'Target value counts: {pd.Series(y_test).value_counts()}')</span></span>
+<span id="cb28-74"><a href="#cb28-74" aria-hidden="true" tabindex="-1"></a>            <span class="co">#print(f'input shape: {len(X_train[0])}')</span></span>
+<span id="cb28-75"><a href="#cb28-75" aria-hidden="true" tabindex="-1"></a>            <span class="co">#print(matrix)</span></span>
+<span id="cb28-76"><a href="#cb28-76" aria-hidden="true" tabindex="-1"></a>            <span class="bu">print</span>(score)</span>
+<span id="cb28-77"><a href="#cb28-77" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb28-78"><a href="#cb28-78" aria-hidden="true" tabindex="-1"></a>            results_ <span class="op">=</span> {<span class="st">'model_name'</span>: model_name,</span>
+<span id="cb28-79"><a href="#cb28-79" aria-hidden="true" tabindex="-1"></a>                        <span class="st">'input_name'</span>: input_name, </span>
+<span id="cb28-80"><a href="#cb28-80" aria-hidden="true" tabindex="-1"></a>                        <span class="st">'target_name'</span>: target_name,</span>
+<span id="cb28-81"><a href="#cb28-81" aria-hidden="true" tabindex="-1"></a>                        <span class="st">'score'</span>: score, </span>
+<span id="cb28-82"><a href="#cb28-82" aria-hidden="true" tabindex="-1"></a>                        <span class="st">'size'</span>: <span class="bu">len</span>(X_train[<span class="dv">0</span>])}</span>
+<span id="cb28-83"><a href="#cb28-83" aria-hidden="true" tabindex="-1"></a>            results.append(results_)</span>
+<span id="cb28-84"><a href="#cb28-84" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb28-85"><a href="#cb28-85" aria-hidden="true" tabindex="-1"></a>df_results <span class="op">=</span> pd.DataFrame(results)</span>
+<span id="cb28-86"><a href="#cb28-86" aria-hidden="true" tabindex="-1"></a>df_results</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>0.4358717434869739
+0.3526570048309179
+0.3657314629258517
+0.24852388620504562
+0.37274549098196386
+0.239398819108964
+0.14228456913827658
+0.2028985507246377
+0.1002004008016033
+0.096081588835212
+0.09819639278557113
+0.045625335480407925
+0.34468937875751493
+0.2356414385399892
+0.4358717434869739
+0.31025228126677407
+0.405811623246493
+0.25442834138486314
+0.39779559118236474
+0.26033279656468067
+0.3807615230460921
+0.23832528180354262
+0.3827655310621243
+0.2195383789586689
+0.37374749498997994
+0.2630166398282341
+0.39078156312625256
+0.21900161030595822</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>/home/ap/miniconda3/lib/python3.9/site-packages/sklearn/linear_model/_logistic.py:814: ConvergenceWarning: lbfgs failed to converge (status=1):
+STOP: TOTAL NO. of ITERATIONS REACHED LIMIT.
+
+Increase the number of iterations (max_iter) or scale the data as shown in:
+    https://scikit-learn.org/stable/modules/preprocessing.html
+Please also refer to the documentation for alternative solver options:
+    https://scikit-learn.org/stable/modules/linear_model.html#logistic-regression
+  n_iter_i = _check_optimize_result(</code></pre>
+</div>
+<div class="cell-output cell-output-stdout">
+<pre><code>0.4188376753507015</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>/home/ap/miniconda3/lib/python3.9/site-packages/sklearn/linear_model/_logistic.py:814: ConvergenceWarning: lbfgs failed to converge (status=1):
+STOP: TOTAL NO. of ITERATIONS REACHED LIMIT.
+
+Increase the number of iterations (max_iter) or scale the data as shown in:
+    https://scikit-learn.org/stable/modules/preprocessing.html
+Please also refer to the documentation for alternative solver options:
+    https://scikit-learn.org/stable/modules/linear_model.html#logistic-regression
+  n_iter_i = _check_optimize_result(</code></pre>
+</div>
+<div class="cell-output cell-output-stdout">
+<pre><code>0.318840579710145
+0.38476953907815625
+0.2388620504562533
+0.3527054108216432
+0.22490606548577574
+0.09719438877755504
+0.10789049919484706
+0.08717434869739482
+0.016103059581320522
+0.10420841683366744
+0.056360708534621606
+0.3757515030060121
+0.24154589371980673</code></pre>
+</div>
+</div>
+<div class="cell" data-execution_count="49">
+<div class="sourceCode cell-code" id="cb34"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb34-1"><a href="#cb34-1" aria-hidden="true" tabindex="-1"></a>df_results <span class="op">=</span> pd.DataFrame(results)</span>
+<span id="cb34-2"><a href="#cb34-2" aria-hidden="true" tabindex="-1"></a>df_results</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display" data-execution_count="49">
+
+<div>
+
+<table class="dataframe table table-sm table-striped">
+  <thead>
+    <tr>
+      <th></th>
+      <th>model_name</th>
+      <th>input_name</th>
+      <th>target_name</th>
+      <th>score</th>
+      <th>size</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>0</th>
+      <td>RidgeClassifier</td>
+      <td>encoder_0</td>
+      <td>has_contested_open_file</td>
+      <td>0.435872</td>
+      <td>1024</td>
+    </tr>
+    <tr>
+      <th>1</th>
+      <td>RidgeClassifier</td>
+      <td>encoder_0</td>
+      <td>white_double_pawn</td>
+      <td>0.352657</td>
+      <td>1024</td>
+    </tr>
+    <tr>
+      <th>2</th>
+      <td>RidgeClassifier</td>
+      <td>encoder_1</td>
+      <td>has_contested_open_file</td>
+      <td>0.365731</td>
+      <td>32</td>
+    </tr>
+    <tr>
+      <th>3</th>
+      <td>RidgeClassifier</td>
+      <td>encoder_1</td>
+      <td>white_double_pawn</td>
+      <td>0.248524</td>
+      <td>32</td>
+    </tr>
+    <tr>
+      <th>4</th>
+      <td>RidgeClassifier</td>
+      <td>encoder_2</td>
+      <td>has_contested_open_file</td>
+      <td>0.372745</td>
+      <td>8</td>
+    </tr>
+    <tr>
+      <th>5</th>
+      <td>RidgeClassifier</td>
+      <td>encoder_2</td>
+      <td>white_double_pawn</td>
+      <td>0.239399</td>
+      <td>8</td>
+    </tr>
+    <tr>
+      <th>6</th>
+      <td>RidgeClassifier</td>
+      <td>encoder_3</td>
+      <td>has_contested_open_file</td>
+      <td>0.142285</td>
+      <td>2</td>
+    </tr>
+    <tr>
+      <th>7</th>
+      <td>RidgeClassifier</td>
+      <td>encoder_3</td>
+      <td>white_double_pawn</td>
+      <td>0.202899</td>
+      <td>2</td>
+    </tr>
+    <tr>
+      <th>8</th>
+      <td>RidgeClassifier</td>
+      <td>decoder_0</td>
+      <td>has_contested_open_file</td>
+      <td>0.100200</td>
+      <td>8</td>
+    </tr>
+    <tr>
+      <th>9</th>
+      <td>RidgeClassifier</td>
+      <td>decoder_0</td>
+      <td>white_double_pawn</td>
+      <td>0.096082</td>
+      <td>8</td>
+    </tr>
+    <tr>
+      <th>10</th>
+      <td>RidgeClassifier</td>
+      <td>decoder_1</td>
+      <td>has_contested_open_file</td>
+      <td>0.098196</td>
+      <td>32</td>
+    </tr>
+    <tr>
+      <th>11</th>
+      <td>RidgeClassifier</td>
+      <td>decoder_1</td>
+      <td>white_double_pawn</td>
+      <td>0.045625</td>
+      <td>32</td>
+    </tr>
+    <tr>
+      <th>12</th>
+      <td>RidgeClassifier</td>
+      <td>decoder_2</td>
+      <td>has_contested_open_file</td>
+      <td>0.344689</td>
+      <td>1024</td>
+    </tr>
+    <tr>
+      <th>13</th>
+      <td>RidgeClassifier</td>
+      <td>decoder_2</td>
+      <td>white_double_pawn</td>
+      <td>0.235641</td>
+      <td>1024</td>
+    </tr>
+    <tr>
+      <th>14</th>
+      <td>LGBMClassifier</td>
+      <td>encoder_0</td>
+      <td>has_contested_open_file</td>
+      <td>0.435872</td>
+      <td>1024</td>
+    </tr>
+    <tr>
+      <th>15</th>
+      <td>LGBMClassifier</td>
+      <td>encoder_0</td>
+      <td>white_double_pawn</td>
+      <td>0.310252</td>
+      <td>1024</td>
+    </tr>
+    <tr>
+      <th>16</th>
+      <td>LGBMClassifier</td>
+      <td>encoder_1</td>
+      <td>has_contested_open_file</td>
+      <td>0.405812</td>
+      <td>32</td>
+    </tr>
+    <tr>
+      <th>17</th>
+      <td>LGBMClassifier</td>
+      <td>encoder_1</td>
+      <td>white_double_pawn</td>
+      <td>0.254428</td>
+      <td>32</td>
+    </tr>
+    <tr>
+      <th>18</th>
+      <td>LGBMClassifier</td>
+      <td>encoder_2</td>
+      <td>has_contested_open_file</td>
+      <td>0.397796</td>
+      <td>8</td>
+    </tr>
+    <tr>
+      <th>19</th>
+      <td>LGBMClassifier</td>
+      <td>encoder_2</td>
+      <td>white_double_pawn</td>
+      <td>0.260333</td>
+      <td>8</td>
+    </tr>
+    <tr>
+      <th>20</th>
+      <td>LGBMClassifier</td>
+      <td>encoder_3</td>
+      <td>has_contested_open_file</td>
+      <td>0.380762</td>
+      <td>2</td>
+    </tr>
+    <tr>
+      <th>21</th>
+      <td>LGBMClassifier</td>
+      <td>encoder_3</td>
+      <td>white_double_pawn</td>
+      <td>0.238325</td>
+      <td>2</td>
+    </tr>
+    <tr>
+      <th>22</th>
+      <td>LGBMClassifier</td>
+      <td>decoder_0</td>
+      <td>has_contested_open_file</td>
+      <td>0.382766</td>
+      <td>8</td>
+    </tr>
+    <tr>
+      <th>23</th>
+      <td>LGBMClassifier</td>
+      <td>decoder_0</td>
+      <td>white_double_pawn</td>
+      <td>0.219538</td>
+      <td>8</td>
+    </tr>
+    <tr>
+      <th>24</th>
+      <td>LGBMClassifier</td>
+      <td>decoder_1</td>
+      <td>has_contested_open_file</td>
+      <td>0.373747</td>
+      <td>32</td>
+    </tr>
+    <tr>
+      <th>25</th>
+      <td>LGBMClassifier</td>
+      <td>decoder_1</td>
+      <td>white_double_pawn</td>
+      <td>0.263017</td>
+      <td>32</td>
+    </tr>
+    <tr>
+      <th>26</th>
+      <td>LGBMClassifier</td>
+      <td>decoder_2</td>
+      <td>has_contested_open_file</td>
+      <td>0.390782</td>
+      <td>1024</td>
+    </tr>
+    <tr>
+      <th>27</th>
+      <td>LGBMClassifier</td>
+      <td>decoder_2</td>
+      <td>white_double_pawn</td>
+      <td>0.219002</td>
+      <td>1024</td>
+    </tr>
+    <tr>
+      <th>28</th>
+      <td>LogisticRegression</td>
+      <td>encoder_0</td>
+      <td>has_contested_open_file</td>
+      <td>0.418838</td>
+      <td>1024</td>
+    </tr>
+    <tr>
+      <th>29</th>
+      <td>LogisticRegression</td>
+      <td>encoder_0</td>
+      <td>white_double_pawn</td>
+      <td>0.318841</td>
+      <td>1024</td>
+    </tr>
+    <tr>
+      <th>30</th>
+      <td>LogisticRegression</td>
+      <td>encoder_1</td>
+      <td>has_contested_open_file</td>
+      <td>0.384770</td>
+      <td>32</td>
+    </tr>
+    <tr>
+      <th>31</th>
+      <td>LogisticRegression</td>
+      <td>encoder_1</td>
+      <td>white_double_pawn</td>
+      <td>0.238862</td>
+      <td>32</td>
+    </tr>
+    <tr>
+      <th>32</th>
+      <td>LogisticRegression</td>
+      <td>encoder_2</td>
+      <td>has_contested_open_file</td>
+      <td>0.352705</td>
+      <td>8</td>
+    </tr>
+    <tr>
+      <th>33</th>
+      <td>LogisticRegression</td>
+      <td>encoder_2</td>
+      <td>white_double_pawn</td>
+      <td>0.224906</td>
+      <td>8</td>
+    </tr>
+    <tr>
+      <th>34</th>
+      <td>LogisticRegression</td>
+      <td>encoder_3</td>
+      <td>has_contested_open_file</td>
+      <td>0.097194</td>
+      <td>2</td>
+    </tr>
+    <tr>
+      <th>35</th>
+      <td>LogisticRegression</td>
+      <td>encoder_3</td>
+      <td>white_double_pawn</td>
+      <td>0.107890</td>
+      <td>2</td>
+    </tr>
+    <tr>
+      <th>36</th>
+      <td>LogisticRegression</td>
+      <td>decoder_0</td>
+      <td>has_contested_open_file</td>
+      <td>0.087174</td>
+      <td>8</td>
+    </tr>
+    <tr>
+      <th>37</th>
+      <td>LogisticRegression</td>
+      <td>decoder_0</td>
+      <td>white_double_pawn</td>
+      <td>0.016103</td>
+      <td>8</td>
+    </tr>
+    <tr>
+      <th>38</th>
+      <td>LogisticRegression</td>
+      <td>decoder_1</td>
+      <td>has_contested_open_file</td>
+      <td>0.104208</td>
+      <td>32</td>
+    </tr>
+    <tr>
+      <th>39</th>
+      <td>LogisticRegression</td>
+      <td>decoder_1</td>
+      <td>white_double_pawn</td>
+      <td>0.056361</td>
+      <td>32</td>
+    </tr>
+    <tr>
+      <th>40</th>
+      <td>LogisticRegression</td>
+      <td>decoder_2</td>
+      <td>has_contested_open_file</td>
+      <td>0.375752</td>
+      <td>1024</td>
+    </tr>
+    <tr>
+      <th>41</th>
+      <td>LogisticRegression</td>
+      <td>decoder_2</td>
+      <td>white_double_pawn</td>
+      <td>0.241546</td>
+      <td>1024</td>
+    </tr>
+  </tbody>
+</table>
+</div>
+</div>
+</div>
+<div class="cell" data-execution_count="52">
+<div class="sourceCode cell-code" id="cb35"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb35-1"><a href="#cb35-1" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> target_name <span class="kw">in</span> df_results.target_name.unique():</span>
+<span id="cb35-2"><a href="#cb35-2" aria-hidden="true" tabindex="-1"></a>    df_results_ <span class="op">=</span> df_results[df_results.target_name <span class="op">==</span> target_name]</span>
+<span id="cb35-3"><a href="#cb35-3" aria-hidden="true" tabindex="-1"></a>    <span class="cf">for</span> model_name  <span class="kw">in</span> df_results_.model_name.unique():</span>
+<span id="cb35-4"><a href="#cb35-4" aria-hidden="true" tabindex="-1"></a>        <span class="co"># plot scores</span></span>
+<span id="cb35-5"><a href="#cb35-5" aria-hidden="true" tabindex="-1"></a>        plt.plot(<span class="bu">range</span>(<span class="bu">len</span>(df_results_[df_results_.model_name <span class="op">==</span> model_name])), df_results_[df_results_.model_name <span class="op">==</span> model_name].score, label<span class="op">=</span>model_name)</span>
+<span id="cb35-6"><a href="#cb35-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb35-7"><a href="#cb35-7" aria-hidden="true" tabindex="-1"></a>    <span class="co"># set x ticks as size   </span></span>
+<span id="cb35-8"><a href="#cb35-8" aria-hidden="true" tabindex="-1"></a>    plt.xticks(<span class="bu">range</span>(<span class="bu">len</span>(df_results_[df_results_.model_name <span class="op">==</span> model_name])), df_results_[df_results_.model_name <span class="op">==</span> model_name][<span class="st">'size'</span>].astype(<span class="bu">str</span>))</span>
+<span id="cb35-9"><a href="#cb35-9" aria-hidden="true" tabindex="-1"></a>    plt.title(target_name)</span>
+<span id="cb35-10"><a href="#cb35-10" aria-hidden="true" tabindex="-1"></a>    plt.ylabel(<span class="st">'score'</span>)</span>
+<span id="cb35-11"><a href="#cb35-11" aria-hidden="true" tabindex="-1"></a>    plt.xlabel(<span class="st">'Encoder-Decoder compression size'</span>)</span>
+<span id="cb35-12"><a href="#cb35-12" aria-hidden="true" tabindex="-1"></a>    plt.legend()</span>
+<span id="cb35-13"><a href="#cb35-13" aria-hidden="true" tabindex="-1"></a>    plt.show()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display">
+<p><img src="chess_auto_encoder copy_files/figure-html/cell-18-output-1.png" class="img-fluid"></p>
+</div>
+<div class="cell-output cell-output-display">
+<p><img src="chess_auto_encoder copy_files/figure-html/cell-18-output-2.png" class="img-fluid"></p>
+</div>
+</div>
+
+
+</section>
+
+</main> <!-- /main -->
+<script id="quarto-html-after-body" type="application/javascript">
+window.document.addEventListener("DOMContentLoaded", function (event) {
+  const toggleBodyColorMode = (bsSheetEl) => {
+    const mode = bsSheetEl.getAttribute("data-mode");
+    const bodyEl = window.document.querySelector("body");
+    if (mode === "dark") {
+      bodyEl.classList.add("quarto-dark");
+      bodyEl.classList.remove("quarto-light");
+    } else {
+      bodyEl.classList.add("quarto-light");
+      bodyEl.classList.remove("quarto-dark");
+    }
+  }
+  const toggleBodyColorPrimary = () => {
+    const bsSheetEl = window.document.querySelector("link#quarto-bootstrap");
+    if (bsSheetEl) {
+      toggleBodyColorMode(bsSheetEl);
+    }
+  }
+  toggleBodyColorPrimary();  
+  const icon = "";
+  const anchorJS = new window.AnchorJS();
+  anchorJS.options = {
+    placement: 'right',
+    icon: icon
+  };
+  anchorJS.add('.anchored');
+  const clipboard = new window.ClipboardJS('.code-copy-button', {
+    target: function(trigger) {
+      return trigger.previousElementSibling;
+    }
+  });
+  clipboard.on('success', function(e) {
+    // button target
+    const button = e.trigger;
+    // don't keep focus
+    button.blur();
+    // flash "checked"
+    button.classList.add('code-copy-button-checked');
+    var currentTitle = button.getAttribute("title");
+    button.setAttribute("title", "Copied!");
+    let tooltip;
+    if (window.bootstrap) {
+      button.setAttribute("data-bs-toggle", "tooltip");
+      button.setAttribute("data-bs-placement", "left");
+      button.setAttribute("data-bs-title", "Copied!");
+      tooltip = new bootstrap.Tooltip(button, 
+        { trigger: "manual", 
+          customClass: "code-copy-button-tooltip",
+          offset: [0, -8]});
+      tooltip.show();    
+    }
+    setTimeout(function() {
+      if (tooltip) {
+        tooltip.hide();
+        button.removeAttribute("data-bs-title");
+        button.removeAttribute("data-bs-toggle");
+        button.removeAttribute("data-bs-placement");
+      }
+      button.setAttribute("title", currentTitle);
+      button.classList.remove('code-copy-button-checked');
+    }, 1000);
+    // clear code selection
+    e.clearSelection();
+  });
+  function tippyHover(el, contentFn) {
+    const config = {
+      allowHTML: true,
+      content: contentFn,
+      maxWidth: 500,
+      delay: 100,
+      arrow: false,
+      appendTo: function(el) {
+          return el.parentElement;
+      },
+      interactive: true,
+      interactiveBorder: 10,
+      theme: 'quarto',
+      placement: 'bottom-start'
+    };
+    window.tippy(el, config); 
+  }
+  const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+  for (var i=0; i<noterefs.length; i++) {
+    const ref = noterefs[i];
+    tippyHover(ref, function() {
+      // use id or data attribute instead here
+      let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+      try { href = new URL(href).hash; } catch {}
+      const id = href.replace(/^#\/?/, "");
+      const note = window.document.getElementById(id);
+      return note.innerHTML;
+    });
+  }
+  const findCites = (el) => {
+    const parentEl = el.parentElement;
+    if (parentEl) {
+      const cites = parentEl.dataset.cites;
+      if (cites) {
+        return {
+          el,
+          cites: cites.split(' ')
+        };
+      } else {
+        return findCites(el.parentElement)
+      }
+    } else {
+      return undefined;
+    }
+  };
+  var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+  for (var i=0; i<bibliorefs.length; i++) {
+    const ref = bibliorefs[i];
+    const citeInfo = findCites(ref);
+    if (citeInfo) {
+      tippyHover(citeInfo.el, function() {
+        var popup = window.document.createElement('div');
+        citeInfo.cites.forEach(function(cite) {
+          var citeDiv = window.document.createElement('div');
+          citeDiv.classList.add('hanging-indent');
+          citeDiv.classList.add('csl-entry');
+          var biblioDiv = window.document.getElementById('ref-' + cite);
+          if (biblioDiv) {
+            citeDiv.innerHTML = biblioDiv.innerHTML;
+          }
+          popup.appendChild(citeDiv);
+        });
+        return popup.innerHTML;
+      });
+    }
+  }
+});
+</script>
+</div> <!-- /content -->
+
+
+
+</body></html>

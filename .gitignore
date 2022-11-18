@@ -131,7 +131,7 @@ dmypy.json
 
 # Custom
 
-stockfish_14.1_linux_x64    
+stockfish_14.1_linux_x64
 *.pdf
 config.yml
 Stockfish-sf_14.1
@@ -144,3 +144,4 @@ nnue_pytorch/
 runs/
 external_packages/
 data/
+/.quarto/
