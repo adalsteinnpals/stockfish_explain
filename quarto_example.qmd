@@ -27,6 +27,22 @@ In the quest to understand why a machine learning model makes the decision it do
 
 # Chess
 
+## Concepts from Stockfish
+
+- **Material**
+- **Imbalance**
+- **Pawns**
+- **Knights**
+- **Bishops**
+- **Rooks**
+- **Queens**
+- **Mobility**
+- **King Safety**
+- **Threats**
+- **Passed Pawns**
+- **Space**
+- **Winnable**
+
 ## Implemented Concepts
 All concepts are implemented for both white and black.
 
@@ -50,17 +66,42 @@ All concepts are implemented for both white and black.
 ## Comparing concept probing methods
 Here we will evaluate the concept probing methods and consider what they tell us about the model. There are numerous challenges related to concept probing, e.g.:
 
-- How can we find the best concept probing method?
-asdfasdfasdf
+- ***How can we find the best concept probing method?***
 
-- When can we really know if a concept is being used? Even if a concept is linearly separable, how can we know if it is being used?
+When we are evaluating concept probing methods, what we really want to reveal, is how important is a concept to a given model. If the representation of a concept emerges in the hidden representations of a model, then we can infer that the concept is of some usefulness. 
 
-asdfasdf
+- ***When can we really know if a concept is being used? Even if a concept is linearly separable, how can we know if it is being used?***
+
+Inferring that if a concept is linearly separable then it is being used by the model can sometime be misleading. For example if a concept is linearly separable in the input space, the amount to which the model conserves the information in deeper layers can be a function of more than just the usefulness of the concept.
+
+- ***When is a probing method too simple?*** 
+
+If a probing method is too simple, it may not correctly reveal the degree of which the concept is being used. 
+
+For example simpler probing methods might not be able to handle problems related to sparsity, e.g. if a concept is most often present under a given condition, which is not a confounding factor, then the probing method may not be able to detect the concept.
+
+- ***When is a probing method too complex?*** 
+
+Some have argued that it is important to keep the capacity of the regression model low [chess knowledge] to ensure that the probing method is capturing the structure of the probed model instead of learning its own structure.
+
+So given one extreme case, where we probe for a concept in the input layer with a very powerful model, the model will learn its own relationships, regardless of the models representations. In the earlier layers of the model, where some non-useful information is still being represented in the hidden layers, i.e. the non-useful information has not been dissolved by the model, the same situation can occur.
 
 
-- When is a probing method too simple, or too complex? 
+
 
 ### Autoencoder Experiment
+
+This experiment is intended to shed a light on a comparison between different probing architectures. When probing for a concept, it is often hard to know the ground trouth. However, if we use an autoencoder, that compresses the input space and successfully reconstructs it, we know that the concepts are somehow represented in the hidden layers of the autoencoder. 
+
+This is relevant when probing a small neural network, such as Stockfish' NNUE, where the concept representations are much more compressed than in a large neural network. 
+
+Here we seek to understand better when a probing method is too simple and giving lower probing accuracy than more powerful probing methods.
+
+*One key insight gained throught this experiment is just how valuable concept probing is to evaluating the reconstruction properties of generative models.* 
+
+
+
+
 
 ```{python}
 #| label: fig-polar

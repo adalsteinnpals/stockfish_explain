@@ -144,7 +144,8 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
   </ul></li>
   <li><a href="#chess" id="toc-chess" class="nav-link" data-scroll-target="#chess"><span class="toc-section-number">2</span>  Chess</a>
   <ul class="collapse">
-  <li><a href="#implemented-concepts" id="toc-implemented-concepts" class="nav-link" data-scroll-target="#implemented-concepts"><span class="toc-section-number">2.1</span>  Implemented Concepts</a></li>
+  <li><a href="#concepts-from-stockfish" id="toc-concepts-from-stockfish" class="nav-link" data-scroll-target="#concepts-from-stockfish"><span class="toc-section-number">2.1</span>  Concepts from Stockfish</a></li>
+  <li><a href="#implemented-concepts" id="toc-implemented-concepts" class="nav-link" data-scroll-target="#implemented-concepts"><span class="toc-section-number">2.2</span>  Implemented Concepts</a></li>
   </ul></li>
   <li><a href="#concept-probing" id="toc-concept-probing" class="nav-link" data-scroll-target="#concept-probing"><span class="toc-section-number">3</span>  Concept Probing</a>
   <ul class="collapse">
@@ -198,8 +199,26 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 </section>
 <section id="chess" class="level1" data-number="2">
 <h1 data-number="2"><span class="header-section-number">2</span> Chess</h1>
-<section id="implemented-concepts" class="level2" data-number="2.1">
-<h2 data-number="2.1" class="anchored" data-anchor-id="implemented-concepts"><span class="header-section-number">2.1</span> Implemented Concepts</h2>
+<section id="concepts-from-stockfish" class="level2" data-number="2.1">
+<h2 data-number="2.1" class="anchored" data-anchor-id="concepts-from-stockfish"><span class="header-section-number">2.1</span> Concepts from Stockfish</h2>
+<ul>
+<li><strong>Material</strong></li>
+<li><strong>Imbalance</strong></li>
+<li><strong>Pawns</strong></li>
+<li><strong>Knights</strong></li>
+<li><strong>Bishops</strong></li>
+<li><strong>Rooks</strong></li>
+<li><strong>Queens</strong></li>
+<li><strong>Mobility</strong></li>
+<li><strong>King Safety</strong></li>
+<li><strong>Threats</strong></li>
+<li><strong>Passed Pawns</strong></li>
+<li><strong>Space</strong></li>
+<li><strong>Winnable</strong></li>
+</ul>
+</section>
+<section id="implemented-concepts" class="level2" data-number="2.2">
+<h2 data-number="2.2" class="anchored" data-anchor-id="implemented-concepts"><span class="header-section-number">2.2</span> Implemented Concepts</h2>
 <p>All concepts are implemented for both white and black.</p>
 <ul>
 <li><strong>white_bishop_pair</strong> - Is true if white has a bishop pair</li>
@@ -221,15 +240,29 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <h2 data-number="3.1" class="anchored" data-anchor-id="comparing-concept-probing-methods"><span class="header-section-number">3.1</span> Comparing concept probing methods</h2>
 <p>Here we will evaluate the concept probing methods and consider what they tell us about the model. There are numerous challenges related to concept probing, e.g.:</p>
 <ul>
-<li><p>How can we find the best concept probing method? asdfasdfasdf</p></li>
-<li><p>When can we really know if a concept is being used? Even if a concept is linearly separable, how can we know if it is being used?</p></li>
+<li><strong><em>How can we find the best concept probing method?</em></strong></li>
 </ul>
-<p>asdfasdf</p>
+<p>When we are evaluating concept probing methods, what we really want to reveal, is how important is a concept to a given model. If the representation of a concept emerges in the hidden representations of a model, then we can infer that the concept is of some usefulness.</p>
 <ul>
-<li>When is a probing method too simple, or too complex?</li>
+<li><strong><em>When can we really know if a concept is being used? Even if a concept is linearly separable, how can we know if it is being used?</em></strong></li>
 </ul>
+<p>Inferring that if a concept is linearly separable then it is being used by the model can sometime be misleading. For example if a concept is linearly separable in the input space, the amount to which the model conserves the information in deeper layers can be a function of more than just the usefulness of the concept.</p>
+<ul>
+<li><strong><em>When is a probing method too simple?</em></strong></li>
+</ul>
+<p>If a probing method is too simple, it may not correctly reveal the degree of which the concept is being used.</p>
+<p>For example simpler probing methods might not be able to handle problems related to sparsity, e.g.&nbsp;if a concept is most often present under a given condition, which is not a confounding factor, then the probing method may not be able to detect the concept.</p>
+<ul>
+<li><strong><em>When is a probing method too complex?</em></strong></li>
+</ul>
+<p>Some have argued that it is important to keep the capacity of the regression model low [chess knowledge] to ensure that the probing method is capturing the structure of the probed model instead of learning its own structure.</p>
+<p>So given one extreme case, where we probe for a concept in the input layer with a very powerful model, the model will learn its own relationships, regardless of the models representations. In the earlier layers of the model, where some non-useful information is still being represented in the hidden layers, i.e.&nbsp;the non-useful information has not been dissolved by the model, the same situation can occur.</p>
 <section id="autoencoder-experiment" class="level3" data-number="3.1.1">
 <h3 data-number="3.1.1" class="anchored" data-anchor-id="autoencoder-experiment"><span class="header-section-number">3.1.1</span> Autoencoder Experiment</h3>
+<p>This experiment is intended to shed a light on a comparison between different probing architectures. When probing for a concept, it is often hard to know the ground trouth. However, if we use an autoencoder, that compresses the input space and successfully reconstructs it, we know that the concepts are somehow represented in the hidden layers of the autoencoder.</p>
+<p>This is relevant when probing a small neural network, such as Stockfish’ NNUE, where the concept representations are much more compressed than in a large neural network.</p>
+<p>Here we seek to understand better when a probing method is too simple and giving lower probing accuracy than more powerful probing methods.</p>
+<p><em>One key insight gained throught this experiment is just how valuable concept probing is to evaluating the reconstruction properties of generative models.</em></p>
 <div class="cell" data-execution_count="1">
 <details>
 <summary>Code</summary>
