@@ -1,28 +1,28 @@
 [
   {
-    "objectID": "quarto_example.html",
-    "href": "quarto_example.html",
+    "objectID": "report.html",
+    "href": "report.html",
     "title": "Stockfish Explainability",
     "section": "",
     "text": "This document is a work in progress. It is intended to be a guide to the explainability features of Stockfish. It is not intended to be a guide to Stockfish itself. For that, please see the Stockfish documentation.\n\n\n\nExplainability is the ability to understand why a machine learning model makes the decisions it does. It is a key component of the Explainable AI movement. It is also a key component of the Fairness, Accountability, and Transparency\n\n\n\nIn the quest to understand why a machine learning model makes the decision it does we want to find out what it has learnt. The methods we will be using to explain Stockfish are:\n\nFeature Importance\nSaliency Maps\nConcept Probing"
   },
   {
-    "objectID": "quarto_example.html#concepts-from-stockfish",
-    "href": "quarto_example.html#concepts-from-stockfish",
+    "objectID": "report.html#concepts-from-stockfish",
+    "href": "report.html#concepts-from-stockfish",
     "title": "Stockfish Explainability",
     "section": "2.1 Concepts from Stockfish",
     "text": "2.1 Concepts from Stockfish\n\nMaterial\nImbalance\nPawns\nKnights\nBishops\nRooks\nQueens\nMobility\nKing Safety\nThreats\nPassed Pawns\nSpace\nWinnable"
   },
   {
-    "objectID": "quarto_example.html#implemented-concepts",
-    "href": "quarto_example.html#implemented-concepts",
+    "objectID": "report.html#implemented-concepts",
+    "href": "report.html#implemented-concepts",
     "title": "Stockfish Explainability",
     "section": "2.2 Implemented Concepts",
     "text": "2.2 Implemented Concepts\nAll concepts are implemented for both white and black.\n\nwhite_bishop_pair - Is true if white has a bishop pair\nwhite_knight_pair - Is true if white has a knight pair\nwhite_double_pawn - Is true if white has a double pawn\nwhite_isolated_pawn - Is true if white has an isolated pawn\nwhite_connected_rooks - Is true if white has connected rooks\nwhite_rook_on_open_file - Is true if white has a rook on an open file\nhas_contested_open_file - Is true if there is a contested open file\ncurrent_player_is_forking - Is true if the current player is forking\ncurrent_player_can_fork - Is true if the current player can fork\ncurrent_player_is_checking - Is true if the current player is checking"
   },
   {
-    "objectID": "quarto_example.html#comparing-concept-probing-methods",
-    "href": "quarto_example.html#comparing-concept-probing-methods",
+    "objectID": "report.html#comparing-concept-probing-methods",
+    "href": "report.html#comparing-concept-probing-methods",
     "title": "Stockfish Explainability",
     "section": "3.1 Comparing concept probing methods",
     "text": "3.1 Comparing concept probing methods\nHere we will evaluate the concept probing methods and consider what they tell us about the model. There are numerous challenges related to concept probing, e.g.:\n\nHow can we find the best concept probing method?\n\nWhen we are evaluating concept probing methods, what we really want to reveal, is how important is a concept to a given model. If the representation of a concept emerges in the hidden representations of a model, then we can infer that the concept is of some usefulness.\n\nWhen can we really know if a concept is being used? Even if a concept is linearly separable, how can we know if it is being used?\n\nInferring that if a concept is linearly separable then it is being used by the model can sometime be misleading. For example if a concept is linearly separable in the input space, the amount to which the model conserves the information in deeper layers can be a function of more than just the usefulness of the concept.\n\nWhen is a probing method too simple?\n\nIf a probing method is too simple, it may not correctly reveal the degree of which the concept is being used.\nFor example, simpler probing methods might not be able to handle problems related to sparsity, e.g. if a concept is most often present under a given condition, which is not a confounding factor, then the probing method may not be able to detect the concept.\n\nWhen is a probing method too complex?\n\nSome have argued that it is important to keep the capacity of the regression model low [chess knowledge] to ensure that the probing method is capturing the structure of the probed model instead of learning its own structure.\nSo given one extreme case, where we probe for a concept in the input layer with a very powerful model, the model will learn its own relationships, regardless of the models representations. In the earlier layers of the model, where some non-useful information is still being represented in the hidden layers, i.e. the non-useful information has not been dissolved by the model, the same situation can occur.\n\n3.1.1 Autoencoder Experiment\nThis experiment is intended to shed a light on a comparison between different probing architectures. When probing for a concept, it is often hard to know the ground trouth, i.e. to what extend the concept is present. However, if we use an autoencoder, that compresses the input space and successfully reconstructs it, we know that the concepts are somehow represented in the hidden layers of the autoencoder.\nThis is relevant when probing a small neural network, such as Stockfish’ NNUE, where the concept representations are much more compressed than in a large neural network.\nHere we seek to understand better when a probing method is too simple and giving lower probing accuracy than more powerful probing methods.\nOne key insight gained throught this experiment is just how valuable concept probing is to evaluating the reconstruction properties of generative models.\n\n3.1.1.1 The Autoencoder\nThe autoencoder consists of two parts, an encoder and a decoder which are trained to reconstruct the input space. The encoder and decoder mirror each other in terms of the number of layers and the number of neurons in each layer. The design uses a sequence of fully connected linear layers with ReLU activations.\n\n\n3.1.1.2 Probing results\nResults"

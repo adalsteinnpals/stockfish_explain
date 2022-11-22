@@ -2,4 +2,4 @@ project:
   type: website
   output-dir: docs
   render: 
-    - quarto_example.qmd
+    - report.qmd
