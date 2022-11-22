@@ -4,6 +4,7 @@ format:
   html:
     code-fold: true
 jupyter: python3
+bibliography: references.bib
 toc: true
 number-sections: true
 ---
@@ -11,7 +12,7 @@ number-sections: true
 # Explainability and Stockfish
 
 ## Introduction
-This document is a work in progress. It is intended to be a guide to the explainability features of Stockfish. It is not intended to be a guide to Stockfish itself. For that, please see the [Stockfish documentation](https://stockfishchess.org/).
+This document is a work in progress. It is intended to be a guide to the explainability features of Stockfish. It is not intended to be a guide to Stockfish itself. For that, please see the [@Stockfish] documentation.
 
 ## What is Explainability?
 Explainability is the ability to understand why a machine learning model makes the decisions it does. It is a key component of the Explainable AI movement. It is also a key component of the Fairness, Accountability, and Transparency
@@ -69,7 +70,7 @@ In this chapter we will compare various probing methods:
 - Ridge Classifier
 - LightGBM
 
-Methods suggested in Chess Knowledge paper:
+Methods suggested in [@DBLP:journals/corr/abs-2111-09259]:
 
 - data-dependent sparcity using Gated Linear Networks
 - information-theoretic regularization using the information bottleneck
@@ -97,7 +98,7 @@ For example, simpler probing methods might not be able to handle problems relate
 
 - ***When is a probing method too complex?*** 
 
-Some have argued that it is important to keep the capacity of the regression model low [chess knowledge] to ensure that the probing method is capturing the structure of the probed model instead of learning its own structure.
+Some have argued that it is important to keep the capacity of the regression model low [@DBLP:journals/corr/abs-2111-09259] to ensure that the probing method is capturing the structure of the probed model instead of learning its own structure.
 
 So given one extreme case, where we probe for a concept in the input layer with a very powerful model, the model will learn its own relationships, regardless of the models representations. In the earlier layers of the model, where some non-useful information is still being represented in the hidden layers, i.e. the non-useful information has not been dissolved by the model, the same situation can occur.
 
@@ -160,3 +161,6 @@ df_results = pd.read_pickle('stockfish_explain/experiments/chess_auto_encoder/da
 plot_results(df_results)
 ```
 
+
+
+# References

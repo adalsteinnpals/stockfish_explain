@@ -161,11 +161,18 @@ def create_custom_concepts(board):
     concepts['white_queen_on_first_rank'] = int('Q' in np_board[7,:])   
     concepts['black_queen_on_first_rank'] = int('q' in np_board[0,:])
 
+    # Queen on initial square
+    concepts['white_queen_on_initial_square'] = int('Q' in np_board[7,3])
+    concepts['black_queen_on_initial_square'] = int('q' in np_board[0,3])
+
     # Material difference (in pawns)
     concepts['material_difference'] = material(board)
 
     # White has material advantage
     concepts['white_has_material_advantage'] = int(concepts['material_difference'] > 0)
+
+
+
 
     return concepts
 

@@ -83,6 +83,25 @@ code span.st { color: #4070a0; } /* String */
 code span.va { color: #19177c; } /* Variable */
 code span.vs { color: #4070a0; } /* VerbatimString */
 code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
+div.csl-bib-body { }
+div.csl-entry {
+  clear: both;
+}
+.hanging div.csl-entry {
+  margin-left:2em;
+  text-indent:-2em;
+}
+div.csl-left-margin {
+  min-width:2em;
+  float:left;
+}
+div.csl-right-inline {
+  margin-left:2em;
+  padding-left:1em;
+}
+div.csl-indent {
+  margin-left: 2em;
+}
 </style>
 
 
@@ -154,6 +173,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
   <li><a href="#autoencoder-experiment" id="toc-autoencoder-experiment" class="nav-link" data-scroll-target="#autoencoder-experiment"><span class="toc-section-number">3.1.1</span>  Autoencoder Experiment</a></li>
   </ul></li>
   </ul></li>
+  <li><a href="#references" id="toc-references" class="nav-link" data-scroll-target="#references"><span class="toc-section-number">4</span>  References</a></li>
   </ul>
 </nav>
     </div>
@@ -181,7 +201,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <h1 data-number="1"><span class="header-section-number">1</span> Explainability and Stockfish</h1>
 <section id="introduction" class="level2" data-number="1.1">
 <h2 data-number="1.1" class="anchored" data-anchor-id="introduction"><span class="header-section-number">1.1</span> Introduction</h2>
-<p>This document is a work in progress. It is intended to be a guide to the explainability features of Stockfish. It is not intended to be a guide to Stockfish itself. For that, please see the <a href="https://stockfishchess.org/">Stockfish documentation</a>.</p>
+<p>This document is a work in progress. It is intended to be a guide to the explainability features of Stockfish. It is not intended to be a guide to Stockfish itself. For that, please see the <span class="citation" data-cites="Stockfish">(<a href="#ref-Stockfish" role="doc-biblioref">Stockfish 2022</a>)</span> documentation.</p>
 </section>
 <section id="what-is-explainability" class="level2" data-number="1.2">
 <h2 data-number="1.2" class="anchored" data-anchor-id="what-is-explainability"><span class="header-section-number">1.2</span> What is Explainability?</h2>
@@ -243,7 +263,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <li>Ridge Classifier</li>
 <li>LightGBM</li>
 </ul>
-<p>Methods suggested in Chess Knowledge paper:</p>
+<p>Methods suggested in <span class="citation" data-cites="DBLP:journals/corr/abs-2111-09259">(<a href="#ref-DBLP:journals/corr/abs-2111-09259" role="doc-biblioref">McGrath et al. 2021</a>)</span>:</p>
 <ul>
 <li>data-dependent sparcity using Gated Linear Networks</li>
 <li>information-theoretic regularization using the information bottleneck</li>
@@ -269,7 +289,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <ul>
 <li><strong><em>When is a probing method too complex?</em></strong></li>
 </ul>
-<p>Some have argued that it is important to keep the capacity of the regression model low [chess knowledge] to ensure that the probing method is capturing the structure of the probed model instead of learning its own structure.</p>
+<p>Some have argued that it is important to keep the capacity of the regression model low <span class="citation" data-cites="DBLP:journals/corr/abs-2111-09259">(<a href="#ref-DBLP:journals/corr/abs-2111-09259" role="doc-biblioref">McGrath et al. 2021</a>)</span> to ensure that the probing method is capturing the structure of the probed model instead of learning its own structure.</p>
 <p>So given one extreme case, where we probe for a concept in the input layer with a very powerful model, the model will learn its own relationships, regardless of the models representations. In the earlier layers of the model, where some non-useful information is still being represented in the hidden layers, i.e.&nbsp;the non-useful information has not been dissolved by the model, the same situation can occur.</p>
 <section id="autoencoder-experiment" class="level3" data-number="3.1.1">
 <h3 data-number="3.1.1" class="anchored" data-anchor-id="autoencoder-experiment"><span class="header-section-number">3.1.1</span> Autoencoder Experiment</h3>
@@ -448,14 +468,25 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <p></p><figcaption class="figure-caption">Figure&nbsp;3: <strong>?(caption)</strong></figcaption><p></p>
 </figure>
 </div>
+</section>
+</section>
+</section>
+</section>
+<section id="references" class="level1" data-number="4">
+
+
 
 
 </section>
-</section>
-</section>
-</section>
 
-</main> <!-- /main -->
+<div id="quarto-appendix" class="default"><section class="quarto-appendix-contents" role="doc-bibliography"><h2 class="anchored quarto-appendix-heading">4 References</h2><div id="refs" class="references csl-bib-body hanging-indent" role="doc-bibliography">
+<div id="ref-DBLP:journals/corr/abs-2111-09259" class="csl-entry" role="doc-biblioentry">
+McGrath, Thomas, Andrei Kapishnikov, Nenad Tomasev, Adam Pearce, Demis Hassabis, Been Kim, Ulrich Paquet, and Vladimir Kramnik. 2021. <span>“Acquisition of Chess Knowledge in AlphaZero.”</span> <em>CoRR</em> abs/2111.09259. <a href="https://arxiv.org/abs/2111.09259">https://arxiv.org/abs/2111.09259</a>.
+</div>
+<div id="ref-Stockfish" class="csl-entry" role="doc-biblioentry">
+Stockfish. 2022. <span>“Stockfish.”</span> <a href="https://stockfishchess.org/" class="uri">https://stockfishchess.org/</a>.
+</div>
+</div></section></div></main> <!-- /main -->
 <script id="quarto-html-after-body" type="application/javascript">
 window.document.addEventListener("DOMContentLoaded", function (event) {
   const toggleBodyColorMode = (bsSheetEl) => {
