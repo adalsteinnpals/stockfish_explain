@@ -13,7 +13,8 @@ def connected_rooks(np_board, rook_symbol = 'R'):
     return False
 
 
-def can_check(board):
+def can_check(board_):
+    board = copy.copy(board_)
     for move in board.legal_moves:
         board_ = copy.copy(board)
         if board_.gives_check(move):
@@ -22,7 +23,8 @@ def can_check(board):
 
 
 
-def can_fork(board):
+def can_fork(board_):
+    board = copy.copy(board_)
     turn = board.turn
     
     for move in board.legal_moves:
@@ -34,7 +36,8 @@ def can_fork(board):
 
 
 
-def is_knight_forking(board, turn=None, verbose = False):
+def is_knight_forking(board_, turn=None, verbose = False):
+    board = copy.copy(board_)
     
     if turn is None:
         turn = board.turn
@@ -68,10 +71,36 @@ def is_knight_forking(board, turn=None, verbose = False):
     return False
 
 
+def is_king_attacked(board):
+    return board.is_check()
 
+# Calculate material imbalance in centipawns
+def material(board_):
+    board = copy.copy(board_)
+    material_difference = 0
+    for piece in board.piece_map().values():
+        if piece.symbol() == 'P':
+            material_difference += 100
+        elif piece.symbol() == 'N':
+            material_difference += 300
+        elif piece.symbol() == 'B':
+            material_difference += 300
+        elif piece.symbol() == 'R':
+            material_difference += 500
+        elif piece.symbol() == 'Q':
+            material_difference += 900
+        elif piece.symbol() == 'p':
+            material_difference -= 100
+        elif piece.symbol() == 'n':
+            material_difference -= 300
+        elif piece.symbol() == 'b':
+            material_difference -= 300
+        elif piece.symbol() == 'r':
+            material_difference -= 500
+        elif piece.symbol() == 'q':
+            material_difference -= 900
 
-
-
+    return material_difference
 
 
 def create_custom_concepts(board):
@@ -122,6 +151,29 @@ def create_custom_concepts(board):
     
     # Checking
     concepts['can_check'] = can_check(board)
+    concepts['is_checking'] = is_king_attacked(board)
 
+    # Has Queen
+    concepts['white_has_queen'] = int('Q' in pieces)
+    concepts['black_has_queen'] = int('q' in pieces)
+
+    # Queen on first rank
+    concepts['white_queen_on_first_rank'] = int('Q' in np_board[7,:])   
+    concepts['black_queen_on_first_rank'] = int('q' in np_board[0,:])
+
+    # Material difference (in pawns)
+    concepts['material_difference'] = material(board)
+
+    # White has material advantage
+    concepts['white_has_material_advantage'] = int(concepts['material_difference'] > 0)
 
     return concepts
+
+
+
+if __name__ == '__main__':
+    board = chess.Board()
+    print(create_custom_concepts(board))
+
+    board2 = chess.Board('rnbqk1nr/pppp1ppp/8/8/8/8/PPP1PPPP/RNB1KBNR w KQkq - 0 1')
+    print(create_custom_concepts(board2))

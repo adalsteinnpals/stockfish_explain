@@ -56,12 +56,27 @@ All concepts are implemented for both white and black.
 - **current_player_is_forking** - Is true if the current player is forking
 - **current_player_can_fork** - Is true if the current player can fork
 - **current_player_is_checking** - Is true if the current player is checking
-
+- **current_player_can_check** - Is true if the current player can check
+- **material imbalance** - The material imbalance
 
 
 
 
 # Concept Probing
+
+In this chapter we will compare various probing methods:
+
+- Ridge Classifier
+- LightGBM
+
+Methods suggested in Chess Knowledge paper:
+
+- data-dependent sparcity using Gated Linear Networks
+- information-theoretic regularization using the information bottleneck
+- minimum description length probing
+- Bayesian probing 
+
+
 
 ## Comparing concept probing methods
 Here we will evaluate the concept probing methods and consider what they tell us about the model. There are numerous challenges related to concept probing, e.g.:

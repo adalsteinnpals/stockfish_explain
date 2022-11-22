@@ -231,11 +231,25 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <li><strong>current_player_is_forking</strong> - Is true if the current player is forking</li>
 <li><strong>current_player_can_fork</strong> - Is true if the current player can fork</li>
 <li><strong>current_player_is_checking</strong> - Is true if the current player is checking</li>
+<li><strong>current_player_can_check</strong> - Is true if the current player can check</li>
+<li><strong>material imbalance</strong> - The material imbalance</li>
 </ul>
 </section>
 </section>
 <section id="concept-probing" class="level1" data-number="3">
 <h1 data-number="3"><span class="header-section-number">3</span> Concept Probing</h1>
+<p>In this chapter we will compare various probing methods:</p>
+<ul>
+<li>Ridge Classifier</li>
+<li>LightGBM</li>
+</ul>
+<p>Methods suggested in Chess Knowledge paper:</p>
+<ul>
+<li>data-dependent sparcity using Gated Linear Networks</li>
+<li>information-theoretic regularization using the information bottleneck</li>
+<li>minimum description length probing</li>
+<li>Bayesian probing</li>
+</ul>
 <section id="comparing-concept-probing-methods" class="level2" data-number="3.1">
 <h2 data-number="3.1" class="anchored" data-anchor-id="comparing-concept-probing-methods"><span class="header-section-number">3.1</span> Comparing concept probing methods</h2>
 <p>Here we will evaluate the concept probing methods and consider what they tell us about the model. There are numerous challenges related to concept probing, e.g.:</p>
@@ -303,6 +317,22 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 </figure>
 </div>
 </div>
+<div class="cell-output cell-output-display">
+<div id="fig-small-autoencoder-4" class="quarto-figure quarto-figure-center anchored">
+<figure class="figure">
+<p><img src="report_files/figure-html/fig-small-autoencoder-output-4.png" data-ref-parent="fig-small-autoencoder" width="589" height="442" class="figure-img"></p>
+<p></p><figcaption class="figure-caption">(d)</figcaption><p></p>
+</figure>
+</div>
+</div>
+<div class="cell-output cell-output-display">
+<div id="fig-small-autoencoder-5" class="quarto-figure quarto-figure-center anchored">
+<figure class="figure">
+<p><img src="report_files/figure-html/fig-small-autoencoder-output-5.png" data-ref-parent="fig-small-autoencoder" width="589" height="442" class="figure-img"></p>
+<p></p><figcaption class="figure-caption">(e)</figcaption><p></p>
+</figure>
+</div>
+</div>
 <p></p><figcaption class="figure-caption">Figure&nbsp;1: <strong>?(caption)</strong></figcaption><p></p>
 </figure>
 </div>
@@ -343,6 +373,22 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 </figure>
 </div>
 </div>
+<div class="cell-output cell-output-display">
+<div id="fig-medium-autoencoder-4" class="quarto-figure quarto-figure-center anchored">
+<figure class="figure">
+<p><img src="report_files/figure-html/fig-medium-autoencoder-output-4.png" data-ref-parent="fig-medium-autoencoder" width="589" height="442" class="figure-img"></p>
+<p></p><figcaption class="figure-caption">(d)</figcaption><p></p>
+</figure>
+</div>
+</div>
+<div class="cell-output cell-output-display">
+<div id="fig-medium-autoencoder-5" class="quarto-figure quarto-figure-center anchored">
+<figure class="figure">
+<p><img src="report_files/figure-html/fig-medium-autoencoder-output-5.png" data-ref-parent="fig-medium-autoencoder" width="589" height="442" class="figure-img"></p>
+<p></p><figcaption class="figure-caption">(e)</figcaption><p></p>
+</figure>
+</div>
+</div>
 <p></p><figcaption class="figure-caption">Figure&nbsp;2: <strong>?(caption)</strong></figcaption><p></p>
 </figure>
 </div>
@@ -380,6 +426,22 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <figure class="figure">
 <p><img src="report_files/figure-html/fig-large-autoencoder-output-3.png" data-ref-parent="fig-large-autoencoder" width="589" height="442" class="figure-img"></p>
 <p></p><figcaption class="figure-caption">(c)</figcaption><p></p>
+</figure>
+</div>
+</div>
+<div class="cell-output cell-output-display">
+<div id="fig-large-autoencoder-4" class="quarto-figure quarto-figure-center anchored">
+<figure class="figure">
+<p><img src="report_files/figure-html/fig-large-autoencoder-output-4.png" data-ref-parent="fig-large-autoencoder" width="589" height="442" class="figure-img"></p>
+<p></p><figcaption class="figure-caption">(d)</figcaption><p></p>
+</figure>
+</div>
+</div>
+<div class="cell-output cell-output-display">
+<div id="fig-large-autoencoder-5" class="quarto-figure quarto-figure-center anchored">
+<figure class="figure">
+<p><img src="report_files/figure-html/fig-large-autoencoder-output-5.png" data-ref-parent="fig-large-autoencoder" width="589" height="442" class="figure-img"></p>
+<p></p><figcaption class="figure-caption">(e)</figcaption><p></p>
 </figure>
 </div>
 </div>
