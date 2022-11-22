@@ -4,7 +4,7 @@ from stockfish_explain.external_packages.nnue_pytorch.custom_features import Fea
 from stockfish_explain.external_packages.nnue_pytorch.nnue_dataset import FenBatchProvider
 import chess
 import torch
-
+import matplotlib.pyplot as plt
 
 def get_FenBatchProvider(batch_size=100):
     return FenBatchProvider('../../../../data/training_data.binpack', True, 1, batch_size=batch_size)
@@ -21,3 +21,19 @@ def transform(batch):
         #halfkp_list.append(torch.cat(features))
 
     return torch.stack(feature_list)
+
+def plot_results(df_results):
+    for target_name in df_results.target_name.unique():
+        df_results_ = df_results[df_results.target_name == target_name]
+        for model_name  in df_results_.model_name.unique():
+            # plot scores
+            plt.plot(range(len(df_results_[df_results_.model_name == model_name])), df_results_[df_results_.model_name == model_name].score, label=model_name)
+
+        # set x ticks as size   
+        plt.xticks(range(len(df_results_[df_results_.model_name == model_name])), df_results_[df_results_.model_name == model_name]['size'].astype(str))
+        plt.title(target_name)
+        plt.ylabel('score')
+        plt.xlabel('Encoder-Decoder compression size')
+        plt.ylim(0,1.1)
+        plt.legend()
+        plt.show()

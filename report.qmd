@@ -105,6 +105,39 @@ Here we seek to understand better when a probing method is too simple and giving
 The autoencoder consists of two parts, an encoder and a decoder which are trained to reconstruct the input space. The encoder and decoder mirror each other in terms of the number of layers and the number of neurons in each layer. The design uses a sequence of fully connected linear layers with ReLU activations.
 
 
-#### Probing results
+#### Small Autoencoder
+```{python}
+#| label: fig-small-autoencoder
 
-Results
+from stockfish_explain.experiments.chess_auto_encoder.utils import plot_results
+import pandas as pd
+
+df_results = pd.read_pickle('stockfish_explain/experiments/chess_auto_encoder/data/df_results_small.pkl')
+plot_results(df_results)
+```
+
+
+
+#### Medium Autoencoder
+```{python}
+#| label: fig-medium-autoencoder
+
+from stockfish_explain.experiments.chess_auto_encoder.utils import plot_results
+import pandas as pd
+
+df_results = pd.read_pickle('stockfish_explain/experiments/chess_auto_encoder/data/df_results_medium.pkl')
+plot_results(df_results)
+```
+
+
+#### Large Autoencoder
+```{python}
+#| label: fig-large-autoencoder
+
+from stockfish_explain.experiments.chess_auto_encoder.utils import plot_results
+import pandas as pd
+
+df_results = pd.read_pickle('stockfish_explain/experiments/chess_auto_encoder/data/df_results_large.pkl')
+plot_results(df_results)
+```
+
