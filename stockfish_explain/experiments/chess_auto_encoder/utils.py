@@ -32,6 +32,7 @@ def plot_results(df_results):
         # set x ticks as size   
         plt.xticks(range(len(df_results_[df_results_.model_name == model_name])), df_results_[df_results_.model_name == model_name]['size'].astype(str))
         plt.title(target_name)
+        plt.grid()
         plt.ylabel('score')
         plt.xlabel('Encoder-Decoder compression size')
         plt.ylim(0,1.1)

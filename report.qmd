@@ -108,6 +108,7 @@ The autoencoder consists of two parts, an encoder and a decoder which are traine
 #### Small Autoencoder
 ```{python}
 #| label: fig-small-autoencoder
+#| fig-cap: "Visualizing the results of probing a medium autoencoder."
 
 from stockfish_explain.experiments.chess_auto_encoder.utils import plot_results
 import pandas as pd
@@ -121,6 +122,7 @@ plot_results(df_results)
 #### Medium Autoencoder
 ```{python}
 #| label: fig-medium-autoencoder
+#| fig-cap: "Visualizing the results of probing a medium autoencoder."
 
 from stockfish_explain.experiments.chess_auto_encoder.utils import plot_results
 import pandas as pd
@@ -133,6 +135,8 @@ plot_results(df_results)
 #### Large Autoencoder
 ```{python}
 #| label: fig-large-autoencoder
+#| fig-cap: "Visualizing the results of probing a large autoencoder."
+
 
 from stockfish_explain.experiments.chess_auto_encoder.utils import plot_results
 import pandas as pd
