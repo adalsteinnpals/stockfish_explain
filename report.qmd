@@ -120,6 +120,9 @@ Here we seek to understand better when a probing method is too simple and giving
 
 The autoencoder consists of two parts, an encoder and a decoder which are trained to reconstruct the input space. The encoder and decoder mirror each other in terms of the number of layers and the number of neurons in each layer. The design uses a sequence of fully connected linear layers with ReLU activations.
 
+The input into the autoencoder is tensor of size 768, or 64(squares) * 12(piece types).
+
+
 
 #### Small Autoencoder
 ```{python}

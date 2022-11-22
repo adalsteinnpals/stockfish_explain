@@ -23,7 +23,7 @@ def train_model():
 
 
     # Instantiating the model and hyperparameters
-    model = DeepAutoencoder(input_size=641)
+    model = DeepAutoencoder(input_size=768)
     #criterion = torch.nn.MSELoss()
     criterion = torch.nn.BCELoss()
     num_epochs = 1000
@@ -97,7 +97,7 @@ def train_model():
     #plt.show()
 
     # save model to disk
-    torch.save(model.state_dict(), 'model_{model_name}.pt')
+    torch.save(model.state_dict(), f'./models/model_{model_name}.pt')
 
 if __name__ == '__main__':
     train_model()
