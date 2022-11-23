@@ -65,6 +65,8 @@ All concepts are implemented for both white and black.
 
 # Concept Probing
 
+
+
 In this chapter we will compare various probing methods:
 
 - Ridge Classifier
@@ -84,17 +86,22 @@ Here we will evaluate the concept probing methods and consider what they tell us
 
 - ***How can we find the best concept probing method?***
 
-When we are evaluating concept probing methods, what we really want to reveal, is how important is a concept to a given model. If the representation of a concept emerges in the hidden representations of a model, then we can infer that the concept is of some usefulness. 
+When we are evaluating concept probing methods, what we really want to reveal, is how important is a concept to a given model. If the representation of a concept emerges in the hidden representations of a model, then we can infer that the concept is of some usefulness to predict. 
+
+We seek only to reveal what the model has learnt. 
 
 - ***When can we really know if a concept is being used? Even if a concept is linearly separable, how can we know if it is being used?***
 
-Inferring that if a concept is linearly separable then it is being used by the model can sometime be misleading. For example if a concept is linearly separable in the input space, the amount to which the model conserves the information in deeper layers can be a function of more than just the usefulness of the concept.
+Inferring that if a concept is linearly separable then it is being used by the model can sometime be misleading. For example if a concept is linearly separable in the input space, but not useful to the model, it is possible that the model is conserving some non-useful information in the hidden representation. We have not yet quantified this problem.
+
 
 - ***When is a probing method too simple?*** 
 
 If a probing method is too simple, it may not correctly reveal the degree of which the concept is being used. 
 
 For example, simpler probing methods might not be able to handle problems related to sparsity, e.g. if a concept is most often present under a given condition, which is not a confounding factor, then the probing method may not be able to detect the concept.
+
+From [@DBLP:journals/corr/abs-2111-09259]: "... consider a channel representing the possibility of capturing the opponent’s queen by a positive activation at the position of the queen and zero activations otherwise. There are locations on the board in which the queen is more likely to be captured than other locations, and therefore there are levels of sparsity that lead to positive regression weights only at the positions where the queen is most likely to be captured."
 
 - ***When is a probing method too complex?*** 
 
@@ -120,7 +127,7 @@ Here we seek to understand better when a probing method is too simple and giving
 
 The autoencoder consists of two parts, an encoder and a decoder which are trained to reconstruct the input space. The encoder and decoder mirror each other in terms of the number of layers and the number of neurons in each layer. The design uses a sequence of fully connected linear layers with ReLU activations.
 
-The input into the autoencoder is tensor of size 768, or 64(squares) * 12(piece types).
+The input into the autoencoder is tensor of size 768, or 64(squares) * 6(piece types) * 2(color).
 
 
 

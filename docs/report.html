@@ -276,16 +276,18 @@ div.csl-indent {
 <ul>
 <li><strong><em>How can we find the best concept probing method?</em></strong></li>
 </ul>
-<p>When we are evaluating concept probing methods, what we really want to reveal, is how important is a concept to a given model. If the representation of a concept emerges in the hidden representations of a model, then we can infer that the concept is of some usefulness.</p>
+<p>When we are evaluating concept probing methods, what we really want to reveal, is how important is a concept to a given model. If the representation of a concept emerges in the hidden representations of a model, then we can infer that the concept is of some usefulness to predict.</p>
+<p>We seek only to reveal what the model has learnt.</p>
 <ul>
 <li><strong><em>When can we really know if a concept is being used? Even if a concept is linearly separable, how can we know if it is being used?</em></strong></li>
 </ul>
-<p>Inferring that if a concept is linearly separable then it is being used by the model can sometime be misleading. For example if a concept is linearly separable in the input space, the amount to which the model conserves the information in deeper layers can be a function of more than just the usefulness of the concept.</p>
+<p>Inferring that if a concept is linearly separable then it is being used by the model can sometime be misleading. For example if a concept is linearly separable in the input space, but not useful to the model, it is possible that the model is conserving some non-useful information in the hidden representation. We have not yet quantified this problem.</p>
 <ul>
 <li><strong><em>When is a probing method too simple?</em></strong></li>
 </ul>
 <p>If a probing method is too simple, it may not correctly reveal the degree of which the concept is being used.</p>
 <p>For example, simpler probing methods might not be able to handle problems related to sparsity, e.g.&nbsp;if a concept is most often present under a given condition, which is not a confounding factor, then the probing method may not be able to detect the concept.</p>
+<p>From <span class="citation" data-cites="DBLP:journals/corr/abs-2111-09259">(<a href="#ref-DBLP:journals/corr/abs-2111-09259" role="doc-biblioref">McGrath et al. 2021</a>)</span>: “… consider a channel representing the possibility of capturing the opponent’s queen by a positive activation at the position of the queen and zero activations otherwise. There are locations on the board in which the queen is more likely to be captured than other locations, and therefore there are levels of sparsity that lead to positive regression weights only at the positions where the queen is most likely to be captured.”</p>
 <ul>
 <li><strong><em>When is a probing method too complex?</em></strong></li>
 </ul>
@@ -300,7 +302,7 @@ div.csl-indent {
 <section id="the-autoencoder" class="level4" data-number="3.1.1.1">
 <h4 data-number="3.1.1.1" class="anchored" data-anchor-id="the-autoencoder"><span class="header-section-number">3.1.1.1</span> The Autoencoder</h4>
 <p>The autoencoder consists of two parts, an encoder and a decoder which are trained to reconstruct the input space. The encoder and decoder mirror each other in terms of the number of layers and the number of neurons in each layer. The design uses a sequence of fully connected linear layers with ReLU activations.</p>
-<p>The input into the autoencoder is tensor of size 768, or 64(squares) * 12(piece types).</p>
+<p>The input into the autoencoder is tensor of size 768, or 64(squares) * 6(piece types) * 2(color).</p>
 </section>
 <section id="small-autoencoder" class="level4" data-number="3.1.1.2">
 <h4 data-number="3.1.1.2" class="anchored" data-anchor-id="small-autoencoder"><span class="header-section-number">3.1.1.2</span> Small Autoencoder</h4>
