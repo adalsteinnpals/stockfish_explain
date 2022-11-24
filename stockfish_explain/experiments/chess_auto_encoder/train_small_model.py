@@ -15,7 +15,7 @@ from torch.utils.tensorboard import SummaryWriter
 
 def train_model():
     writer = SummaryWriter()   
-    model_name = 'BCE_small_2'                                                                                             
+    model_name = 'BCE_small_3'                                                                                             
 
     batch_size = 200
     train_loader = get_FenBatchProvider(batch_size=batch_size)
@@ -28,7 +28,8 @@ def train_model():
     criterion = torch.nn.BCELoss()
     num_epochs = 1000
     max_iterations = 500
-    optimizer = torch.optim.Adam(model.parameters(), lr=1e-3)
+    optimizer = torch.optim.SGD(model.parameters(), lr=0.05)
+    scheduler = torch.optim.lr_scheduler.CosineAnnealingLR(optimizer, T_max=500*10, eta_min=0.0001)
 
     model = model.cuda()
 
@@ -76,6 +77,7 @@ def train_model():
             
             # Incrementing loss
             running_loss += loss.item()
+            scheduler.step()
         
         # Averaging out loss over entire batch
         running_loss /= batch_size

@@ -3,3 +3,4 @@ project:
   output-dir: docs
   render: 
     - report.qmd
+    - notes.qmd

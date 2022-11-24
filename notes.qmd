@@ -1,0 +1,30 @@
+---
+title: "Meeting Notes"
+format:
+  html:
+    code-fold: true
+jupyter: python3
+toc: true
+---
+
+
+# Meeting Notes
+
+
+## 2022-11-23
+
+We went over the following topics:
+
+- Paper was rejected, even though the most critical reveiwer increased his evaluation.
+- It only makes sens to experiment with very simple concepts. 
+- We talked about the probing problem discussed in the Chess Knowledge paper. 
+    - To evaluate the models mentioned in the paper, we would need to create an experiment.
+- We talked about comparing probing methods for two different models. 
+
+TODO:
+
+- [ ] Add more probing models
+- [ ] Compare the probing accuracy for the same model at different training steps
+
+
+
