@@ -11,24 +11,29 @@ import matplotlib.pyplot as plt
 from utils import   get_FenBatchProvider, transform
 from stockfish_explain.gen_concepts import create_custom_concepts
 from torch.utils.tensorboard import SummaryWriter
-
+from datetime import datetime
 
 def train_model():
     writer = SummaryWriter()   
-    model_name = 'BCE_medium'                                                                                             
+    model_type = 'medium'                                                                                             
 
     batch_size = 200
     train_loader = get_FenBatchProvider(batch_size=batch_size)
     val_loader = get_FenBatchProvider(batch_size=batch_size)
+    
+    model_name = f"model_{model_type}_{datetime.now().strftime('%Y%m%d_%H%M%S')}"                                                             
 
 
     # Instantiating the model and hyperparameters
     model = DeepAutoencoder(input_size=768)
     criterion = torch.nn.BCELoss()
-    num_epochs = 1000
+    num_epochs = 200
     max_iterations = 500
-    optimizer = torch.optim.Adam(model.parameters(), lr=1e-3)
+    save_interval = 10
+    optimizer = torch.optim.Adam(model.parameters(), lr=0.0005)
 
+
+    print('starting...')
     model = model.cuda()
 
     # List that will store the training loss
@@ -83,8 +88,8 @@ def train_model():
         writer.add_scalar("Loss/train", running_loss, epoch)
 
         # save model every 100 epochs
-        if epoch % 100 == 0:
-            torch.save(model.state_dict(), f'./models/model_{model_name}_{epoch}.pt')
+        if epoch % save_interval == 0:
+            torch.save(model.state_dict(), f'./models/{model_name}_{epoch}.pt')
         
         # Storing useful images and
         # reconstructed outputs for the last batch

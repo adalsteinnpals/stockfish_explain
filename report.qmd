@@ -174,5 +174,33 @@ plot_results(df_results)
 ```
 
 
+#### Training Experiment 
+```{python}
+#| label: fig-training-experiment
+#| fig-cap: "Visualizing the results of training experiment."
+
+
+import matplotlib.pyplot as plt
+import pandas as pd
+import seaborn as sns
+
+df_results = pd.read_pickle('stockfish_explain/experiments/chess_auto_encoder/data/df_results_with_dnn.pkl')
+model_files = sorted(df_results['model_string'].unique(), key=lambda x: int(x.split('_')[-1].split('.')[0]))
+# pivot table df_results with model_string as index and input_name as columns
+for feature in df_results['target_name'].unique():
+    for model in df_results['model_name'].unique():
+        df = df_results[(df_results['target_name'] == feature) & (df_results['model_name'] == model)]
+        
+        df = df.pivot(index='model_string', columns='input_name', values='score')
+        df = df.loc[model_files, ['input_encoder_0', 'encoder_0', 'encoder_1', 'encoder_2','decoder_1','decoder_2','decoder_3']]
+        df.index = [x.split('_')[-1].split('.')[0] for x in df.index]
+        plt.figure(figsize = (10,10))
+        plt.title(f" Accuracy for {feature} - {model}")
+        sns.heatmap(df, annot=True, cmap='Blues')       
+        plt.xticks([x + 0.5 for x in range(len(df.columns))], ['786', '1024','64','32','64','1024','786'], rotation=45)
+        plt.show()
+```
+
+
 
 # References

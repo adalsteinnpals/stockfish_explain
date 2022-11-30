@@ -144,3 +144,5 @@ runs/
 external_packages/
 data/
 /.quarto/
+
+/env/

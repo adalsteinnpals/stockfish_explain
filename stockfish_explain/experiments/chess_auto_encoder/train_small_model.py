@@ -11,11 +11,18 @@ import matplotlib.pyplot as plt
 from utils import   get_FenBatchProvider, transform
 from stockfish_explain.gen_concepts import create_custom_concepts
 from torch.utils.tensorboard import SummaryWriter
+from datetime import datetime
 
+
+def get_lr(optimizer):
+    for param_group in optimizer.param_groups:
+        return param_group['lr']
 
 def train_model():
     writer = SummaryWriter()   
-    model_name = 'BCE_small_3'                                                                                             
+    model_type = 'small'
+    # create unique model name for tensorboard
+    model_name = f"model_{model_type}_{datetime.now().strftime('%Y%m%d_%H%M%S')}"                                                             
 
     batch_size = 200
     train_loader = get_FenBatchProvider(batch_size=batch_size)
@@ -26,20 +33,23 @@ def train_model():
     model = DeepAutoencoder(input_size=768)
     #criterion = torch.nn.MSELoss()
     criterion = torch.nn.BCELoss()
-    num_epochs = 1000
+    num_epochs = 200
     max_iterations = 500
-    optimizer = torch.optim.SGD(model.parameters(), lr=0.05)
-    scheduler = torch.optim.lr_scheduler.CosineAnnealingLR(optimizer, T_max=500*10, eta_min=0.0001)
+    learning_rate = 0.0003
+    save_interval = 10
+
+    # print model parameters
+    print(f'Learing rate: {learning_rate}')
+
+
+    #optimizer = torch.optim.SGD(model.parameters(), lr=100)
+    optimizer = torch.optim.Adam(model.parameters(), lr = learning_rate)
+    #scheduler = torch.optim.lr_scheduler.CosineAnnealingLR(optimizer, T_max=500*10, eta_min=10)
 
     model = model.cuda()
 
     # List that will store the training loss
     train_loss = []
-    
-    # Dictionary that will store the
-    # different images and outputs for 
-    # various epochs
-    outputs = {}
     
     
     # Training loop starts
@@ -77,17 +87,19 @@ def train_model():
             
             # Incrementing loss
             running_loss += loss.item()
-            scheduler.step()
+            #scheduler.step()
         
         # Averaging out loss over entire batch
         running_loss /= batch_size
         train_loss.append(running_loss)
 
         writer.add_scalar("Loss/train", running_loss, epoch)
+        #writer.add_scalar("LearningRate", scheduler.get_last_lr()[0], epoch)
+        writer.add_scalar("LearningRate", get_lr(optimizer), epoch)
 
         # save model every 100 epochs
-        if epoch % 100 == 0:
-            torch.save(model.state_dict(), f'./models/model_{model_name}_{epoch}.pt')
+        if epoch % save_interval == 0:
+            torch.save(model.state_dict(), f'./models/{model_name}_{epoch}.pt')
         
     
     
@@ -99,7 +111,7 @@ def train_model():
     #plt.show()
 
     # save model to disk
-    torch.save(model.state_dict(), f'./models/model_{model_name}.pt')
+    torch.save(model.state_dict(), f'./models/{model_name}.pt')
 
 if __name__ == '__main__':
     train_model()

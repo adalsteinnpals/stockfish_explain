@@ -521,6 +521,108 @@ div.csl-indent {
 </figure>
 </div>
 </section>
+<section id="training-experiment" class="level4" data-number="3.1.1.5">
+<h4 data-number="3.1.1.5" class="anchored" data-anchor-id="training-experiment"><span class="header-section-number">3.1.1.5</span> Training Experiment</h4>
+<div id="fig-training-experiment" class="quarto-figure quarto-figure-center anchored">
+<figure class="figure">
+<details>
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb4"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> matplotlib.pyplot <span class="im">as</span> plt</span>
+<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> pandas <span class="im">as</span> pd</span>
+<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> seaborn <span class="im">as</span> sns</span>
+<span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-5"><a href="#cb4-5" aria-hidden="true" tabindex="-1"></a>df_results <span class="op">=</span> pd.read_pickle(<span class="st">'stockfish_explain/experiments/chess_auto_encoder/data/df_results_with_dnn.pkl'</span>)</span>
+<span id="cb4-6"><a href="#cb4-6" aria-hidden="true" tabindex="-1"></a>model_files <span class="op">=</span> <span class="bu">sorted</span>(df_results[<span class="st">'model_string'</span>].unique(), key<span class="op">=</span><span class="kw">lambda</span> x: <span class="bu">int</span>(x.split(<span class="st">'_'</span>)[<span class="op">-</span><span class="dv">1</span>].split(<span class="st">'.'</span>)[<span class="dv">0</span>]))</span>
+<span id="cb4-7"><a href="#cb4-7" aria-hidden="true" tabindex="-1"></a><span class="co"># pivot table df_results with model_string as index and input_name as columns</span></span>
+<span id="cb4-8"><a href="#cb4-8" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> feature <span class="kw">in</span> df_results[<span class="st">'target_name'</span>].unique():</span>
+<span id="cb4-9"><a href="#cb4-9" aria-hidden="true" tabindex="-1"></a>    <span class="cf">for</span> model <span class="kw">in</span> df_results[<span class="st">'model_name'</span>].unique():</span>
+<span id="cb4-10"><a href="#cb4-10" aria-hidden="true" tabindex="-1"></a>        df <span class="op">=</span> df_results[(df_results[<span class="st">'target_name'</span>] <span class="op">==</span> feature) <span class="op">&amp;</span> (df_results[<span class="st">'model_name'</span>] <span class="op">==</span> model)]</span>
+<span id="cb4-11"><a href="#cb4-11" aria-hidden="true" tabindex="-1"></a>        </span>
+<span id="cb4-12"><a href="#cb4-12" aria-hidden="true" tabindex="-1"></a>        df <span class="op">=</span> df.pivot(index<span class="op">=</span><span class="st">'model_string'</span>, columns<span class="op">=</span><span class="st">'input_name'</span>, values<span class="op">=</span><span class="st">'score'</span>)</span>
+<span id="cb4-13"><a href="#cb4-13" aria-hidden="true" tabindex="-1"></a>        df <span class="op">=</span> df.loc[model_files, [<span class="st">'input_encoder_0'</span>, <span class="st">'encoder_0'</span>, <span class="st">'encoder_1'</span>, <span class="st">'encoder_2'</span>,<span class="st">'decoder_1'</span>,<span class="st">'decoder_2'</span>,<span class="st">'decoder_3'</span>]]</span>
+<span id="cb4-14"><a href="#cb4-14" aria-hidden="true" tabindex="-1"></a>        df.index <span class="op">=</span> [x.split(<span class="st">'_'</span>)[<span class="op">-</span><span class="dv">1</span>].split(<span class="st">'.'</span>)[<span class="dv">0</span>] <span class="cf">for</span> x <span class="kw">in</span> df.index]</span>
+<span id="cb4-15"><a href="#cb4-15" aria-hidden="true" tabindex="-1"></a>        plt.figure(figsize <span class="op">=</span> (<span class="dv">10</span>,<span class="dv">10</span>))</span>
+<span id="cb4-16"><a href="#cb4-16" aria-hidden="true" tabindex="-1"></a>        plt.title(<span class="ss">f" Accuracy for </span><span class="sc">{</span>feature<span class="sc">}</span><span class="ss"> - </span><span class="sc">{</span>model<span class="sc">}</span><span class="ss">"</span>)</span>
+<span id="cb4-17"><a href="#cb4-17" aria-hidden="true" tabindex="-1"></a>        sns.heatmap(df, annot<span class="op">=</span><span class="va">True</span>, cmap<span class="op">=</span><span class="st">'Blues'</span>)       </span>
+<span id="cb4-18"><a href="#cb4-18" aria-hidden="true" tabindex="-1"></a>        plt.xticks([x <span class="op">+</span> <span class="fl">0.5</span> <span class="cf">for</span> x <span class="kw">in</span> <span class="bu">range</span>(<span class="bu">len</span>(df.columns))], [<span class="st">'786'</span>, <span class="st">'1024'</span>,<span class="st">'64'</span>,<span class="st">'32'</span>,<span class="st">'64'</span>,<span class="st">'1024'</span>,<span class="st">'786'</span>], rotation<span class="op">=</span><span class="dv">45</span>)</span>
+<span id="cb4-19"><a href="#cb4-19" aria-hidden="true" tabindex="-1"></a>        plt.show()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output cell-output-display">
+<div id="fig-training-experiment-1" class="quarto-figure quarto-figure-center anchored">
+<figure class="figure">
+<p><img src="report_files/figure-html/fig-training-experiment-output-1.png" data-ref-parent="fig-training-experiment" width="749" height="825" class="figure-img"></p>
+<p></p><figcaption class="figure-caption">(a) Visualizing the results of training experiment.</figcaption><p></p>
+</figure>
+</div>
+</div>
+<div class="cell-output cell-output-display">
+<div id="fig-training-experiment-2" class="quarto-figure quarto-figure-center anchored">
+<figure class="figure">
+<p><img src="report_files/figure-html/fig-training-experiment-output-2.png" data-ref-parent="fig-training-experiment" width="749" height="825" class="figure-img"></p>
+<p></p><figcaption class="figure-caption">(b)</figcaption><p></p>
+</figure>
+</div>
+</div>
+<div class="cell-output cell-output-display">
+<div id="fig-training-experiment-3" class="quarto-figure quarto-figure-center anchored">
+<figure class="figure">
+<p><img src="report_files/figure-html/fig-training-experiment-output-3.png" data-ref-parent="fig-training-experiment" width="741" height="825" class="figure-img"></p>
+<p></p><figcaption class="figure-caption">(c)</figcaption><p></p>
+</figure>
+</div>
+</div>
+<div class="cell-output cell-output-display">
+<div id="fig-training-experiment-4" class="quarto-figure quarto-figure-center anchored">
+<figure class="figure">
+<p><img src="report_files/figure-html/fig-training-experiment-output-4.png" data-ref-parent="fig-training-experiment" width="749" height="825" class="figure-img"></p>
+<p></p><figcaption class="figure-caption">(d)</figcaption><p></p>
+</figure>
+</div>
+</div>
+<div class="cell-output cell-output-display">
+<div id="fig-training-experiment-5" class="quarto-figure quarto-figure-center anchored">
+<figure class="figure">
+<p><img src="report_files/figure-html/fig-training-experiment-output-5.png" data-ref-parent="fig-training-experiment" width="749" height="825" class="figure-img"></p>
+<p></p><figcaption class="figure-caption">(e)</figcaption><p></p>
+</figure>
+</div>
+</div>
+<div class="cell-output cell-output-display">
+<div id="fig-training-experiment-6" class="quarto-figure quarto-figure-center anchored">
+<figure class="figure">
+<p><img src="report_files/figure-html/fig-training-experiment-output-6.png" data-ref-parent="fig-training-experiment" width="741" height="825" class="figure-img"></p>
+<p></p><figcaption class="figure-caption">(f)</figcaption><p></p>
+</figure>
+</div>
+</div>
+<div class="cell-output cell-output-display">
+<div id="fig-training-experiment-7" class="quarto-figure quarto-figure-center anchored">
+<figure class="figure">
+<p><img src="report_files/figure-html/fig-training-experiment-output-7.png" data-ref-parent="fig-training-experiment" width="758" height="825" class="figure-img"></p>
+<p></p><figcaption class="figure-caption">(g)</figcaption><p></p>
+</figure>
+</div>
+</div>
+<div class="cell-output cell-output-display">
+<div id="fig-training-experiment-8" class="quarto-figure quarto-figure-center anchored">
+<figure class="figure">
+<p><img src="report_files/figure-html/fig-training-experiment-output-8.png" data-ref-parent="fig-training-experiment" width="758" height="825" class="figure-img"></p>
+<p></p><figcaption class="figure-caption">(h)</figcaption><p></p>
+</figure>
+</div>
+</div>
+<div class="cell-output cell-output-display">
+<div id="fig-training-experiment-9" class="quarto-figure quarto-figure-center anchored">
+<figure class="figure">
+<p><img src="report_files/figure-html/fig-training-experiment-output-9.png" data-ref-parent="fig-training-experiment" width="741" height="825" class="figure-img"></p>
+<p></p><figcaption class="figure-caption">(i)</figcaption><p></p>
+</figure>
+</div>
+</div>
+<p></p><figcaption class="figure-caption">Figure&nbsp;4: <strong>?(caption)</strong></figcaption><p></p>
+</figure>
+</div>
+</section>
 </section>
 </section>
 </section>
