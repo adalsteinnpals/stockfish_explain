@@ -4,3 +4,4 @@ project:
   render: 
     - report.qmd
     - notes.qmd
+    - chess_concepts.qmd

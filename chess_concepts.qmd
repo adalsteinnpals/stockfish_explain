@@ -1,0 +1,81 @@
+# Chess Theory
+
+Book: Elements of positional evaluation
+
+## Static Features
+
+Aspect of a position that do not require analysis of piece movements. E.g. Doubled pawns, open files dark square complex.
+
+## Dynamic Features
+
+Aspect of a position that require knowledge of how the pieces move. It includes both how the pieces move and the time measurement for motion: the *tempo*
+
+**Tempo** measurements are the *move -* one move by each player - and the *ply -* one move by one player.
+
+## Strategy
+
+The part of chess that involves evaluation of the position ( which side stands better, how much and why) and the accompanying planning. 
+
+## Tactics
+
+A forced maneuver that may include winning material, including pawn promotion, and executing a mating attack.
+
+- *En prise* - a piece that is attacked but not guarded
+- *Counting* - how a player evaluates material trades by the “I take-you take” thought process. Determine whether material can be won by any sequential capturing sequence.
+- *Single motifs* - examples are double attacks, double theats, pins, removal of the guard, and back rank mates.
+- *Combinations of motifs without sacrifice*
+- *Combinations of motifs with sacrifice.*
+
+## Positional Play
+
+A strategy that emphasizes piece and pawn placement, as opposed to tactics.
+
+# Concepts
+
+- **Mobility** - measures the number of moves of a piece.
+    - There is a close relationship between mobility and the “material” value of the piece
+    - GM Neil McDonald: “… an advantage in mobility means nothing unless it can be converted into something more tangible”
+- **Activity** - is how much the piece can do in an actual position. The more mobile the piece is the more likely it is active.
+    - The more mobile a piece is, then the more likely it is active
+- **Actual Mobility**  - The number of legal moves a piece can make at any given time in a particular position.
+- **Potential Mobility** - The number of squares a piece could move from a particular square if the board was otherwise empty
+- **Global Mobility** - The total number of squares a piece could move given unlimited tempi.
+- **Actual Global Mobility** - is the total number of squares that a piece could legally get to if it had possession of unlimited tempi in a given position.
+- **Potential Global Mobility**  - is the total number of squares a piece can move to on an empty board given unlimited tempi.
+- **Flexibility** - consists of keeping one’s options open, maintaining many alternate paths.
+    - Low plan flexibility, when taken voluntarily, is the equivalent of “burning your bridges”
+    - Edmar Mentis: “One of the hallmarks of modern opening play is to aim for maximum flexibility. That is, you want to use the move order that will achieve a position where you have excellent choices of how to proceed.”
+- **Piece flexibility** - includes flexibility of both individual pieces and groups of pieces. Flexibility does not imply high mobility, but rather a wide range of plausible ways to maneuver.
+    - Examples are: knight maneuvers, mobile pawn chains, two-way bishops ( bishops effective on both diagonals)
+- **Absolute vulnerability** - is independent of the position of the pieces. For example, the center is the most vulnerable area because it can be reached or attacked the quickest from any other spot on the board
+- **Must move** - is a concept that is a key aspect of vulnerability and is a result of another element: **Loss of flexibility**
+- **Relative vulnerability** - is apiece being subject to attack that is dependent on the position of the pieces.
+- The degree of backwardness of a pawn is proportional to its vulnerability and vice versa.
+- The more material value a piece has the more vulnerable it may be
+- **Inadequately guarded -**  ether fewer guards than defenders or not the right guards
+- **Barely adequate guarded -**  Guard and defenders exactly equal so vulnerable to double attack
+- **Adequately guarded**  - The attacked piece and defenders are worth less than the attackers so they are safe
+- **Overprotected** - more guards than defenders so an additional attacker is not a danger
+
+## Static Features
+
+- **Doubled Pawns**
+    - Doubled pawns ensure at least one semi-open file for the player with the doubled pawns
+    - Because doubled pawns result from a pawn capture, at least one of the files adjacent to the doubled pawns has a high probability of being at least semi-open.
+    - There is not a high correlation between doubled pawns and either passed or backward pawns.
+    - In the endgame doubled pawns are often a liability, as they make creating passed pawns more difficult.
+- **Isolated pawns**
+    - There is much less inherently good, and more bad about isolated pawns than doubled pawns.
+- **Backward Pawns**
+    - The single weakest pawn is the backward pawn on a semi-open file
+- **Passed Pawns**
+    - Protected passed pawn - a passed pawn guarded by another pawn
+    - Outside passed pawn - When both sides have passed pawns, the one farther away from the kings is the “outside” passed pawn
+    - Connected passed pawns - passed pawns on adjacent files
+    - The opponent mush keep an eye on the pawn to prevent queening
+    - The opponent should avoid trading into endgames where the passed pawn would give its owner a decisive advantage
+    - Strong Passed pawn: primarily high mobility, low vulnerability, and a short number of tempi from promotion
+
+## Weak Squares
+
+[https://www.youtube.com/watch?v=jEehFvnO3ZA](https://www.youtube.com/watch?v=jEehFvnO3ZA)

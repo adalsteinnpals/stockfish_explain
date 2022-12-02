@@ -33,5 +33,26 @@
     "title": "Meeting Notes",
     "section": "",
     "text": "We went over the following topics:\n\nPaper was rejected, even though the most critical reveiwer increased his evaluation.\nIt only makes sens to experiment with very simple concepts.\nWe talked about the probing problem discussed in the Chess Knowledge paper.\n\nTo evaluate the models mentioned in the paper, we would need to create an experiment.\n\nWe talked about comparing probing methods for two different models.\n\nTODO:\n\nAdd more probing models\nCompare the probing accuracy for the same model at different training steps\n\n\n\n\nWork done:\n\nAdded a neural network probe\nProbed the medium autoencoder during training with three different probing methods\n“The degree of effort” approach"
+  },
+  {
+    "objectID": "chess_concepts.html",
+    "href": "chess_concepts.html",
+    "title": "",
+    "section": "",
+    "text": "Book: Elements of positional evaluation\n\n\nAspect of a position that do not require analysis of piece movements. E.g. Doubled pawns, open files dark square complex.\n\n\n\nAspect of a position that require knowledge of how the pieces move. It includes both how the pieces move and the time measurement for motion: the tempo\nTempo measurements are the move - one move by each player - and the ply - one move by one player.\n\n\n\nThe part of chess that involves evaluation of the position ( which side stands better, how much and why) and the accompanying planning.\n\n\n\nA forced maneuver that may include winning material, including pawn promotion, and executing a mating attack.\n\nEn prise - a piece that is attacked but not guarded\nCounting - how a player evaluates material trades by the “I take-you take” thought process. Determine whether material can be won by any sequential capturing sequence.\nSingle motifs - examples are double attacks, double theats, pins, removal of the guard, and back rank mates.\nCombinations of motifs without sacrifice\nCombinations of motifs with sacrifice.\n\n\n\n\nA strategy that emphasizes piece and pawn placement, as opposed to tactics."
+  },
+  {
+    "objectID": "chess_concepts.html#static-features-1",
+    "href": "chess_concepts.html#static-features-1",
+    "title": "",
+    "section": "Static Features",
+    "text": "Static Features\n\nDoubled Pawns\n\nDoubled pawns ensure at least one semi-open file for the player with the doubled pawns\nBecause doubled pawns result from a pawn capture, at least one of the files adjacent to the doubled pawns has a high probability of being at least semi-open.\nThere is not a high correlation between doubled pawns and either passed or backward pawns.\nIn the endgame doubled pawns are often a liability, as they make creating passed pawns more difficult.\n\nIsolated pawns\n\nThere is much less inherently good, and more bad about isolated pawns than doubled pawns.\n\nBackward Pawns\n\nThe single weakest pawn is the backward pawn on a semi-open file\n\nPassed Pawns\n\nProtected passed pawn - a passed pawn guarded by another pawn\nOutside passed pawn - When both sides have passed pawns, the one farther away from the kings is the “outside” passed pawn\nConnected passed pawns - passed pawns on adjacent files\nThe opponent mush keep an eye on the pawn to prevent queening\nThe opponent should avoid trading into endgames where the passed pawn would give its owner a decisive advantage\nStrong Passed pawn: primarily high mobility, low vulnerability, and a short number of tempi from promotion"
+  },
+  {
+    "objectID": "chess_concepts.html#weak-squares",
+    "href": "chess_concepts.html#weak-squares",
+    "title": "",
+    "section": "Weak Squares",
+    "text": "Weak Squares\nhttps://www.youtube.com/watch?v=jEehFvnO3ZA"
   }
 ]

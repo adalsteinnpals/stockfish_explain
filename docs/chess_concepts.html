@@ -1,0 +1,320 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
+
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.2.269">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+
+<title>chess_concepts</title>
+<style>
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: min(4vw, 1.5em);}
+div.column{flex: auto; overflow-x: auto;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1.6em;
+  vertical-align: middle;
+}
+</style>
+
+
+<script src="site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="site_libs/clipboard/clipboard.min.js"></script>
+<script src="site_libs/quarto-search/autocomplete.umd.js"></script>
+<script src="site_libs/quarto-search/fuse.min.js"></script>
+<script src="site_libs/quarto-search/quarto-search.js"></script>
+<meta name="quarto:offset" content="./">
+<script src="site_libs/quarto-html/quarto.js"></script>
+<script src="site_libs/quarto-html/popper.min.js"></script>
+<script src="site_libs/quarto-html/tippy.umd.min.js"></script>
+<script src="site_libs/quarto-html/anchor.min.js"></script>
+<link href="site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="site_libs/quarto-html/quarto-syntax-highlighting.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<script src="site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="site_libs/bootstrap/bootstrap.min.css" rel="stylesheet" id="quarto-bootstrap" data-mode="light">
+<script id="quarto-search-options" type="application/json">{
+  "location": "sidebar",
+  "copy-button": false,
+  "collapse-after": 3,
+  "panel-placement": "start",
+  "type": "textbox",
+  "limit": 20,
+  "language": {
+    "search-no-results-text": "No results",
+    "search-matching-documents-text": "matching documents",
+    "search-copy-link-title": "Copy link to search",
+    "search-hide-matches-text": "Hide additional matches",
+    "search-more-match-text": "more match in this document",
+    "search-more-matches-text": "more matches in this document",
+    "search-clear-button-title": "Clear",
+    "search-detached-cancel-button-title": "Cancel",
+    "search-submit-button-title": "Submit"
+  }
+}</script>
+
+
+</head>
+
+<body class="fullcontent">
+
+<div id="quarto-search-results"></div>
+<!-- content -->
+<div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article">
+<!-- sidebar -->
+<!-- margin-sidebar -->
+    
+<!-- main -->
+<main class="content" id="quarto-document-content">
+
+
+
+<section id="chess-theory" class="level1">
+<h1>Chess Theory</h1>
+<p>Book: Elements of positional evaluation</p>
+<section id="static-features" class="level2">
+<h2 class="anchored" data-anchor-id="static-features">Static Features</h2>
+<p>Aspect of a position that do not require analysis of piece movements. E.g. Doubled pawns, open files dark square complex.</p>
+</section>
+<section id="dynamic-features" class="level2">
+<h2 class="anchored" data-anchor-id="dynamic-features">Dynamic Features</h2>
+<p>Aspect of a position that require knowledge of how the pieces move. It includes both how the pieces move and the time measurement for motion: the <em>tempo</em></p>
+<p><strong>Tempo</strong> measurements are the <em>move -</em> one move by each player - and the <em>ply -</em> one move by one player.</p>
+</section>
+<section id="strategy" class="level2">
+<h2 class="anchored" data-anchor-id="strategy">Strategy</h2>
+<p>The part of chess that involves evaluation of the position ( which side stands better, how much and why) and the accompanying planning.</p>
+</section>
+<section id="tactics" class="level2">
+<h2 class="anchored" data-anchor-id="tactics">Tactics</h2>
+<p>A forced maneuver that may include winning material, including pawn promotion, and executing a mating attack.</p>
+<ul>
+<li><em>En prise</em> - a piece that is attacked but not guarded</li>
+<li><em>Counting</em> - how a player evaluates material trades by the “I take-you take” thought process. Determine whether material can be won by any sequential capturing sequence.</li>
+<li><em>Single motifs</em> - examples are double attacks, double theats, pins, removal of the guard, and back rank mates.</li>
+<li><em>Combinations of motifs without sacrifice</em></li>
+<li><em>Combinations of motifs with sacrifice.</em></li>
+</ul>
+</section>
+<section id="positional-play" class="level2">
+<h2 class="anchored" data-anchor-id="positional-play">Positional Play</h2>
+<p>A strategy that emphasizes piece and pawn placement, as opposed to tactics.</p>
+</section>
+</section>
+<section id="concepts" class="level1">
+<h1>Concepts</h1>
+<ul>
+<li><strong>Mobility</strong> - measures the number of moves of a piece.
+<ul>
+<li>There is a close relationship between mobility and the “material” value of the piece</li>
+<li>GM Neil McDonald: “… an advantage in mobility means nothing unless it can be converted into something more tangible”</li>
+</ul></li>
+<li><strong>Activity</strong> - is how much the piece can do in an actual position. The more mobile the piece is the more likely it is active.
+<ul>
+<li>The more mobile a piece is, then the more likely it is active</li>
+</ul></li>
+<li><strong>Actual Mobility</strong> - The number of legal moves a piece can make at any given time in a particular position.</li>
+<li><strong>Potential Mobility</strong> - The number of squares a piece could move from a particular square if the board was otherwise empty</li>
+<li><strong>Global Mobility</strong> - The total number of squares a piece could move given unlimited tempi.</li>
+<li><strong>Actual Global Mobility</strong> - is the total number of squares that a piece could legally get to if it had possession of unlimited tempi in a given position.</li>
+<li><strong>Potential Global Mobility</strong> - is the total number of squares a piece can move to on an empty board given unlimited tempi.</li>
+<li><strong>Flexibility</strong> - consists of keeping one’s options open, maintaining many alternate paths.
+<ul>
+<li>Low plan flexibility, when taken voluntarily, is the equivalent of “burning your bridges”</li>
+<li>Edmar Mentis: “One of the hallmarks of modern opening play is to aim for maximum flexibility. That is, you want to use the move order that will achieve a position where you have excellent choices of how to proceed.”</li>
+</ul></li>
+<li><strong>Piece flexibility</strong> - includes flexibility of both individual pieces and groups of pieces. Flexibility does not imply high mobility, but rather a wide range of plausible ways to maneuver.
+<ul>
+<li>Examples are: knight maneuvers, mobile pawn chains, two-way bishops ( bishops effective on both diagonals)</li>
+</ul></li>
+<li><strong>Absolute vulnerability</strong> - is independent of the position of the pieces. For example, the center is the most vulnerable area because it can be reached or attacked the quickest from any other spot on the board</li>
+<li><strong>Must move</strong> - is a concept that is a key aspect of vulnerability and is a result of another element: <strong>Loss of flexibility</strong></li>
+<li><strong>Relative vulnerability</strong> - is apiece being subject to attack that is dependent on the position of the pieces.</li>
+<li>The degree of backwardness of a pawn is proportional to its vulnerability and vice versa.</li>
+<li>The more material value a piece has the more vulnerable it may be</li>
+<li><strong>Inadequately guarded -</strong> ether fewer guards than defenders or not the right guards</li>
+<li><strong>Barely adequate guarded -</strong> Guard and defenders exactly equal so vulnerable to double attack</li>
+<li><strong>Adequately guarded</strong> - The attacked piece and defenders are worth less than the attackers so they are safe</li>
+<li><strong>Overprotected</strong> - more guards than defenders so an additional attacker is not a danger</li>
+</ul>
+<section id="static-features-1" class="level2">
+<h2 class="anchored" data-anchor-id="static-features-1">Static Features</h2>
+<ul>
+<li><strong>Doubled Pawns</strong>
+<ul>
+<li>Doubled pawns ensure at least one semi-open file for the player with the doubled pawns</li>
+<li>Because doubled pawns result from a pawn capture, at least one of the files adjacent to the doubled pawns has a high probability of being at least semi-open.</li>
+<li>There is not a high correlation between doubled pawns and either passed or backward pawns.</li>
+<li>In the endgame doubled pawns are often a liability, as they make creating passed pawns more difficult.</li>
+</ul></li>
+<li><strong>Isolated pawns</strong>
+<ul>
+<li>There is much less inherently good, and more bad about isolated pawns than doubled pawns.</li>
+</ul></li>
+<li><strong>Backward Pawns</strong>
+<ul>
+<li>The single weakest pawn is the backward pawn on a semi-open file</li>
+</ul></li>
+<li><strong>Passed Pawns</strong>
+<ul>
+<li>Protected passed pawn - a passed pawn guarded by another pawn</li>
+<li>Outside passed pawn - When both sides have passed pawns, the one farther away from the kings is the “outside” passed pawn</li>
+<li>Connected passed pawns - passed pawns on adjacent files</li>
+<li>The opponent mush keep an eye on the pawn to prevent queening</li>
+<li>The opponent should avoid trading into endgames where the passed pawn would give its owner a decisive advantage</li>
+<li>Strong Passed pawn: primarily high mobility, low vulnerability, and a short number of tempi from promotion</li>
+</ul></li>
+</ul>
+</section>
+<section id="weak-squares" class="level2">
+<h2 class="anchored" data-anchor-id="weak-squares">Weak Squares</h2>
+<p><a href="https://www.youtube.com/watch?v=jEehFvnO3ZA">https://www.youtube.com/watch?v=jEehFvnO3ZA</a></p>
+
+
+</section>
+</section>
+
+</main> <!-- /main -->
+<script id="quarto-html-after-body" type="application/javascript">
+window.document.addEventListener("DOMContentLoaded", function (event) {
+  const toggleBodyColorMode = (bsSheetEl) => {
+    const mode = bsSheetEl.getAttribute("data-mode");
+    const bodyEl = window.document.querySelector("body");
+    if (mode === "dark") {
+      bodyEl.classList.add("quarto-dark");
+      bodyEl.classList.remove("quarto-light");
+    } else {
+      bodyEl.classList.add("quarto-light");
+      bodyEl.classList.remove("quarto-dark");
+    }
+  }
+  const toggleBodyColorPrimary = () => {
+    const bsSheetEl = window.document.querySelector("link#quarto-bootstrap");
+    if (bsSheetEl) {
+      toggleBodyColorMode(bsSheetEl);
+    }
+  }
+  toggleBodyColorPrimary();  
+  const icon = "";
+  const anchorJS = new window.AnchorJS();
+  anchorJS.options = {
+    placement: 'right',
+    icon: icon
+  };
+  anchorJS.add('.anchored');
+  const clipboard = new window.ClipboardJS('.code-copy-button', {
+    target: function(trigger) {
+      return trigger.previousElementSibling;
+    }
+  });
+  clipboard.on('success', function(e) {
+    // button target
+    const button = e.trigger;
+    // don't keep focus
+    button.blur();
+    // flash "checked"
+    button.classList.add('code-copy-button-checked');
+    var currentTitle = button.getAttribute("title");
+    button.setAttribute("title", "Copied!");
+    let tooltip;
+    if (window.bootstrap) {
+      button.setAttribute("data-bs-toggle", "tooltip");
+      button.setAttribute("data-bs-placement", "left");
+      button.setAttribute("data-bs-title", "Copied!");
+      tooltip = new bootstrap.Tooltip(button, 
+        { trigger: "manual", 
+          customClass: "code-copy-button-tooltip",
+          offset: [0, -8]});
+      tooltip.show();    
+    }
+    setTimeout(function() {
+      if (tooltip) {
+        tooltip.hide();
+        button.removeAttribute("data-bs-title");
+        button.removeAttribute("data-bs-toggle");
+        button.removeAttribute("data-bs-placement");
+      }
+      button.setAttribute("title", currentTitle);
+      button.classList.remove('code-copy-button-checked');
+    }, 1000);
+    // clear code selection
+    e.clearSelection();
+  });
+  function tippyHover(el, contentFn) {
+    const config = {
+      allowHTML: true,
+      content: contentFn,
+      maxWidth: 500,
+      delay: 100,
+      arrow: false,
+      appendTo: function(el) {
+          return el.parentElement;
+      },
+      interactive: true,
+      interactiveBorder: 10,
+      theme: 'quarto',
+      placement: 'bottom-start'
+    };
+    window.tippy(el, config); 
+  }
+  const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+  for (var i=0; i<noterefs.length; i++) {
+    const ref = noterefs[i];
+    tippyHover(ref, function() {
+      // use id or data attribute instead here
+      let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+      try { href = new URL(href).hash; } catch {}
+      const id = href.replace(/^#\/?/, "");
+      const note = window.document.getElementById(id);
+      return note.innerHTML;
+    });
+  }
+  const findCites = (el) => {
+    const parentEl = el.parentElement;
+    if (parentEl) {
+      const cites = parentEl.dataset.cites;
+      if (cites) {
+        return {
+          el,
+          cites: cites.split(' ')
+        };
+      } else {
+        return findCites(el.parentElement)
+      }
+    } else {
+      return undefined;
+    }
+  };
+  var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+  for (var i=0; i<bibliorefs.length; i++) {
+    const ref = bibliorefs[i];
+    const citeInfo = findCites(ref);
+    if (citeInfo) {
+      tippyHover(citeInfo.el, function() {
+        var popup = window.document.createElement('div');
+        citeInfo.cites.forEach(function(cite) {
+          var citeDiv = window.document.createElement('div');
+          citeDiv.classList.add('hanging-indent');
+          citeDiv.classList.add('csl-entry');
+          var biblioDiv = window.document.getElementById('ref-' + cite);
+          if (biblioDiv) {
+            citeDiv.innerHTML = biblioDiv.innerHTML;
+          }
+          popup.appendChild(citeDiv);
+        });
+        return popup.innerHTML;
+      });
+    }
+  }
+});
+</script>
+</div> <!-- /content -->
+
+
+
+</body></html>

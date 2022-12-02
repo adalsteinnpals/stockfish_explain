@@ -30,6 +30,8 @@ In the quest to understand why a machine learning model makes the decision it do
 
 # Chess
 
+Notes about chess concepts can be found [here](chess_concepts.qmd)
+
 ## Concepts from Stockfish
 
 - **Material**
