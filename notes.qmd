@@ -27,4 +27,12 @@ TODO:
 - [ ] Compare the probing accuracy for the same model at different training steps
 
 
+## 2022-11-30
+
+Work done:
+
+- Added a neural network probe
+- Probed the medium autoencoder during training with three different probing methods
+- "The degree of effort" approach
+
 
