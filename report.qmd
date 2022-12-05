@@ -216,7 +216,7 @@ for feature in df_results['target_name'].unique():
         plt.show()
 ```
 
-
+#### Plotly experiment
 ```{python}
 #| label: fig-training-experiment2
 #| fig-cap: "Visualizing the results of training experiment."
