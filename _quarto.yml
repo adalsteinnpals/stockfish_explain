@@ -5,3 +5,4 @@ project:
     - report.qmd
     - notes.qmd
     - chess_concepts.qmd
+    - plotly_example.qmd
