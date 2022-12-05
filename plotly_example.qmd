@@ -1,6 +1,6 @@
 
 ---
-title: "Stockfish Explainability"
+title: "Plotly Example"
 format:
   html:
     code-fold: true
