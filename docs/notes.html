@@ -76,7 +76,7 @@ ul.task-list li input[type="checkbox"] {
   <li><a href="#meeting-notes" id="toc-meeting-notes" class="nav-link active" data-scroll-target="#meeting-notes">Meeting Notes</a>
   <ul class="collapse">
   <li><a href="#section" id="toc-section" class="nav-link" data-scroll-target="#section">2022-11-23</a></li>
-  <li><a href="#section-1" id="toc-section-1" class="nav-link" data-scroll-target="#section-1">2022-11-30</a></li>
+  <li><a href="#section-1" id="toc-section-1" class="nav-link" data-scroll-target="#section-1">2022-12-05</a></li>
   </ul></li>
   </ul>
 </nav>
@@ -122,12 +122,24 @@ ul.task-list li input[type="checkbox"] {
 </ul>
 </section>
 <section id="section-1" class="level2">
-<h2 class="anchored" data-anchor-id="section-1">2022-11-30</h2>
+<h2 class="anchored" data-anchor-id="section-1">2022-12-05</h2>
 <p>Work done:</p>
 <ul>
 <li>Added a neural network probe</li>
 <li>Probed the medium autoencoder during training with three different probing methods</li>
-<li>“The degree of effort” approach</li>
+<li>“The degree of effort” approach reviewed</li>
+<li>Implemented boosting algorithm to approximate degree of effort</li>
+</ul>
+<p>Discussion:</p>
+<ul>
+<li>We saw that a linear probe (and the decision tree probe) showed a decrease in probing accuracy in a compressed state while the network was clearly improving.</li>
+<li>The neural network probe did not show this behavior.</li>
+<li>Thus if we want to use probing to evaluate the quality of a compressed state, we should use a neural network probe.</li>
+</ul>
+<p>TODO:</p>
+<ul class="task-list">
+<li><input type="checkbox" disabled="">Use a neural network probe (linear and decision tree) to evaluate Stockfish NNUE</li>
+<li><input type="checkbox" disabled="">Check if the boosting algorithm sheds light on concept representation.</li>
 </ul>
 
 

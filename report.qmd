@@ -84,6 +84,16 @@ Methods suggested in [@DBLP:journals/corr/abs-2111-09259]:
 - Bayesian probing 
 
 
+## Minimum description length probing
+
+The accuracy of a probe is commonly used as a proxy of how well an property is encoded by a model. To show a difference between two properties, often ether the amount of training data or the probing model (size) is restricted. 
+
+Instead this paper presents an approach that approximates the "amount of effort" needed to achieve a given probing accuracy. High accuracy while reducing training data or model size reflect the same property: *strength of the regularity in the data*.
+
+
+
+
+
 
 ## Comparing concept probing methods
 Here we will evaluate the concept probing methods and consider what they tell us about the model. There are numerous challenges related to concept probing, e.g.:

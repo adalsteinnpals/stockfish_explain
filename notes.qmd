@@ -27,12 +27,28 @@ TODO:
 - [ ] Compare the probing accuracy for the same model at different training steps
 
 
-## 2022-11-30
+## 2022-12-05
 
 Work done:
 
 - Added a neural network probe
 - Probed the medium autoencoder during training with three different probing methods
-- "The degree of effort" approach
+- "The degree of effort" approach reviewed
+- Implemented boosting algorithm to approximate degree of effort
+
+Discussion:
+
+- We saw that a linear probe (and the decision tree probe) showed a decrease in probing accuracy in a compressed state while the network was clearly improving. 
+- The neural network probe did not show this behavior.
+- Thus if we want to use probing to evaluate the quality of a compressed state, we should use a neural network probe.
+
+
+TODO:
+
+- [ ] Use a neural network probe (linear and decision tree) to evaluate Stockfish NNUE
+- [ ] Check if the boosting algorithm sheds light on concept representation.
+
+
+ 
 
 
