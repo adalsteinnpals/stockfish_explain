@@ -16,14 +16,14 @@ from captum.attr._core.lime import get_exp_kernel_similarity_function
 from PIL import Image
 from stockfish import Stockfish
 from torch import nn
-
+from stockfish_explain.utils.general import get_root_dir
 
 non_king_pieces = ["p", "b", "n", "r", "q"]
 available_methods = ["shapley", "lime"]
 
 
 def get_config():
-    with open("config.yml") as f:
+    with open(get_root_dir()+"stockfish_explain/stockfish_explain/config.yml") as f:
         config = yaml.load(f, Loader=yaml.FullLoader)
     return config
 

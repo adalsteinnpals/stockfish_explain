@@ -77,6 +77,7 @@ ul.task-list li input[type="checkbox"] {
   <ul class="collapse">
   <li><a href="#section" id="toc-section" class="nav-link" data-scroll-target="#section">2022-11-23</a></li>
   <li><a href="#section-1" id="toc-section-1" class="nav-link" data-scroll-target="#section-1">2022-12-05</a></li>
+  <li><a href="#section-2" id="toc-section-2" class="nav-link" data-scroll-target="#section-2">2022-12-07</a></li>
   </ul></li>
   </ul>
 </nav>
@@ -134,12 +135,31 @@ ul.task-list li input[type="checkbox"] {
 <ul>
 <li>We saw that a linear probe (and the decision tree probe) showed a decrease in probing accuracy in a compressed state while the network was clearly improving.</li>
 <li>The neural network probe did not show this behavior.</li>
-<li>Thus if we want to use probing to evaluate the quality of a compressed state, we should use a neural network probe.</li>
+<li>Thus if we want to use probing to evaluate and compare the quality of a compressed state, we should use a neural network probe.</li>
 </ul>
 <p>TODO:</p>
 <ul class="task-list">
 <li><input type="checkbox" disabled="">Use a neural network probe (linear and decision tree) to evaluate Stockfish NNUE</li>
 <li><input type="checkbox" disabled="">Check if the boosting algorithm sheds light on concept representation.</li>
+</ul>
+</section>
+<section id="section-2" class="level2">
+<h2 class="anchored" data-anchor-id="section-2">2022-12-07</h2>
+<p>Work done:</p>
+<ul>
+<li>Imported the officiel NNUE weights</li>
+<li>Probed the NNUE at two different depths</li>
+<li>Calculated the probing accuracy for number of classification concepts at both depths</li>
+</ul>
+<p>Discussion:</p>
+<ul>
+<li>We saw that linear probe was often underperforming at layer1 but not layer2</li>
+<li>No clear pattern was observed for comparison of decision trees and neural network probe</li>
+</ul>
+<p>TODO:</p>
+<ul class="task-list">
+<li><input type="checkbox" disabled="">Implement binary concept: pawn is on Nth rank</li>
+<li><input type="checkbox" disabled="">Perform probing experiment with Regression concepts (stockfish concepts)</li>
 </ul>
 
 

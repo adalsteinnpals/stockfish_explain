@@ -140,6 +140,7 @@ nnue_pytorch/
 *.db
 .vscode/
 *.pt
+*.pkl
 runs/
 external_packages/
 data/

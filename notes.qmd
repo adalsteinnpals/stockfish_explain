@@ -40,13 +40,37 @@ Discussion:
 
 - We saw that a linear probe (and the decision tree probe) showed a decrease in probing accuracy in a compressed state while the network was clearly improving. 
 - The neural network probe did not show this behavior.
-- Thus if we want to use probing to evaluate the quality of a compressed state, we should use a neural network probe.
+- Thus if we want to use probing to evaluate and compare the quality of a compressed state, we should use a neural network probe.
 
 
 TODO:
 
 - [ ] Use a neural network probe (linear and decision tree) to evaluate Stockfish NNUE
 - [ ] Check if the boosting algorithm sheds light on concept representation.
+
+
+
+## 2022-12-07
+
+Work done:
+
+- Imported the officiel NNUE weights 
+- Probed the NNUE at two different depths
+- Calculated the probing accuracy for number of classification concepts at both depths
+
+Discussion:
+
+- We saw that linear probe was often underperforming at layer1 but not layer2
+- No clear pattern was observed for comparison of decision trees and neural network probe
+
+TODO:
+
+- [ ] Implement binary concept: pawn is on Nth rank
+- [ ] Perform probing experiment with Regression concepts (stockfish concepts)
+
+
+
+
 
 
  
