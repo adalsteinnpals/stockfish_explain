@@ -19,7 +19,8 @@ logging.basicConfig(format='%(asctime)s - %(message)s',
                     datefmt='%d-%b-%y %H:%M:%S',
                     level=logging.DEBUG)
 
-def create_concepts(dataset_size = 200000):
+def create_concepts(dataset_size = 200000,
+                    add_only_white_to_move = False):
 
     batch_size = 50
     num_batch = dataset_size // batch_size
@@ -38,6 +39,11 @@ def create_concepts(dataset_size = 200000):
             pieces = dict(Counter([str(v) for v in board.piece_map().values()]))
             d = {**d, **pieces}
 
+            # add white to move
+            d['white_to_move'] = 1 if board.turn else 0
+            if add_only_white_to_move:
+                if d['white_to_move'] == 0:
+                    continue
             results.append(d)
         return results
 
@@ -47,8 +53,13 @@ def create_concepts(dataset_size = 200000):
         data = data  + fetch_batch()
 
     df = pd.DataFrame(data).fillna(0)
-    del data
+    # drop duplicate fen
+
     logging.info("dataframe size: {}".format(df.shape))
+    df = df.drop_duplicates(subset=['fen'])
+
+    del data
+    logging.info("dataframe size after dropping duplicate: {}".format(df.shape))
 
 
 
@@ -76,6 +87,8 @@ def create_concepts(dataset_size = 200000):
         'p': 'black_pawn',
     }
 
+        
+
 
     df = df.rename(columns=columns_names)
 
@@ -83,4 +96,9 @@ def create_concepts(dataset_size = 200000):
 
 
 if __name__ == '__main__':
-    create_concepts(dataset_size = 2000)
+    df = create_concepts(dataset_size = 2300000,
+                         add_only_white_to_move = True)
+
+
+    # save to csv
+    df.to_csv("/media/ap/storage/stockfish_data/concept_table_v6_white_to_move.csv", index=False)

@@ -70,9 +70,42 @@ TODO:
 
 
 
+## 2022-12-14
 
+Work done:
 
+- Implemented binary concept: pawn is on Nth rank
+- Probed pawn rank concept
+- Regression experiment failed to converge for second layer
+- Regression experiment converged for first layer
 
+Discussion:
+
+- We need to make decisions about publishing 
+- Pawn rank concept is very interesting
+
+TODO:
+
+- [ ] Find ways to make the regression experiment converge
+- [ ] Try probing experiments per bucket
  
 
+## 2022-12-16
 
+Work done:
+
+- Probed regression concepts by converting them to binary concepts (sign of the concept)
+  - Probed per bucket regression concepts
+
+
+## 2023-02-06
+
+
+- CoG - https://2023.ieee-cog.org/
+- ECAI - https://ecai2023.eu/dates
+- Ráðstefnan sem María nefndi - https://www.sciencedirect.com/journal/decision-support-systems/about/call-for-papers#dss-special-issue-on-explainable-ai-for-enhanced-decision-making
+
+
+TODO:
+  - Create a bigger neural probe
+  - 

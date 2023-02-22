@@ -1,0 +1,6 @@
+buckets:
+- all
+concept_file: /media/ap/storage/stockfish_data/concept_table_ballanced_can_fork_white_to_move.csv
+db_name: stockfish_data_v8_can_fork
+metric: !!python/name:stockfish_explain.utils.concepts.classification_cost ''
+num_splits: 5

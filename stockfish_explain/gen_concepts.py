@@ -103,6 +103,16 @@ def material(board_):
     return material_difference
 
 
+# create boolean value if pawn is on the each rank
+def pawn_on_rank(board_):
+    board = copy.copy(board_)
+    pawn_on_rank = {}
+    for i in range(1,9):
+        pawn_on_rank['white_pawn_on_rank_' + str(i)] = 1 if int(board.pieces(chess.PAWN, chess.WHITE) & chess.BB_RANKS[i-1]) else 0
+        pawn_on_rank['black_pawn_on_rank_' + str(i)] = 1 if int(board.pieces(chess.PAWN, chess.BLACK) & chess.BB_RANKS[i-1]) else 0
+    return pawn_on_rank
+
+
 def create_custom_concepts(board):
     
     
@@ -171,7 +181,8 @@ def create_custom_concepts(board):
     # White has material advantage
     concepts['white_has_material_advantage'] = int(concepts['material_difference'] > 0)
 
-
+    # pawn on each rank
+    concepts.update(pawn_on_rank(board))
 
 
     return concepts
@@ -179,8 +190,16 @@ def create_custom_concepts(board):
 
 
 if __name__ == '__main__':
+    import json
     board = chess.Board()
-    print(create_custom_concepts(board))
+    print(board)
+    print(json.dumps(create_custom_concepts(board),sort_keys=True, indent=4))
 
     board2 = chess.Board('rnbqk1nr/pppp1ppp/8/8/8/8/PPP1PPPP/RNB1KBNR w KQkq - 0 1')
-    print(create_custom_concepts(board2))
+    print(board2)
+    print(json.dumps(create_custom_concepts(board2),sort_keys=True, indent=4))
+
+    fen3 = 'rnbqkbnr/pp2pppp/8/1p2P3/2p5/3P1P2/PPP3PP/RNBQKBNR w KQkq - 0 1'
+    board3 = chess.Board(fen3)
+    print(board3)
+    print(json.dumps(create_custom_concepts(board3),sort_keys=True, indent=4))
